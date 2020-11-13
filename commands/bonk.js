@@ -1,3 +1,5 @@
+const { VoiceState } = require("discord.js");
+
 module.exports = {
 	name: 'bonk',
     description: 'Moves a user to horny jail.',
@@ -5,7 +7,10 @@ module.exports = {
     args: true,
     usage: '<user>',
 	execute(message, args) {
-        const mentionedMember = (message.mentions.users.first());
-        //mentionedMember.voice.setChannel(750271593401417779);
-	},s
+        const user = (message.mentions.member.first());
+        //const member = message.guild.member(message.guild.member);
+        //member.voice.setChannel(750271593401417779, "Bonk.");
+        //member.voice.channel(750271593401417779);
+        message.guild.member.get(user).channel(750271593401417779);
+	},
 };
