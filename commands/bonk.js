@@ -26,9 +26,9 @@ module.exports = {
         }
 
         // send bonk message
-        message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`,{files: ["https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755"]});
+        message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, { files: ['https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755'] });
 
         // move user to bonk channel
-        taggedMember.edit({channel:bonkChannel}).catch(err => console.log(err));
+        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
 	},
 };
