@@ -45,7 +45,7 @@ client.on('message', message => {
     // checks if a command is only for a guild
     if (command.guildOnly && message.channel.type === 'dm') {
         return message.reply('I can\'t execute that command inside DMs!');
-    }    
+    }
 
     // checks if the number of args is correct
     if (command.args && !args.length) {
@@ -63,11 +63,11 @@ client.on('message', message => {
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());
     }
-    
+
     const now = Date.now();
     const timestamps = cooldowns.get(command.name);
     const cooldownAmount = (command.cooldown || 0) * 1000;
-    
+
     if (timestamps.has(message.author.id)) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
