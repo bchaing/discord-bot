@@ -1,5 +1,3 @@
-const { VoiceState } = require("discord.js");
-
 module.exports = {
 	name: 'bonk',
     description: 'Moves a user to horny jail.',
