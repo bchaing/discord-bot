@@ -10,6 +10,12 @@ module.exports = {
         let taggedMember = (message.mentions.members.first());
         const bonkChannel = message.guild.channels.cache.get('750271593401417779');
 
+        // checks the permissions of the user
+        if(!message.member.hasPermission('MOVE_MEMBERS')) {
+            message.channel.send('You must have permission to move members!');
+            return;
+        }
+
         // check if taggedMember is valid
         if (!taggedMember) {
             message.channel.send(`${args[0]} is not a valid user!`);
