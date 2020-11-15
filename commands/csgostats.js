@@ -31,19 +31,17 @@ module.exports = {
             }
 
             // getting steam id from URL
-            if (customUrl.includes("https://steamcommunity.com/id") && !customUrl.includes("your_profile_name")) {
-                const url = customUrl.concat("?xml=1");
-                try {
+            const url = customUrl.concat("?xml=1");
+            try {
                 const resp = await fetch(url);
                 const text = await resp.text();
                 const doc = new DOMParser().parseFromString(text);
                 const ele = doc.documentElement.getElementsByTagName("steamID64");
                 steamID = ele.item(0).firstChild.nodeValue;
-                } catch (error) {
+            } catch (error) {
                 console.log(error);
                 message.channel.send("An error occurred retrieving your steam id");
                 return;
-                }
             }
 
             // create a new browser page and navagate to csgostats live page
