@@ -20,10 +20,15 @@ module.exports = {
             });
 
             // creating variables to parse for steam id
-            const customUrl = `https://steamcommunity.com/id/${ args[0] }`;
             const DOMParser = require('xmldom').DOMParser;
             const fetch = require('node-fetch');
             let steamID;
+
+            // completes URL from input
+            let customUrl = args[0];
+            if (!customUrl.includes("https://steamcommunity.com/id")) {
+                customUrl = `https://steamcommunity.com/id/${ args[0] }`;
+            }
 
             // getting steam id from URL
             if (customUrl.includes("https://steamcommunity.com/id") && !customUrl.includes("your_profile_name")) {
@@ -54,7 +59,7 @@ module.exports = {
             // wait for page to load and screen shot the stats element
             await page.waitForSelector('#player-live');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-            await element.screenshot({path: 'images/csgostats.png'}); // take screenshot element in puppeteer
+            await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
 
             // send image to the chat
             message.channel.send({ files: ['images/csgostats.png'] });
