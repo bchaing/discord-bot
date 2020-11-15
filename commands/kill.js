@@ -10,9 +10,9 @@ module.exports = {
             message.channel.send('You must have permission to kill the bot!');
             return;
         }
-
-        message.channel.send('Bonking Bonk Bot. Goodbye!');
         
-        message.client.destroy();
+        message.channel.send(`Bonking ${message.client.user}, shutting down...`).then(() => {
+            message.client.destroy();
+        });
 	},
 };
