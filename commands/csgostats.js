@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: true,
     args: true,
     usage: '<profile name>',
-    cooldown: 0,
+    cooldown: 5,
 	execute(message, args) {
         (async () => {
             // creating puppeteer variables
@@ -26,38 +26,48 @@ module.exports = {
 
             // completes URL from input
             let customUrl = args[0];
-            if (!customUrl.includes("https://steamcommunity.com/id")) {
-                customUrl = `https://steamcommunity.com/id/${ args[0] }`;
+            if (customUrl.includes('steamcommunity.com/profiles/')) {
+                steamID = customUrl.substring(customUrl.search(/\d/));
+            } else if (!customUrl.includes('steamcommunity.com/id/')) {
+                customUrl = `https://steamcommunity.com/id/${ args[0] }`; 
             }
 
             // getting steam id from URL
-            const url = customUrl.concat("?xml=1");
+            if (!steamID) {
+                try {
+                    const url = customUrl.concat("?xml=1");
+                    const resp = await fetch(url);
+                    const text = await resp.text();
+                    const doc = new DOMParser().parseFromString(text);
+                    const ele = doc.documentElement.getElementsByTagName("steamID64");
+                    steamID = ele.item(0).firstChild.nodeValue;
+                } catch (error) {
+                    // console.log(error);
+                    message.channel.send("An error occurred retrieving your steam id");
+                    return;
+                }
+            }
+
+            // create a new browser page
+            const page = await browser.newPage();
             try {
-                const resp = await fetch(url);
-                const text = await resp.text();
-                const doc = new DOMParser().parseFromString(text);
-                const ele = doc.documentElement.getElementsByTagName("steamID64");
-                steamID = ele.item(0).firstChild.nodeValue;
+                // navagate to csgostats live page
+                await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
+
+                // click on check live game button
+                const [button] = await page.$x("//button[contains(., 'Check for live game')]");
+                if (button) {
+                    await button.click();
+                }
+
+                // wait for page to load and screen shot the stats element
+                await page.waitForSelector('#player-live');          // wait for the selector to load
+                const element = await page.$('#player-live');        // declare a variable with an ElementHandle
+                await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
             } catch (error) {
-                console.log(error);
-                message.channel.send("An error occurred retrieving your steam id");
+                message.channel.send("An error occurred retrieving your csgostats page");
                 return;
             }
-
-            // create a new browser page and navagate to csgostats live page
-            const page = await browser.newPage();
-            await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' }).catch(err => console.log(err));
-
-            // click on check live game button
-            const [button] = await page.$x("//button[contains(., 'Check for live game')]");
-            if (button) {
-                await button.click();
-            }
-            
-            // wait for page to load and screen shot the stats element
-            await page.waitForSelector('#player-live');          // wait for the selector to load
-            const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-            await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
 
             // send image to the chat
             message.channel.send({ files: ['images/csgostats.png'] });
