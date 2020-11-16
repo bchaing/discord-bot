@@ -12,13 +12,6 @@ module.exports = {
             const StealthPlugin = require('puppeteer-extra-plugin-stealth');
             puppeteer.use(StealthPlugin());
 
-            // creating browser
-            const browser = await puppeteer.launch({
-                headless: false, // The browser is visible
-                ignoreHTTPSErrors: true,
-                args: ['--window-size=1920,1080'],
-            });
-
             // creating variables to parse for steam id
             const DOMParser = require('xmldom').DOMParser;
             const fetch = require('node-fetch');
@@ -48,6 +41,13 @@ module.exports = {
                 }
             }
 
+            // creating browser
+            const browser = await puppeteer.launch({
+                headless: true, // The browser is visible
+                ignoreHTTPSErrors: true,
+                args: ['--window-size=1920,1080'],
+            });
+
             // create a new browser page
             const page = await browser.newPage();
             try {
@@ -64,8 +64,10 @@ module.exports = {
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
+                await browser.close();
             } catch (error) {
                 message.channel.send("An error occurred retrieving your csgostats page");
+                browser.close();
                 return;
             }
 
