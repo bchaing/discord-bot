@@ -72,7 +72,15 @@ module.exports = {
             }
 
             // send image to the chat
-            message.channel.send({ files: ['images/csgostats.png'] });
+            await message.channel.send({ files: ['images/csgostats.png'] });
+            
+            // delete image after being sent
+            const fs = require('fs');
+            try {
+                fs.unlinkSync('images/csgostats.png');
+            } catch (error) {
+                console.log(error);
+            }
           })();
 	},
 };
