@@ -38,8 +38,11 @@ module.exports = {
                 await page.waitForSelector('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');          // wait for the selector to load
                 const element = await page.$('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');        // declare a variable with an ElementHandle
                 await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
+                await browser.close();
+                
             } catch (error) {
                 message.channel.send("An error occurred retrieving your lolstats page");
+                browser.close();
                 return;
             }
 
