@@ -22,6 +22,7 @@ module.exports = {
             }
         }
 
+        // check if taggedMember is in a voice channel
         if (!taggedMember.voice.channel) {
             message.channel.send(`${args[0]} is not a voice channel!`);
             taggedMember = message.member;
