@@ -22,12 +22,19 @@ module.exports = {
             }
         }
 
+        if (!taggedMember.voice.channel) {
+            message.channel.send(`${args[0]} is not a voice channel!`);
+            taggedMember = message.member;
+
+            if (!taggedMember.voice.channel) {
+                return;
+            }
+        } 
+
         // send bonk message
         message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, { files: ['https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755'] });
 
         // move user to bonk channel
-        if (taggedMember.voice.channel) {
-            taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
-        }  
+        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err)); 
 	},
 };
