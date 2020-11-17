@@ -21,16 +21,13 @@ module.exports = {
                 return;
             }
         }
-        
-        // check if taggedMember is in a voice channel
-        if (!taggedMember.voice.channel) {
-            return message.channel.send(`${taggedMember.user} is not in a valid voice channel!`);
-        }
 
         // send bonk message
         message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, { files: ['https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755'] });
 
         // move user to bonk channel
-        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
+        if (taggedMember.voice.channel) {
+            taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
+        }  
 	},
 };
