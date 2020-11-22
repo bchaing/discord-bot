@@ -25,7 +25,7 @@ for (const file of commandFiles) {
 // this event will only trigger one time after logging in
 client.once('ready', () => {
     client.user.setActivity('b!help', { type: 'COMPETING' });
-    console.log('Ready!');
+    console.log(`Logged in as ${client.user.tag}`);
 });
 
 // listen for messages
