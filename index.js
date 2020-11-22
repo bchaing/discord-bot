@@ -24,6 +24,7 @@ for (const file of commandFiles) {
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
+    client.user.setActivity('b!help', { type: 'COMPETING' });
     console.log('Ready!');
 });
 
