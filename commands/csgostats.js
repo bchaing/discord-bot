@@ -69,6 +69,7 @@ module.exports = {
                 await browser.close();
             } catch (error) {
                 message.channel.send("An error occurred retrieving your csgostats page");
+                console.log(error);
                 browser.close();
                 return;
             }
