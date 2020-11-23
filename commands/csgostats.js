@@ -41,12 +41,14 @@ module.exports = {
                 }
             }
 
+
             // creating browser
             const browser = await puppeteer.launch({
-                executablePath: 'chromium-browser',
+                product: 'chrome',
+                executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
-            });
+                });
 
             // create a new browser page
             const page = await browser.newPage();
@@ -66,7 +68,8 @@ module.exports = {
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 await browser.close();
             } catch (error) {
-                message.channel.send("An error occurred retrieving your csgostats page");
+                console.log(error);
+                message.channel.send("An error occurred retrieving your csgostats page");    
                 browser.close();
                 return;
             }
