@@ -44,7 +44,8 @@ module.exports = {
 
             // creating browser
             const browser = await puppeteer.launch({
-                executablePath: '/usr/bin/chromium',
+                product: 'chrome',
+                executablePath: '/usr/bin/chromium-browser',
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
                 });
