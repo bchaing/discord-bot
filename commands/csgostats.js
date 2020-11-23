@@ -68,8 +68,8 @@ module.exports = {
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 await browser.close();
             } catch (error) {
-                message.channel.send("An error occurred retrieving your csgostats page");
                 console.log(error);
+                message.channel.send("An error occurred retrieving your csgostats page");    
                 browser.close();
                 return;
             }
