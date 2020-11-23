@@ -46,7 +46,7 @@ module.exports = {
                 product: 'chrome', 
                 executablePath: '/usr/bin/chromium',
                 ignoreHTTPSErrors: true,
-                args: ['--window-size=1920,1080', '--no-sandbox'],
+                args: ['--window-size=1920,1080'],
             });
 
             // create a new browser page
