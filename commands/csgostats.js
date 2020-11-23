@@ -41,13 +41,13 @@ module.exports = {
                 }
             }
 
+
             // creating browser
             const browser = await puppeteer.launch({
-                product: 'chrome', 
                 executablePath: '/usr/bin/chromium',
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
-            });
+                });
 
             // create a new browser page
             const page = await browser.newPage();
