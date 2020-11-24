@@ -42,13 +42,13 @@ module.exports = {
                 const element = await page.$('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');        // declare a variable with an ElementHandle
 
                 // click on check live game button
-                /* const [button] = await page.$x("//button[contains(., 'OK')]");
+                const [button] = await page.$x("//button[contains(., 'X')]");
                 if (button) {
                     await button.click();
-                } */
-                await Promise.all([
+                }
+                /* await Promise.all([
                     await page.click('body > div > div.message.type-bottom.no-border > div.message-component.message-row.message-row > button.message-component.message-button.no-children.accept-button'),
-                  ]);
+                  ]); */
 
                 await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
                 await browser.close();
