@@ -47,7 +47,7 @@ module.exports = {
                     await button.click();
                 } */
                 await Promise.all([
-                    await page.click('body > div > div.message.type-bottom.no-border > div:nth-child(1) > span'),
+                    await page.click('body > div > div.message.type-bottom.no-border > div.message-component.message-row.message-row > button.message-component.message-button.no-children.accept-button'),
                   ]);
 
                 await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
