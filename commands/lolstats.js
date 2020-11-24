@@ -17,7 +17,7 @@ module.exports = {
                 product: 'chrome',
                 executablePath: '/usr/bin/chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
-                args: ['--window-size=1920,1080'],
+                args: ['--window-size=1920,1920'],
             });
 
             // parses input user
