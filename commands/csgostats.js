@@ -90,6 +90,8 @@ module.exports = {
             } catch (error) {
                 console.log(error);
             }
+
+            console.log();  // newline for console logs
           })();
 	},
 };
