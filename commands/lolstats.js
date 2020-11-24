@@ -19,17 +19,19 @@ module.exports = {
                 args: ['--window-size=1920,1080'],
             });
 
-            // completes URL from input
-            const userName = args[0];
-
-            // presses okay button from cookies
-
+            // parses input user
+            let userName = "";
+            for(let i = 0; i < args.length; i++)
+            {
+                if (i != 0)
+                {
+                    userName += "%20";
+                }
+                userName += args[i];
+            }
 
             // create a new browser page
             const page = await browser.newPage();
-            const form = await page.$('body > div > div.message.type-bottom.no-border > div.message-component.message-row.message-row > button.message-component.message-button.no-children.accept-button');
-            await form.evaluate( form => form.click() );
-
             try {
                 // navagate to league of legends live page
                 await page.goto(`https://u.gg/lol/profile/na1/${userName}/live-game`, { waitUntil: 'networkidle0' });
