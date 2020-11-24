@@ -14,6 +14,7 @@ module.exports = {
 
             // creating browser
             const browser = await puppeteer.launch({
+                headless: false,
                 product: 'chrome',
                 executablePath: '/usr/bin/chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
