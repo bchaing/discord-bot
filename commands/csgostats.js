@@ -34,8 +34,9 @@ module.exports = {
                     const doc = new DOMParser().parseFromString(text);
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
+                    console.log(`[CSGOSTATS] Found steamID: ${steamID}`);
                 } catch (error) {
-                    // console.log(error);
+                    console.log('[CSGOSTATS] Invalid steamID passed or error in steamID processing.');
                     message.channel.send("An error occurred retrieving your steam id");
                     return;
                 }
@@ -43,6 +44,7 @@ module.exports = {
 
 
             // creating browser
+            console.log('[CSGOSTATS] Starting chromium browser...');
             const browser = await puppeteer.launch({
                 product: 'chrome',
                 executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
@@ -54,9 +56,11 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to csgostats live page
+                console.log(`[CSGOSTATS] Navagating to https://csgostats.gg/player/${ steamID }#/live`);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
+                console.log('[CSGOSTATS] Clicking live game button...');
                 const [button] = await page.$x("//button[contains(., 'Check for live game')]");
                 if (button) {
                     await button.click();
@@ -65,6 +69,7 @@ module.exports = {
                 // wait for page to load and screen shot the stats element
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
+                console.log('[CSGOSTATS] Taking screenshot...');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 await browser.close();
             } catch (error) {
@@ -76,6 +81,7 @@ module.exports = {
 
             // send image to the chat
             await message.channel.send({ files: ['images/csgostats.png'] });
+            console.log('[CSGOSTATS] Image sent!');
             
             // delete image after being sent
             const fs = require('fs');
