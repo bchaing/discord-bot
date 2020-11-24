@@ -14,7 +14,6 @@ module.exports = {
 
             // creating browser
             const browser = await puppeteer.launch({
-                headless: false,
                 product: 'chrome',
                 executablePath: '/usr/bin/chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
@@ -41,6 +40,13 @@ module.exports = {
                 // wait for page to load and screen shot the stats element
                 await page.waitForSelector('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');          // wait for the selector to load
                 const element = await page.$('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');        // declare a variable with an ElementHandle
+
+                // click on check live game button
+                const [button] = await page.$x("//button[contains(., 'OK')]");
+                if (button) {
+                    await button.click();
+                }
+
                 await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
                 await browser.close();
                 
