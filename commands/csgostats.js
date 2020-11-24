@@ -36,7 +36,7 @@ module.exports = {
                     steamID = ele.item(0).firstChild.nodeValue;
                     console.log(`[CSGOSTATS] Found steamID: ${steamID}`);
                 } catch (error) {
-                    console.log('[CSGOSTATS] Invalid steamID passed or error in steamID processing\n');
+                    console.log('[CSGOSTATS] Invalid steamID passed or error in steamID processing');
                     message.channel.send("An error occurred retrieving your steam id");
                     return;
                 }
@@ -81,7 +81,7 @@ module.exports = {
 
             // send image to the chat
             await message.channel.send({ files: ['images/csgostats.png'] });
-            console.log('[CSGOSTATS] Image sent!\n');
+            console.log('[CSGOSTATS] Image sent!');
             
             // delete image after being sent
             const fs = require('fs');
