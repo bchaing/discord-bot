@@ -26,5 +26,6 @@ module.exports = {
         }
 
         message.channel.send(`Command \`${command.name}\` was reloaded!`);
+        console.log(`[CLIENT] Command ${command.name} was reloaded`);
 	},
 };
