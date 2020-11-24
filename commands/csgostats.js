@@ -44,7 +44,7 @@ module.exports = {
 
 
             // creating browser
-            console.log('[CSGOSTATS] Starting chromium browser...');
+            console.log('[CSGOSTATS] Starting chromium browser');
             const browser = await puppeteer.launch({
                 product: 'chrome',
                 executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
@@ -60,7 +60,7 @@ module.exports = {
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
-                console.log('[CSGOSTATS] Clicking live game button...');
+                console.log('[CSGOSTATS] Clicking live game button');
                 const [button] = await page.$x("//button[contains(., 'Check for live game')]");
                 if (button) {
                     await button.click();
@@ -69,7 +69,7 @@ module.exports = {
                 // wait for page to load and screen shot the stats element
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-                console.log('[CSGOSTATS] Taking screenshot...');
+                console.log('[CSGOSTATS] Taking screenshot');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 await browser.close();
             } catch (error) {
