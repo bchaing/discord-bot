@@ -17,6 +17,9 @@ module.exports = {
             const fetch = require('node-fetch');
             let steamID;
 
+            // sending status message
+            const msg = await message.channel.send('\`[--------------------]\` Retrieving steamID');
+
             // completes URL from input
             let customUrl = args[0];
             if (customUrl.includes('steamcommunity.com/profiles/')) {
@@ -35,9 +38,10 @@ module.exports = {
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
                     console.log(`[CSGOSTATS] Found steamID: ${steamID}`);
+                    msg.edit(`\`[0000----------------]\` Found steamID: ${steamID}`);
                 } catch (error) {
                     console.log('[CSGOSTATS] Invalid steamID passed or error in steamID processing');
-                    message.channel.send("An error occurred retrieving your steam id");
+                    msg.edit("An error occurred retrieving your steam id");
                     return;
                 }
             }
@@ -45,9 +49,11 @@ module.exports = {
 
             // creating browser
             console.log('[CSGOSTATS] Starting chromium browser');
+            msg.edit('\`[00000000------------]\` Starting chromium browser');
             const browser = await puppeteer.launch({
-                product: 'chrome',
-                executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
+                // product: 'chrome',
+                // executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
+                headless: true,
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
                 });
@@ -57,6 +63,7 @@ module.exports = {
             try {
                 // navagate to csgostats live page
                 console.log(`[CSGOSTATS] Navagating to https://csgostats.gg/player/${ steamID }#/live`);
+                msg.edit(`\`[000000000000--------]\` Navagating to https://csgostats.gg/player/${ steamID }#/live`);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
@@ -70,16 +77,18 @@ module.exports = {
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
                 console.log('[CSGOSTATS] Taking screenshot');
+                msg.edit('\`[0000000000000000----]\` Taking screenshot');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 await browser.close();
             } catch (error) {
                 console.log(error);
-                message.channel.send("An error occurred retrieving your csgostats page");    
+                msg.edit("An error occurred retrieving your csgostats page");    
                 browser.close();
                 return;
             }
 
             // send image to the chat
+            msg.delete();
             await message.channel.send({ files: ['images/csgostats.png'] });
             console.log('[CSGOSTATS] Image sent!');
             
