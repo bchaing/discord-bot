@@ -51,9 +51,8 @@ module.exports = {
             console.log('[CSGOSTATS] Starting chromium browser');
             msg.edit('\`[00000000------------]\` Starting chromium browser');
             const browser = await puppeteer.launch({
-                // product: 'chrome',
-                // executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
-                headless: true,
+                product: 'chrome',
+                executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
                 });
