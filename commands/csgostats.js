@@ -70,7 +70,6 @@ module.exports = {
                 // wait for page to load and screen shot the stats element
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-                console.log('[CSGOSTATS] Taking screenshot');
                 msg.edit('\`[0000000000000000----]\` Taking screenshot');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
                 msg.edit('\`[00000000000000000000]\` Sending image');
@@ -85,8 +84,7 @@ module.exports = {
             // send image to the chat
             msg.delete();
             await message.channel.send({ files: ['images/csgostats.png'] });
-            console.log('[CSGOSTATS] Image sent!');
-            
+                        
             // delete image after being sent
             const fs = require('fs');
             try {
