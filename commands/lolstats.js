@@ -12,6 +12,9 @@ module.exports = {
             const StealthPlugin = require('puppeteer-extra-plugin-stealth');
             puppeteer.use(StealthPlugin());
 
+            // creates message for status messages
+            const msg = await message.channel.send('\`[--------------------]\` Starting chromium browser');
+            
             // creating browser
             const browser = await puppeteer.launch({
                 product: 'chrome',
@@ -21,6 +24,7 @@ module.exports = {
             });
 
             // parses input user
+            msg.edit('\`[0000----------------]\` Parsing user from input');
             let userName = "";
             for(let i = 0; i < args.length; i++)
             {
@@ -35,21 +39,26 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to league of legends live page
-                await page.goto(`https://u.gg/lol/profile/na1/${userName}/live-game`, { waitUntil: 'networkidle0' });
+                msg.edit(`\`[00000000------------]\` Navagating to https://u.gg/lol/profile/na1/${userName}/live-game`);
+                await page.goto(`https://u.gg/lol/profile/na1/${userName}/live-game`);
 
                 // wait for page to load and screen shot the stats element
+                msg.edit('\`[000000000000--------]\` Waiting for page to load');
                 await page.waitForSelector('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');          // wait for the selector to load
                 const element = await page.$('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');        // declare a variable with an ElementHandle
+                msg.edit('\`[0000000000000000----]\` Taking screenshot');
                 await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
+                msg.edit('\`[00000000000000000000]\` Sending screenshot');
                 await browser.close();
                 
             } catch (error) {
-                message.channel.send("An error occurred retrieving your lolstats page");
+                msg.edit("An error occurred retrieving your lolstats page");
                 browser.close();
                 return;
             }
 
             // send image to the chat
+            msg.delete();
             message.channel.send({ files: ['images/lolstats.png'] });
           })();
 	},
