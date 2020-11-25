@@ -39,7 +39,7 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to league of legends live page
-                msg.edit(`\`[00000000------------]\` Navagating to https://u.gg/lol/profile/na1/${userName}/live-game`);
+                msg.edit(`\`[00000000------------]\` Navigating to https://u.gg/lol/profile/na1/${userName}/live-game`);
                 await page.goto(`https://u.gg/lol/profile/na1/${userName}/live-game`);
 
                 // wait for page to load and screen shot the stats element

@@ -58,7 +58,7 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to csgostats live page
-                msg.edit(`\`[000000000000--------]\` Navagating to https://csgostats.gg/player/${ steamID }#/live`);
+                msg.edit(`\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
