@@ -37,10 +37,8 @@ module.exports = {
                     const doc = new DOMParser().parseFromString(text);
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
-                    console.log(`[CSGOSTATS] Found steamID: ${steamID}`);
                     msg.edit(`\`[0000----------------]\` Found steamID: ${steamID}`);
                 } catch (error) {
-                    console.log('[CSGOSTATS] Invalid steamID passed or error in steamID processing');
                     msg.edit("An error occurred retrieving your steam id");
                     return;
                 }
@@ -48,7 +46,6 @@ module.exports = {
 
 
             // creating browser
-            console.log('[CSGOSTATS] Starting chromium browser');
             msg.edit('\`[00000000------------]\` Starting chromium browser');
             const browser = await puppeteer.launch({
                 product: 'chrome',
@@ -61,12 +58,10 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to csgostats live page
-                console.log(`[CSGOSTATS] Navagating to https://csgostats.gg/player/${ steamID }#/live`);
                 msg.edit(`\`[000000000000--------]\` Navagating to https://csgostats.gg/player/${ steamID }#/live`);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
-                console.log('[CSGOSTATS] Clicking live game button');
                 const [button] = await page.$x("//button[contains(., 'Check for live game')]");
                 if (button) {
                     await button.click();
