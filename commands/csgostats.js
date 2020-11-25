@@ -73,6 +73,7 @@ module.exports = {
                 console.log('[CSGOSTATS] Taking screenshot');
                 msg.edit('\`[0000000000000000----]\` Taking screenshot');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
+                msg.edit('\`[00000000000000000000]\` Sending image');
                 await browser.close();
             } catch (error) {
                 console.log(error);
