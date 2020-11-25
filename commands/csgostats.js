@@ -68,6 +68,7 @@ module.exports = {
                 }
 
                 // wait for page to load and screen shot the stats element
+                msg.edit('\`[000000000000--------]\` Waiting for page to load');
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
                 msg.edit('\`[0000000000000000----]\` Taking screenshot');
