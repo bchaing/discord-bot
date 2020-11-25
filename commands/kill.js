@@ -15,6 +15,7 @@ module.exports = {
         // sends shutdown message and destroys client
         message.channel.send('Shutting down...').then(() => {
             message.client.destroy();
+            console.log("Killing bot process");
         });
 
 	},

@@ -17,6 +17,9 @@ module.exports = {
             const fetch = require('node-fetch');
             let steamID;
 
+            // sending status message
+            const msg = await message.channel.send('\`[--------------------]\` Retrieving steamID');
+
             // completes URL from input
             let customUrl = args[0];
             if (customUrl.includes('steamcommunity.com/profiles/')) {
@@ -34,24 +37,28 @@ module.exports = {
                     const doc = new DOMParser().parseFromString(text);
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
+                    msg.edit(`\`[0000----------------]\` Found steamID: ${steamID}`);
                 } catch (error) {
-                    // console.log(error);
-                    message.channel.send("An error occurred retrieving your steam id");
+                    msg.edit("An error occurred retrieving your steam id");
                     return;
                 }
             }
 
+
             // creating browser
+            msg.edit('\`[00000000------------]\` Starting chromium browser');
             const browser = await puppeteer.launch({
-                headless: true, // The browser is visible
+                product: 'chrome',
+                executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
-            });
+                });
 
             // create a new browser page
             const page = await browser.newPage();
             try {
                 // navagate to csgostats live page
+                msg.edit(`\`[000000000000--------]\` Navagating to https://csgostats.gg/player/${ steamID }#/live`);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
@@ -61,19 +68,24 @@ module.exports = {
                 }
 
                 // wait for page to load and screen shot the stats element
+                msg.edit('\`[000000000000--------]\` Waiting for page to load');
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
+                msg.edit('\`[0000000000000000----]\` Taking screenshot');
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
+                msg.edit('\`[00000000000000000000]\` Sending image');
                 await browser.close();
             } catch (error) {
-                message.channel.send("An error occurred retrieving your csgostats page");
+                console.log(error);
+                msg.edit("An error occurred retrieving your csgostats page");    
                 browser.close();
                 return;
             }
 
             // send image to the chat
+            msg.delete();
             await message.channel.send({ files: ['images/csgostats.png'] });
-            
+                        
             // delete image after being sent
             const fs = require('fs');
             try {
