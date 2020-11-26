@@ -10,6 +10,7 @@ module.exports = {
             
             members.map((key, value) => {
                 console.log(`${key} : ${value}`);
+                message.channel.send(`${key}`);
             });
 
           })();
