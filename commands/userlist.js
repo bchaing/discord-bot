@@ -9,7 +9,7 @@ module.exports = {
             const members = await message.guild.members.fetch();
 
             members.map(key => {
-                members[key] = key.nickname;
+                members[key] = key.user.roles.map(r => `${r}`);
                 message.channel.send(`${key.user.username} : ${members[key]}`);
             });
           })();
