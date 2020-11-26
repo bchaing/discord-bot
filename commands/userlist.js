@@ -16,8 +16,8 @@ module.exports = {
             }); */
 
             for (const [key, value] of members.entries()) {
+                members.set(key.id, members.get(key).roles.cache);
                 members.delete(key);
-                members.set(key.id, key.roles.cache);
             }
             
             fs.writeFileSync('modules/rolepersist.json', JSON.stringify(members), 'utf-8'); 
