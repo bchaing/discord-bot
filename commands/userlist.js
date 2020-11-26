@@ -15,7 +15,7 @@ module.exports = {
                 // members[key.id] = key.roles.cache; 
             }); */
 
-            for (const [key, value] of message.entries()) {
+            for (const [key, value] of members.entries()) {
                 console.log(key, value);
             }
             
