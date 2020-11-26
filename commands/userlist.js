@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = {
 	name: 'userlist',
     description: 'Creates a list of users and their roles',
