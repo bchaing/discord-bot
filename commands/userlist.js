@@ -6,6 +6,6 @@ module.exports = {
     usage: '',
 	execute(message, args) {
         const members = message.guild.members.fetch();
-        message.channel.send(`${members.map(r => r.user.id)}`);
+        message.channel.send(`${members}`);
 	},
 };
