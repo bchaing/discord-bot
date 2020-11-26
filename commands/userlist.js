@@ -16,7 +16,7 @@ module.exports = {
             }); */
 
             for (const [key, value] of members.entries()) {
-                members.set(members.get(key).id, members.get(key).roles.cache);
+                members.set(value, key.roles.cache);
                 members.delete(key);
             }
             
