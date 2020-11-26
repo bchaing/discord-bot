@@ -9,18 +9,14 @@ module.exports = {
 	execute(message) {
         (async () => {
             const members = await message.guild.members.fetch();
-
-            /* await members.map(key => {
+            members.map((value, key) => {
                 members.delete(key);
-                // members[key.id] = key.roles.cache; 
-            }); */
-
-            for (const [key, value] of members.entries()) {
-                members.set(value, key.roles.cache);
-                members.delete(key);
-            }
+                members.set(key, value.roles.cache);
+            });
             
-            fs.writeFileSync('modules/rolepersist.json', JSON.stringify(members), 'utf-8'); 
+            const jsonData = Object.fromEntries(members);
+
+            fs.writeFileSync('modules/rolepersist.json', JSON.stringify(jsonData), 'utf-8'); 
           })();
 	},
 };
