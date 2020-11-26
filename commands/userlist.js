@@ -16,7 +16,7 @@ module.exports = {
             }); */
 
             for (const [key, value] of members.entries()) {
-                console.log(key, value);
+                members.delete(key);
             }
             
             fs.writeFileSync('modules/rolepersist.json', JSON.stringify(members), 'utf-8'); 
