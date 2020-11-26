@@ -17,6 +17,7 @@ module.exports = {
 
             for (const [key, value] of members.entries()) {
                 members.delete(key);
+                members.set(key.id, key.roles.cache);
             }
             
             fs.writeFileSync('modules/rolepersist.json', JSON.stringify(members), 'utf-8'); 
