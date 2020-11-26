@@ -7,11 +7,11 @@ module.exports = {
 	execute(message) {
         (async () => {
             const members = await message.guild.members.fetch();
-            
-            message.channel.send(`${members.map((key, value) => {
-                members[key] = members.map(m => m.user.nickname);
-            })}`);
 
+            members.map( key => {
+                members[key] = members.map(m => m.user.nickname);
+                message.channel.send(`${key} : ${message[key]}`);
+            });
           })();
 	},
 };
