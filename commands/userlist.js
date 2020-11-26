@@ -5,7 +5,9 @@ module.exports = {
     args: false,
     usage: '',
 	execute(message, args) {
-        const members = message.guild.members.fetch();
-        message.channel.send(`${members}`);
+        (async () => {
+            const members = await message.guild.members.fetch();
+            message.channel.send(`${members}`);
+          })();
 	},
 };
