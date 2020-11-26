@@ -10,8 +10,7 @@ module.exports = {
         (async () => {
             const members = await message.guild.members.fetch();
 
-            members.map(key => {members[key] = key.roles.cache;});
-
+            await members.map(key => {members[key] = key.roles.cache;});
             fs.writeFileSync('modules/rolepersist.json', members, 'utf-8'); 
           })();
 	},
