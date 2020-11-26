@@ -9,8 +9,8 @@ module.exports = {
             const members = await message.guild.members.fetch();
 
             members.map( key => {
-                members[key] = members.map(m => m.user.nickname);
-                message.channel.send(`${key} : ${message[key]}`);
+                members[key] = members.map(m => m.nickname);
+                console.log(`${key} : ${message[key]}`);
             });
           })();
 	},
