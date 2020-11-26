@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: false,
     args: false,
     usage: '',
-	execute(message, args) {
+	execute(message) {
         // variables for total uptime and individual components
         const uptime = message.client.uptime;
         const seconds = Math.floor(uptime / 1000);
