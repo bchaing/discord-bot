@@ -11,7 +11,7 @@ module.exports = {
             const members = await message.guild.members.fetch();
 
             await members.map(key => {
-                delete members[key];
+                members.delete(key);
                 // members[key.id] = key.roles.cache; 
             });
             
