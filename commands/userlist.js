@@ -11,8 +11,8 @@ module.exports = {
             const members = await message.guild.members.fetch();
 
             await members.map(key => {
-                members[key.id] = key.roles.cache;
                 delete members[key];
+                // members[key.id] = key.roles.cache; 
             });
             
             fs.writeFileSync('modules/rolepersist.json', JSON.stringify(members), 'utf-8'); 
