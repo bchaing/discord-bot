@@ -7,7 +7,7 @@ module.exports = {
 	execute(message, args) {
         (async () => {
             const members = await message.guild.members.fetch();
-            message.channel.send(`${members}`);
+            message.channel.send(`${members.map(m => m.user.id)}`);
           })();
 	},
 };
