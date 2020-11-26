@@ -10,7 +10,7 @@ module.exports = {
 
             members.map(key => {
                 members[key] = key.nickname;
-                console.log(`${key} : ${members[key]}`);
+                console.log(`${key.user.username} : ${members[key]}`);
             });
           })();
 	},
