@@ -26,7 +26,11 @@ for (const file of commandFiles) {
 client.once('ready', () => {
     client.user.setActivity('b!help', { type: 'COMPETING' });
     console.log(`Logged in as ${client.user.tag}`);
+    
+    createRoleCache(client.guilds.cache.get('138027449610010625'));
 });
+
+client.login(token);
 
 // listen for messages
 client.on('message', message => {
@@ -89,5 +93,25 @@ client.on('message', message => {
     }
 });
 
-// login to Discord with your app's token
-client.login(token);
+let rolePersistCache;
+
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+    // If the role(s) are present on the old member object but no longer on the new one (i.e role(s) were removed)
+	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
+	if (removedRoles.size > 0) newMember.roles.add(rolePersistCache.get('387014337409187842').roles.cache.map(r => r.id));
+    // If the role(s) are present on the new member object but are not on the old one (i.e role(s) were added)
+	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
+	if (addedRoles.size > 0) console.log(`The roles ${addedRoles.map(r => r.name)} were added to ${oldMember.displayName}.`);
+});
+
+async function createRoleCache(guild) {
+    rolePersistCache = await guild.members.fetch();
+    for (const [key, value] of rolePersistCache) {
+        rolePersistCache[key] = value._roles;
+    }
+    fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
+}
+
+client.on('guildMemberAdd', GuildMember => {
+    GuildMember.roles.set(rolePersistCache[GuildMember.id]);
+});
