@@ -28,6 +28,7 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     
     createRoleCache(client.guilds.cache.get('138027449610010625'));
+    createVCRoles(client.guilds.cache.get('138027449610010625'));
 });
 
 client.login(token);
@@ -110,14 +111,52 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
     }
 });
 
-async function createRoleCache(guild) {
-    rolePersistCache = await guild.members.fetch();
-    for (const [key, value] of rolePersistCache) {
-        rolePersistCache[key] = value._roles;
-    }
-    fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
-}
-
 client.on('guildMemberAdd', GuildMember => {
     GuildMember.roles.set(rolePersistCache[GuildMember.id]);
 });
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+    const updatedUser = newState.member;
+
+    if (newState.channel != oldState.channel && oldState.channel != null) {
+        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`));
+    }
+    if (newState.channel != oldState.channel && newState.channel != null) {
+        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`));
+    } 
+});
+
+async function createRoleCache(guild) {
+    rolePersistCache = await guild.members.fetch();     // get guild role cache
+    fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
+}
+
+function createVCRoles(guild) {
+    const voiceChannels = guild.channels.cache;         // get guild channel cache
+    let role;                                           // declare role variable
+    
+    // loop through all channels of a guild
+    for (const [key, value] of voiceChannels) {
+        // check if channel is a voice channel
+        if (value.type == "voice") {
+            role = guild.roles.cache.find(r => r.name === `${value.name}`);
+            if (!role) {    // check if role exists for each vc
+                guild.roles.create({
+                    data: {
+                      name: `${value.name}`,
+                      mentionable: true,
+                    },
+                });
+            } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
+                role.delete().catch(console.error);
+
+                guild.roles.create({
+                    data: {
+                        name: `${value.name}`,
+                        mentionable: true,
+                    },
+                });
+            }
+        }
+    }
+}
