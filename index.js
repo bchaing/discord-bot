@@ -116,10 +116,7 @@ client.on('guildMemberAdd', GuildMember => {
 });
 
 async function createRoleCache(guild) {
-    rolePersistCache = await guild.members.fetch();
-    for (const [key, value] of rolePersistCache) {
-        rolePersistCache[key] = value._roles;
-    }
+    rolePersistCache = await guild.members.fetch();     // get guild role cache
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
 }
 
@@ -130,6 +127,7 @@ function createVCRoles(guild) {
     for (const [key, value] of voiceChannels) {
         if (value.type == "voice") {
             role = guild.roles.cache.find(r => r.name === `${value.name}`);
+            
             if (!role) {
                 guild.roles.create({
                     data: {
