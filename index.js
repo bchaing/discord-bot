@@ -112,6 +112,9 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
+    for (const [key, value] of rolePersistCache) {
+        rolePersistCache[key] = value._roles;
+    }
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
 }
 
