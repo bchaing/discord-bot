@@ -137,14 +137,14 @@ function createVCRoles(guild) {
                     },
                 });
             } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
-                    role.delete().catch(console.error);
+                role.delete().catch(console.error);
 
-                    guild.roles.create({
-                        data: {
-                          name: `${value.name}`,
-                          mentionable: true,
-                        },
-                    });
+                guild.roles.create({
+                    data: {
+                        name: `${value.name}`,
+                        mentionable: true,
+                    },
+                });
             }
         }
     }
