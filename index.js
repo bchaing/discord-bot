@@ -115,6 +115,17 @@ client.on('guildMemberAdd', GuildMember => {
     GuildMember.roles.set(rolePersistCache[GuildMember.id]);
 });
 
+client.on('voiceStateUpdate', (oldState, newState) => {
+    const updatedUser = newState.member;
+
+    if (newState.channel != oldState.channel && oldState.channel != null) {
+        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`));
+    }
+    if (newState.channel != oldState.channel && newState.channel != null) {
+        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`));
+    } 
+});
+
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();     // get guild role cache
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
