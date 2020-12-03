@@ -119,10 +119,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     const updatedUser = newState.member;
 
     if (newState.channel != oldState.channel && oldState.channel != null) {
-        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`));
+        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`)).catch(console.error);
     }
     if (newState.channel != oldState.channel && newState.channel != null) {
-        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`));
+        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`)).catch(console.error);
     } 
 });
 
