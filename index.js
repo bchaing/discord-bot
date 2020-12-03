@@ -121,21 +121,22 @@ async function createRoleCache(guild) {
 }
 
 function createVCRoles(guild) {
-    const voiceChannels = guild.channels.cache;
-    let role;
+    const voiceChannels = guild.channels.cache;         // get guild channel cache
+    let role;                                           // declare role variable
     
+    // loop through all channels of a guild
     for (const [key, value] of voiceChannels) {
+        // check if channel is a voice channel
         if (value.type == "voice") {
             role = guild.roles.cache.find(r => r.name === `${value.name}`);
-            
-            if (!role) {
+            if (!role) {    // check if role exists for each vc
                 guild.roles.create({
                     data: {
                       name: `${value.name}`,
                       mentionable: true,
                     },
                 });
-            } else if (!role.mentionable) {
+            } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
                     role.delete().catch(console.error);
 
                     guild.roles.create({
@@ -145,8 +146,6 @@ function createVCRoles(guild) {
                         },
                     });
             }
-        } else {
-            voiceChannels.delete(key);
         }
     }
 }
