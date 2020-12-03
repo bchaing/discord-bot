@@ -112,11 +112,11 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 });
 
 client.on('guildMemberAdd', GuildMember => {
-    GuildMember.roles.set(rolePersistCache[GuildMember.id]);
+    GuildMember.roles.set(rolePersistCache[GuildMember.id]).catch(console.error);
 });
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-    const updatedUser = newState.member;
+    const updatedUser = oldState.member;
 
     if (newState.channel != oldState.channel && oldState.channel != null) {
         updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`)).catch(console.error);
@@ -150,12 +150,7 @@ function createVCRoles(guild) {
             } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
                 role.delete().catch(console.error);
 
-                guild.roles.create({
-                    data: {
-                        name: `${value.name}`,
-                        mentionable: true,
-                    },
-                });
+                guild.roles.edit({ mentionable: true });
             }
         }
     }
