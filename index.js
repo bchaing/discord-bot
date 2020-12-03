@@ -28,6 +28,7 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     
     createRoleCache(client.guilds.cache.get('138027449610010625'));
+    createVCRoles(client.guilds.cache.get('138027449610010625'));
 });
 
 client.login(token);
@@ -110,6 +111,10 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
     }
 });
 
+client.on('guildMemberAdd', GuildMember => {
+    GuildMember.roles.set(rolePersistCache[GuildMember.id]);
+});
+
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
     for (const [key, value] of rolePersistCache) {
@@ -118,6 +123,32 @@ async function createRoleCache(guild) {
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
 }
 
-client.on('guildMemberAdd', GuildMember => {
-    GuildMember.roles.set(rolePersistCache[GuildMember.id]);
-});
+function createVCRoles(guild) {
+    const voiceChannels = guild.channels.cache;
+    let role;
+    
+    for (const [key, value] of voiceChannels) {
+        if (value.type == "voice") {
+            role = guild.roles.cache.find(r => r.name === `${value.name}`);
+            if (!role) {
+                guild.roles.create({
+                    data: {
+                      name: `${value.name}`,
+                      mentionable: true,
+                    },
+                });
+            } else if (!role.mentionable) {
+                    role.delete().catch(console.error);
+
+                    guild.roles.create({
+                        data: {
+                          name: `${value.name}`,
+                          mentionable: true,
+                        },
+                    });
+            }
+        } else {
+            voiceChannels.delete(key);
+        }
+    }
+}
