@@ -101,13 +101,13 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
 	if (removedRoles.size > 0)  {
         rolePersistCache[newMember.id] = newMember._roles;
-        console.log(`The roles ${removedRoles.map(r => r.name)} were removed from ${oldMember.displayName}.`);
+        // console.log(`The roles ${removedRoles.map(r => r.name)} were removed from ${oldMember.displayName}.`);
     }
     // If the role(s) are present on the new member object but are not on the old one (i.e role(s) were added)
 	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
     if (addedRoles.size > 0) {
         rolePersistCache[newMember.id] = newMember._roles;
-        console.log(`The roles ${addedRoles.map(r => r.name)} were added to ${oldMember.displayName}.`);
+        // console.log(`The roles ${addedRoles.map(r => r.name)} were added to ${oldMember.displayName}.`);
     }
 });
 
@@ -118,10 +118,15 @@ client.on('guildMemberAdd', GuildMember => {
 client.on('voiceStateUpdate', (oldState, newState) => {
     const updatedUser = oldState.member;
 
+    // remove vc role when leaving channel
     if (newState.channel != oldState.channel && oldState.channel != null) {
+        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
         updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`)).catch(console.error);
     }
+
+    // add vc role when joining channel
     if (newState.channel != oldState.channel && newState.channel != null) {
+        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
         updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`)).catch(console.error);
     } 
 });
