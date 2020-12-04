@@ -5,20 +5,25 @@ module.exports = {
     args: true,
     usage: '<message>',
 	execute(message, args) {
-        const emojis = message.guild.emojis.cache;
-        let randomEmoji;
-        let returnMessage = "";
+        (async () => {
+            const emojis = message.guild.emojis.cache;
+            let randomEmoji;
+            let returnMessage = "";
 
-        for (let i = 0; i < args.length; i++) {
-            randomEmoji = emojis.random();
-            returnMessage = `${returnMessage}${args[i]}${randomEmoji}`;
-        }
+            for (let i = 0; i < args.length; i++) {
+                randomEmoji = emojis.random();
+                returnMessage = `${returnMessage}${args[i]}${randomEmoji}`;
+            }
 
-        try {
-            message.channel.send(returnMessage);
-        } catch(error) {
-            console.log(error);
-            message.channel.send("Message is too long!");
-        }
+            const webhooks = await message.channel.fetchWebhooks();
+            const webhook = webhooks.first();
+            
+            await webhook.send(returnMessage, {
+                username: `${message.author.username}`,
+                avatarURL: `${message.author.avatarURL()}`,
+            }).catch(console.error);
+
+            message.delete();
+        })();
 	},
 };
