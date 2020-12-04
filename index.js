@@ -149,6 +149,13 @@ client.on('channelCreate', channel => {
     }
 });
 
+client.on('channelDelete', channel => {
+    if (channel.type == "voice") {
+        const role = channel.guild.roles.cache.find(r => r.name === `${channel.name}`);
+        role.delete();
+    }
+});
+
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();     // get guild role cache
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
