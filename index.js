@@ -138,6 +138,17 @@ client.on('channelUpdate', (oldChannel, newChannel) => {
     }
 });
 
+client.on('channelCreate', channel => {
+    if (channel.type == "voice") {
+        channel.guild.roles.create({
+            data: {
+                name: `${channel.name}`,
+                mentionable: true,
+            },
+        });
+    }
+});
+
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();     // get guild role cache
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
