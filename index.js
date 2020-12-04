@@ -133,7 +133,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
     if (oldChannel.name != newChannel.name) {
-        newChannel.guild.roles
+        
     }
 });
 
