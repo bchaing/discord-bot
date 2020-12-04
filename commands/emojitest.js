@@ -3,7 +3,7 @@ module.exports = {
     description: 'Adds emojis to the message',
     guildOnly: false,
     args: true,
-    usage: '<args>',
+    usage: '<message>',
 	execute(message, args) {
         const emojis = message.guild.emojis.cache;
         let randomEmoji;
