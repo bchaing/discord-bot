@@ -14,6 +14,11 @@ module.exports = {
             returnMessage = `${returnMessage}${args[i]}${randomEmoji}`;
         }
 
-        message.channel.send(returnMessage);
+        try {
+            message.channel.send(returnMessage);
+        } catch(error) {
+            console.log(error);
+            message.channel.send("Message is too long!");
+        }
 	},
 };
