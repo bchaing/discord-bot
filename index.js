@@ -131,13 +131,12 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     } 
 });
 
-/* client.on('channelUpdate', (oldChannel, newChannel) => {
-    console.log(`${oldChannel.name}, ${newChannel.name}`);
+client.on('channelUpdate', (oldChannel, newChannel) => {
     if (oldChannel.name != newChannel.name) {
         const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
-        VCRole.edit({ names: newChannel.name });
+        VCRole.edit({ name: `${newChannel.name}` });
     }
-}); */
+});
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();     // get guild role cache
