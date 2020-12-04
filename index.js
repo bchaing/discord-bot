@@ -166,7 +166,7 @@ function createVCRoles(guild) {
     let role;                                           // declare role variable
     
     // loop through all channels of a guild
-    for (const [key, value] of voiceChannels) {
+    voiceChannels.each(value => {
         // check if channel is a voice channel
         if (value.type == "voice") {
             role = guild.roles.cache.find(r => r.name === `${value.name}`);
@@ -181,5 +181,5 @@ function createVCRoles(guild) {
                 role.edit({ mentionable: true }).catch(console.error);
             }
         }
-    }
+    });
 }
