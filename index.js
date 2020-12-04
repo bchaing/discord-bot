@@ -131,11 +131,13 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     } 
 });
 
-client.on('channelUpdate', (oldChannel, newChannel) => {
+/* client.on('channelUpdate', (oldChannel, newChannel) => {
+    console.log(`${oldChannel.name}, ${newChannel.name}`);
     if (oldChannel.name != newChannel.name) {
-        
+        const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
+        VCRole.edit({ names: newChannel.name });
     }
-});
+}); */
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();     // get guild role cache
@@ -159,9 +161,7 @@ function createVCRoles(guild) {
                     },
                 });
             } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
-                role.delete().catch(console.error);
-
-                guild.roles.edit({ mentionable: true });
+                role.edit({ mentionable: true }).catch(console.error);
             }
         }
     }
