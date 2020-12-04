@@ -11,7 +11,7 @@ module.exports = {
 
         for (let i = 0; i < args.length; i++) {
             randomEmoji = emojis.random();
-            returnMessage = `${returnMessage} ${args[i]} ${randomEmoji}`;
+            returnMessage = `${returnMessage}${args[i]}${randomEmoji}`;
         }
 
         message.channel.send(returnMessage);
