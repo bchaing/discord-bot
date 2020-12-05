@@ -112,6 +112,7 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 });
 
 client.on('guildMemberAdd', GuildMember => {
+    // set new member's roles to what is stored in the cache
     GuildMember.roles.set(rolePersistCache[GuildMember.id]).catch(console.error);
 });
 
@@ -132,6 +133,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
+    // change name of vc role when vc is updated
     if (oldChannel.name != newChannel.name) {
         const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
         VCRole.edit({ name: `${newChannel.name}` });
@@ -139,6 +141,7 @@ client.on('channelUpdate', (oldChannel, newChannel) => {
 });
 
 client.on('channelCreate', channel => {
+    // create new role for newly created vc's
     if (channel.type == "voice") {
         channel.guild.roles.create({
             data: {
@@ -150,6 +153,7 @@ client.on('channelCreate', channel => {
 });
 
 client.on('channelDelete', channel => {
+    // delete vc roles on vc deletion
     if (channel.type == "voice") {
         const role = channel.guild.roles.cache.find(r => r.name === `${channel.name}`);
         role.delete();
@@ -157,7 +161,7 @@ client.on('channelDelete', channel => {
 });
 
 async function createRoleCache(guild) {
-    rolePersistCache = await guild.members.fetch();     // get guild role cache
+    rolePersistCache = await guild.members.fetch();
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
 }
 
