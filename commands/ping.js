@@ -5,6 +5,6 @@ module.exports = {
     args: false,
     usage: '',
 	execute(message) {
-		message.channel.send('Pong.');
+		message.channel.send('🏓 Pong!');
 	},
 };
