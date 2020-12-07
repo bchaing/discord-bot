@@ -121,8 +121,8 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
     // remove vc role when leaving channel
     if (newState.channel != oldState.channel && oldState.channel != null) {
-        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
         updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === `${oldState.channel.name}`)).catch(console.error);
+        updatedUser.roles.remove(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
     }
 
     // add vc role when joining channel
