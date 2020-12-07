@@ -108,7 +108,7 @@ module.exports = {
                 image: {
                     url: 'attachment://csgostats.png',
                 },
-                files: 'images/csgostats.png',
+                files: './images/csgostats.png',
                 color: '#0099ff',
                 timestamp: Date.now(),
                 footer: { 
