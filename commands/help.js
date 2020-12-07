@@ -1,4 +1,5 @@
 const { prefix } = require('../config.json');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	name: 'help',
@@ -10,9 +11,14 @@ module.exports = {
         const { commands } = message.client;
 
         if (!args.length) {
-            message.channel.send('Here\'s a list of all my commands:');
-            message.channel.send(commands.map(command => command.name).join(', '));
-            message.channel.send(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+            const helpEmbed = new MessageEmbed()
+                .setColor('#eda338')
+                .setTitle('Commands')
+                .setAuthor('Bonk Bot', `${message.client.user.avatarURL()}`)
+                .setDescription(`${commands.map(command => command.name).join(', ')} \n\n \*\*You can send \`${prefix}help [command name]\` to get info on a specific command!\*\*`)
+                .setTimestamp();
+
+            message.channel.send(helpEmbed);
 
             return;
         }
@@ -24,12 +30,19 @@ module.exports = {
             return message.channel.send(`${command} is not a valid command!`);
         }
 
-        message.channel.send(`**Name:** ${command.name}`);
+        const helpEmbed = new MessageEmbed()
+            .setColor('#eda338')
+            .setTitle(`${command.name}`)
+            .setAuthor('Bonk Bot', `${message.client.user.avatarURL()}`)
+            .setDescription(`${command.description}`)
+            .setTimestamp();
 
-        if (command.aliases) message.channel.send(`**Aliases:** ${command.aliases.join(', ')}`);
-        if (command.description) message.channel.send(`**Description:** ${command.description}`);
-        if (command.usage) message.channel.send(`**Usage:** ${prefix}${command.name} ${command.usage}`);
+        if (command.description) helpEmbed.discription = `${command.description}`;
+        if (command.aliases) helpEmbed.addField('Aliases', `${command.aliases.join(', ')}`, true);
+        if (command.usage) helpEmbed.addField('Usage', `b!${command.name} ${command.usage}`, true);
 
-        message.channel.send(`**Cooldown:** ${command.cooldown || 0} second(s)`);
+        helpEmbed.addField('Cooldown', `${command.cooldown || 0} second(s)`, true);
+
+        message.channel.send(helpEmbed);
 	},
 };
