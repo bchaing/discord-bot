@@ -105,7 +105,7 @@ module.exports = {
             const returnEmbed = {
                 title: 'CSGOSTATS',
                 image: {
-                    url: 'attachment://discordjs.png',
+                    url: 'attachment://csgostats.png',
                 },
                 color: '#0099ff',
                 timestamp: Date.now(),
