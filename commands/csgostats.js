@@ -105,7 +105,9 @@ module.exports = {
             const file = await new MessageAttachment('images/csgostats.png');
             const returnEmbed = {
                 title: 'CSGOSTATS',
-                files: [file],
+                image: {
+                    url: 'attachment://csgostats.png',
+                },
                 color: '#0099ff',
                 timestamp: Date.now(),
                 footer: { 
@@ -115,7 +117,7 @@ module.exports = {
             };
 
             msg.delete();
-            await message.channel.send({ embed: returnEmbed });
+            await message.channel.send({ files: [file], embed: returnEmbed });
                         
             // delete image after being sent
             const fs = require('fs');
