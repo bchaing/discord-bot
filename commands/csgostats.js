@@ -105,9 +105,6 @@ module.exports = {
             const file = await new MessageAttachment('images/csgostats.png');
             const returnEmbed = {
                 title: 'CSGOSTATS',
-                image: {
-                    url: 'attachment://csgostats.png',
-                },
                 files: [file],
                 color: '#0099ff',
                 timestamp: Date.now(),
