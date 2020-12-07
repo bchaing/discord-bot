@@ -14,7 +14,6 @@ module.exports = {
                 message.reply('You need to join a voice channel first!');
             }
 
-            message.channel.send('https://gfycat.com/allgrimdrafthorse');
             const dispatcher = connection.play('audio.mp4', { volume: 0.30 });
             
             dispatcher.on('finish', () => {
