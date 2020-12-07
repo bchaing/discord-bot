@@ -14,7 +14,7 @@ module.exports = {
                 message.reply('You need to join a voice channel first!');
             }
 
-            const dispatcher = connection.play('audio\chikenhig.mp4', { volume: 0.30 });
+            const dispatcher = connection.play('audio/chikenhig.mp4', { volume: 0.30 });
             
             dispatcher.on('finish', () => {
                 connection.disconnect();
