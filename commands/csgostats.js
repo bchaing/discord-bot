@@ -23,18 +23,13 @@ module.exports = {
             const csgoEmbed = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('CSGOSTATS')
-                .setAuthor('csgostats.gg', 
-                    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg', 
-                    'https://csgostats.gg/',
-                    )
+                .setDescription('\`[--------------------]\` Retrieving steamID')
                 .setTimestamp()
                 .setFooter('Data from csgostats.gg', 
                     'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
                     );
-            
-            csgoEmbed.description = '\`[--------------------]\` Retrieving steamID';
+            const msg = message.channel.send(csgoEmbed);
 
-            message.channel.send(csgoEmbed);
             // completes URL from input
             let customUrl = args[0];
             if (customUrl.includes('steamcommunity.com/profiles/')) {
@@ -52,16 +47,19 @@ module.exports = {
                     const doc = new DOMParser().parseFromString(text);
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
-                    msg.edit(`\`[0000----------------]\` Found steamID: ${steamID}`);
+                    csgoEmbed.description = `\`[0000----------------]\` Found steamID: ${steamID}`;
+                    msg.edit(csgoEmbed);
                 } catch (error) {
-                    msg.edit("An error occurred retrieving your steam id");
+                    csgoEmbed.description = "An error occurred retrieving your steam id";
+                    msg.edit(csgoEmbed);
                     return;
                 }
             }
 
 
             // creating browser
-            msg.edit('\`[00000000------------]\` Starting chromium browser');
+            csgoEmbed.description = '\`[00000000------------]\` Starting chromium browser';
+            msg.edit(csgoEmbed);
             const browser = await puppeteer.launch({
                 product: 'chrome',
                 executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
@@ -73,7 +71,8 @@ module.exports = {
             const page = await browser.newPage();
             try {
                 // navagate to csgostats live page
-                msg.edit(`\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`);
+                csgoEmbed.description = `\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`;
+                msg.edit(csgoEmbed);
                 await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
                 // click on check live game button
@@ -83,22 +82,25 @@ module.exports = {
                 }
 
                 // wait for page to load and screen shot the stats element
-                msg.edit('\`[000000000000--------]\` Waiting for page to load');
+                csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
+                msg.edit(csgoEmbed);
                 await page.waitForSelector('#player-live');          // wait for the selector to load
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-                msg.edit('\`[0000000000000000----]\` Taking screenshot');
+                csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
+                msg.edit(csgoEmbed);
                 await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
-                msg.edit('\`[00000000000000000000]\` Sending image');
+                csgoEmbed.description = '\`[00000000000000000000]\` Sending image';
+                msg.edit(csgoEmbed);
                 await browser.close();
             } catch (error) {
                 console.log(error);
-                msg.edit("An error occurred retrieving your csgostats page");    
+                csgoEmbed.description = "An error occurred retrieving your csgostats page";
+                msg.edit(csgoEmbed);
                 browser.close();
                 return;
             }
 
             // send image to the chat
-            msg.delete();
             await message.channel.send({ files: ['images/csgostats.png'] });
                         
             // delete image after being sent
