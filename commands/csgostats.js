@@ -25,6 +25,7 @@ module.exports = {
                 .setTitle('CSGOSTATS')
                 .setDescription('\`[--------------------]\` Retrieving steamID')
                 .setTimestamp()
+                .setImage()
                 .setFooter('Data from csgostats.gg', 
                     'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
                     );
