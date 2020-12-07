@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 
 module.exports = {
 	name: 'csgostats',
@@ -101,7 +101,9 @@ module.exports = {
             }
 
             // send image to the chat
-            await message.channel.send({ files: ['images/csgostats.png'] });
+            const attachment = await new MessageAttachment('images/csgostats.png', 'csgostats.png');
+            csgoEmbed.image('images/csgostats.png');
+            await msg.edit(csgoEmbed);
                         
             // delete image after being sent
             const fs = require('fs');
