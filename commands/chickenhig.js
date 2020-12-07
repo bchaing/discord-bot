@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'chickenhig',
+	name: 'chikenhig',
     description: 'Plays chikenhig insults.',
     guildOnly: true,
     args: false,
