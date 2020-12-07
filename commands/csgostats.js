@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
 	name: 'csgostats',
     description: 'Sends an image with stats of a live csgo game.',
@@ -18,7 +20,7 @@ module.exports = {
             let steamID;
 
             // sending status message
-            const csgoEmbed = new Discord.MessageEmbed()
+            const csgoEmbed = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('CSGOSTATS')
                 .setAuthor('csgostats.gg', 
