@@ -25,9 +25,10 @@ module.exports = {
                 .setTitle('CSGOSTATS')
                 .setDescription('\`[--------------------]\` Retrieving steamID')
                 .setTimestamp()
-                .setFooter('Data from csgostats.gg', 
+                .setFooter(
+                    `${args[0]}`, 
                     'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
-                    );
+                );
             const msg = await message.channel.send({ embed: csgoEmbed });
 
             // completes URL from input
@@ -110,7 +111,7 @@ module.exports = {
                 color: '#0099ff',
                 timestamp: Date.now(),
                 footer: { 
-                    text: 'Data from csgostats.gg', 
+                    text: `${args[0]}`, 
                     icon_url: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
                 },
             };
