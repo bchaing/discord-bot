@@ -9,15 +9,15 @@ module.exports = {
             // Only try to join the sender's voice channel if they are in one themselves
             let connection;
             if (message.member.voice.channel) {
-                connection = await message.member.voice.channel.join();
+                connection = await message.member.voice.channel.join().catch(console.error);
             } else {
                 message.reply('You need to join a voice channel first!');
             }
 
-            const dispatcher = connection.play('audio/chikenhig.mp4', { volume: 0.30 });
+            const dispatcher = connection.play('audio/chikenhig.mp4', { volume: 0.30 }).catch(console.error);
             
             dispatcher.on('finish', () => {
-                connection.disconnect();
+                connection.disconnect().catch(console.error);
             });
         })();
 	},
