@@ -101,9 +101,9 @@ module.exports = {
             }
 
             // send image to the chat
-            const attachment = new MessageAttachment('images/csgostats.png');
-            csgoEmbed.image = {url: 'attachment://csgostats.png'};
-            await msg.edit({ files: [attachment], embed: csgoEmbed });
+            const file = new MessageAttachment('images/csgostats.png');
+            csgoEmbed.image = { url: 'attachment://csgostats.png' };
+            await msg.edit({ files: [file], embed: csgoEmbed });
                         
             // delete image after being sent
             const fs = require('fs');
