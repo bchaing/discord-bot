@@ -14,11 +14,11 @@ module.exports = {
                 message.reply('You need to join a voice channel first!');
             }
 
-            const dispatcher = connection.play('audio.mp4', { volume: 0.25 });
+            /* const dispatcher = connection.play('audio.mp4', { volume: 0.25 });
             
             dispatcher.on('finish', () => {
                 connection.disconnect();
-            });  
+            });   */
         })();
 	},
 };
