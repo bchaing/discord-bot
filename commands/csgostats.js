@@ -107,7 +107,7 @@ module.exports = {
             const exampleEmbed = {
                 title: 'Some title',
                 image: {
-                    url: 'attachment://discordjs.png',
+                    url: 'attachment://csgostats.png',
                 },
             };
             
