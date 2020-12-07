@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: true,
     args: false,
     usage: '',
-	execute(message, args) {
+	execute(message) {
         (async () => {
             // Only try to join the sender's voice channel if they are in one themselves
             let connection;
@@ -14,11 +14,11 @@ module.exports = {
                 message.reply('You need to join a voice channel first!');
             }
 
-            /* const dispatcher = connection.play('audio.mp4', { volume: 0.25 });
+            const dispatcher = connection.play('audio.mp4', { volume: 0.30 });
             
             dispatcher.on('finish', () => {
                 connection.disconnect();
-            });   */
+            });
         })();
 	},
 };
