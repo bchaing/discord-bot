@@ -28,7 +28,7 @@ module.exports = {
                 .setFooter('Data from csgostats.gg', 
                     'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
                     );
-            const msg = message.channel.send(csgoEmbed);
+            const msg = message.channel.send({ embed: csgoEmbed });
 
             // completes URL from input
             let customUrl = args[0];
@@ -48,7 +48,7 @@ module.exports = {
                     const ele = doc.documentElement.getElementsByTagName("steamID64");
                     steamID = ele.item(0).firstChild.nodeValue;
                     csgoEmbed.description = `\`[0000----------------]\` Found steamID: ${steamID}`;
-                    msg.edit(csgoEmbed);
+                    msg.edit({ embed: csgoEmbed });
                 } catch (error) {
                     csgoEmbed.description = "An error occurred retrieving your steam id";
                     msg.edit(csgoEmbed);
