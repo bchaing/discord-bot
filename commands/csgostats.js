@@ -18,8 +18,21 @@ module.exports = {
             let steamID;
 
             // sending status message
-            const msg = await message.channel.send('\`[--------------------]\` Retrieving steamID');
+            const csgoEmbed = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('CSGOSTATS')
+                .setAuthor('csgostats.gg', 
+                    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg', 
+                    'https://csgostats.gg/',
+                    )
+                .setTimestamp()
+                .setFooter('Data from csgostats.gg', 
+                    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
+                    );
+            
+            csgoEmbed.setDescritpion('\`[--------------------]\` Retrieving steamID');
 
+            message.channel.send(csgoEmbed);
             // completes URL from input
             let customUrl = args[0];
             if (customUrl.includes('steamcommunity.com/profiles/')) {
