@@ -101,7 +101,7 @@ module.exports = {
             }
 
             // send image to the chat
-            const file = await new MessageAttachment('images/csgostats.png');
+            const file = new MessageAttachment('images/csgostats.png');
             const returnEmbed = {
                 title: 'CSGOSTATS',
                 image: {
