@@ -28,7 +28,7 @@ module.exports = {
                 .setFooter('Data from csgostats.gg', 
                     'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
                     );
-            const msg = message.channel.send({ embed: csgoEmbed });
+            const msg = await message.channel.send({ embed: csgoEmbed });
 
             // completes URL from input
             let customUrl = args[0];
