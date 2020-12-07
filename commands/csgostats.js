@@ -102,7 +102,7 @@ module.exports = {
 
             // send image to the chat
             const attachment = await new MessageAttachment('images/csgostats.png', 'csgostats.png');
-            csgoEmbed.image('images/csgostats.png');
+            csgoEmbed.image = 'images/csgostats.png';
             await msg.edit(csgoEmbed);
                         
             // delete image after being sent
