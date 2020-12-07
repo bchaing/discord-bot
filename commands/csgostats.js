@@ -115,7 +115,7 @@ module.exports = {
                 },
             };
 
-            await message.channel.send({ files: [file], embed: returnEmbed });
+            await msg.edit({ files: [file], embed: returnEmbed });
                         
             // delete image after being sent
             const fs = require('fs');
