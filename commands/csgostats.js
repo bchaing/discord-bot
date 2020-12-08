@@ -102,6 +102,7 @@ module.exports = {
 
             // send image to the chat
             const file = await new MessageAttachment('images/csgostats.png');
+
             const returnEmbed = {
                 image: {
                     url: 'attachment://csgostats.png',
@@ -112,6 +113,11 @@ module.exports = {
                     text: 'csgostats.gg', 
                 },
             };
+
+            if (file.height == 22) {
+                returnEmbed.description = 'Player is not in a live macth!';
+                returnEmbed.image = '';
+            }
 
             msg.delete();
             await message.channel.send({ files: [file], embed: returnEmbed });
