@@ -17,7 +17,7 @@ module.exports = {
             const dispatcher = connection.play('audio/chikenhig.mp4', { volume: 0.30 });
             
             dispatcher.on('finish', () => {
-                connection.disconnect().catch(console.error);
+                connection.disconnect();
             });
         })();
 	},
