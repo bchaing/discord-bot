@@ -26,8 +26,7 @@ module.exports = {
                 .setDescription('\`[--------------------]\` Retrieving steamID')
                 .setTimestamp()
                 .setFooter(
-                    'Data from csgostats.gg', 
-                    'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
+                    'csgostats.gg', 
                 );
             const msg = await message.channel.send({ embed: csgoEmbed });
 
@@ -104,15 +103,13 @@ module.exports = {
             // send image to the chat
             const file = await new MessageAttachment('images/csgostats.png');
             const returnEmbed = {
-                title: 'CSGOSTATS',
                 image: {
                     url: 'attachment://csgostats.png',
                 },
                 color: '#0099ff',
                 timestamp: Date.now(),
                 footer: { 
-                    text: 'Data from csgostats.gg', 
-                    icon_url: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/3f/3f62ce96f157858da734f243515862fb547657b4_full.jpg',
+                    text: 'csgostats.gg', 
                 },
             };
 
