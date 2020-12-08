@@ -12,6 +12,7 @@ module.exports = {
                 connection = await message.member.voice.channel.join().catch(console.error);
             } else {
                 message.reply('You need to join a voice channel first!');
+                return;
             }
 
             const dispatcher = connection.play('audio/chikenhig.mp4', { volume: 0.30 });
