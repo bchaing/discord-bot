@@ -114,8 +114,9 @@ module.exports = {
                 },
             };
 
-            if (file.height === '22') {
+            if (file.height == 22) {
                 returnEmbed.description = 'Player is not in a live match!';
+                console.log('not in match');
                 returnEmbed.image = '';
             }
 
