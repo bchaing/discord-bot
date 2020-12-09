@@ -114,7 +114,7 @@ module.exports = {
                 },
             };
 
-            console.log(file.attachment.height);
+            console.log(file);
 
             if (file.height == 22) {
                 returnEmbed.description = 'Player is not in a live match!';
