@@ -160,6 +160,13 @@ client.on('channelDelete', channel => {
     }
 });
 
+// fixing discord mobile @'s
+client.on('message', message => {
+    if (message.content.startsWith('<@')) {
+        console.log(message.content);
+    }
+});
+
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
     fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
