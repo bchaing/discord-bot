@@ -162,10 +162,23 @@ client.on('channelDelete', channel => {
 
 // fixing discord mobile @'s
 client.on('message', message => {
-    if (message.content.startsWith('<@')) {
-        console.log(message.content);
+    if (message.content.startsWith('<<@&')) {
+        const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
+        message.delete();
+        sendWebhookMessage(message.channel, message.author, returnMsg)
     }
 });
+
+// fixing discord mobile @'s
+async function sendWebhookMessage(channel, author, message) {
+    const webhooks = await channel.fetchWebhooks();
+    const webhook = webhooks.first();
+    
+    await webhook.send(message, {
+        username: `${author.username}`,
+        avatarURL: `${author.avatarURL()}`,
+    }).catch(console.error);
+}
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
