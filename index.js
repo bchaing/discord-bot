@@ -165,7 +165,7 @@ client.on('message', message => {
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
-        sendWebhookMessage(message.channel, message.author, returnMsg)
+        sendWebhookMessage(message.channel, message.author, returnMsg);
     }
 });
 
