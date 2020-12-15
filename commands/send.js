@@ -11,9 +11,11 @@ module.exports = {
                 message.channel.send('You need to tag a channel!');
                 return;
             }
-            
+   
+            const msg = message.content.replace(`<#${channel.id}>`, '').replace(`b!send `, '');
+            if (msg) channel.send(`${msg}`).catch(console.error);   
+
             message.delete();
-            channel.send(`${message.content.replace(`<#${channel.id}>`, '').replace(`b!send`, '')}`).catch(console.error);
         } else {
             message.channel.send("Only the bot owner can use this command!");
         }
