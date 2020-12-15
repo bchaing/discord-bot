@@ -17,9 +17,7 @@ module.exports = {
                 emoji = message.guild.emojis.cache.find(e => e.name.toLowerCase() === `${returnMsg.replace(/:/g, "").toLowerCase()}`);
                 
                 // checks if user is trying to send an emoji without nitro
-                if (emoji != null) {
-                    returnMsg = emoji;
-                }
+                if (emoji) returnMsg = emoji;
 
                 returnMessage = `${returnMessage}${returnMsg}${randomEmoji}`;
             }
