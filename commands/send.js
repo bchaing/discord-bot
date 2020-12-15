@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: false,
     args: true,
     usage: '<channel> <message>',
-	execute(message, args) {
+	execute(message) {
         if(message.author.id == '140944479090638848') {
             const channel = message.mentions.channels.first();
             if (channel === undefined) {
