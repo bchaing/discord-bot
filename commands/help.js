@@ -39,9 +39,9 @@ module.exports = {
 
         if (command.description) helpEmbed.discription = `${command.description}`;
         if (command.aliases) helpEmbed.addField('Aliases', `\`${command.aliases.join(', ')}\``, true);
-        if (command.usage) helpEmbed.addField('Usage', `b!${command.name} ${command.usage}`, true);
+        if (command.usage) helpEmbed.addField('Usage', `\`b!${command.name} ${command.usage}\``, true);
 
-        helpEmbed.addField('Cooldown', `${command.cooldown || 0} second(s)`, true);
+        helpEmbed.addField('Cooldown', `\`${command.cooldown || 0}\` second(s)`, true);
 
         message.channel.send(helpEmbed);
 	},
