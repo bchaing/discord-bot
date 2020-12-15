@@ -9,7 +9,7 @@ module.exports = {
 
         if (taggedMember.size) {
             taggedMember.each((member) => { 
-                message.channel.send({ files: [member.user.avatarURL()] });
+                message.channel.send({ files: [member.user.displayAvatarURL({ dynamic : true })] });
             });
         } else {
             args = args.toString().split(',,').map(elem => elem.replace(/,/g, ' ').trim());
@@ -20,7 +20,7 @@ module.exports = {
                     taggedMember = message.guild.members.cache.find(m => String(m.nickname).toLowerCase() === arg.toLowerCase());
                 }
 
-                if (taggedMember != undefined) message.channel.send({ files: [taggedMember.user.avatarURL()] });
+                if (taggedMember != undefined) message.channel.send({ files: [taggedMember.user.displayAvatarURL({ dynamic : true })] });
             });
         }
 
