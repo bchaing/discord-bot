@@ -88,7 +88,7 @@ module.exports = {
                 const element = await page.$('#player-live');        // declare a variable with an ElementHandle
                 csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
                 msg.edit(csgoEmbed);
-                await element.screenshot({ path: 'images/csgostats.png' }); // take screenshot element in puppeteer
+                await element.screenshot({ path: 'assets/images/csgostats.png' }); // take screenshot element in puppeteer
                 csgoEmbed.description = '\`[00000000000000000000]\` Sending image';
                 msg.edit(csgoEmbed);
                 await browser.close();
@@ -122,14 +122,6 @@ module.exports = {
 
             msg.delete();
             await message.channel.send({ files: [file], embed: returnEmbed });
-                        
-            // delete image after being sent
-            const fs = require('fs');
-            try {
-                fs.unlinkSync('assets/images/csgostats.png');
-            } catch (error) {
-                console.log(error);
-            }
           })();
 	},
 };
