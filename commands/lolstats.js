@@ -47,7 +47,7 @@ module.exports = {
                 await page.waitForSelector('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');          // wait for the selector to load
                 const element = await page.$('#content > div.summoner-profile-container.content-side-padding > div.summoner-profile_content-container > div > div.live-game-container > div');        // declare a variable with an ElementHandle
                 msg.edit('\`[0000000000000000----]\` Taking screenshot');
-                await element.screenshot({ path: 'images/lolstats.png' }); // take screenshot element in puppeteer
+                await element.screenshot({ path: 'assets/images/lolstats.png' }); // take screenshot element in puppeteer
                 msg.edit('\`[00000000000000000000]\` Sending screenshot');
                 await browser.close();
                 
@@ -59,7 +59,7 @@ module.exports = {
 
             // send image to the chat
             msg.delete();
-            message.channel.send({ files: ['images/lolstats.png'] });
+            message.channel.send({ files: ['assets/images/lolstats.png'] });
           })();
 	},
 };
