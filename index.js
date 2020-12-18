@@ -24,9 +24,10 @@ for (const file of commandFiles) {
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
-    client.user.setActivity('b!help', { type: 'COMPETING' });
     console.log(`Logged in as ${client.user.tag}`);
     
+    client.user.setActivity('b!help', { type: 'COMPETING' });
+
     createRoleCache(client.guilds.cache.get('138027449610010625'));
     createVCRoles(client.guilds.cache.get('138027449610010625'));
 });
