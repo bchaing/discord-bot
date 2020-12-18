@@ -1,9 +1,11 @@
 module.exports = {
-	name: 'args-info',
-    description: 'Reads back user inputted arguments.',
+	name: '',
+    description: '',
     guildOnly: false,
-    args: true,
-    usage: '<args>',
+    args: false,
+    aliases: [''],
+	usage: '',
+	cooldown: 0,
 	execute(message, args) {
         const { commands } = message.client;
         message.channel.send(`Command name: ${ commands }\nArguments: ${args}`);
