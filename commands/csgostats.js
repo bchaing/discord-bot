@@ -101,7 +101,7 @@ module.exports = {
             }
 
             // send image to the chat
-            const file = await new MessageAttachment('images/csgostats.png');
+            const file = await new MessageAttachment('assets/images/csgostats.png');
 
             const returnEmbed = {
                 image: {
@@ -126,7 +126,7 @@ module.exports = {
             // delete image after being sent
             const fs = require('fs');
             try {
-                fs.unlinkSync('images/csgostats.png');
+                fs.unlinkSync('assets/images/csgostats.png');
             } catch (error) {
                 console.log(error);
             }
