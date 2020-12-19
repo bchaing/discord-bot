@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 5,
 	async execute(message, args) {
         // creating puppeteer variables
-        const puppeteer = require('puppeteer');
+        const puppeteer = require('puppeteer-core');
 
         // creating variables to parse for steam id
         const DOMParser = require('xmldom').DOMParser;
