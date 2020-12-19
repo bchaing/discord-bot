@@ -131,7 +131,7 @@ module.exports = {
                     console.error(err);
                 }
             });
-        console.log(`${message.author.username} retrived CSGOSTATS from ${args[0]}`);
+        console.log(`${message.author.username} retreived CSGOSTATS for ${args[0]}`);
 	},
 };
 
