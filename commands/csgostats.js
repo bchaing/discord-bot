@@ -119,6 +119,7 @@ module.exports = {
             returnEmbed.image = '';
         }
 
+        // delete progress embed and send final image
         msg.delete();
         message.channel.send({ files: [file], embed: returnEmbed })
             .then(() => {
