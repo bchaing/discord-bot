@@ -1,9 +1,6 @@
 module.exports = {
 	name: 'ping',
-    description: 'Ping!',
-    guildOnly: false,
-    args: false,
-    usage: '',
+    description: 'Responds to the user and prints the latency of message replies.',
 	execute(message) {
 		message.channel.send('🏓 Pong!').then((newMsg) => {
             const ping = newMsg.createdTimestamp - message.createdTimestamp;
