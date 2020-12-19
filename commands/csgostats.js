@@ -62,7 +62,6 @@ module.exports = {
             executablePath: 'chromium-browser',     // points to chromium browser on raspberry pi
             ignoreHTTPSErrors: true,
             args: ['--window-size=1920,1080'],
-            headless: false,
             });
 
         // create a new browser page
@@ -83,7 +82,7 @@ module.exports = {
             // wait for page to load and screen shot the stats element
             csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
             msg.edit(csgoEmbed);
-            await page.waitForSelector('#player-live');          // wait for the selector to load
+            // await page.waitForSelector('#player-live');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
             csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
             msg.edit(csgoEmbed);
