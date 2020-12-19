@@ -7,7 +7,7 @@ const { prefix, token, serverID } = require('./config.json');
 const client = new Discord.Client();
 
 // console timestamps
-require('console-stamp')(console);
+require('console-stamp')(console, { label: false });
 
 // creates an array of commands
 client.commands = new Discord.Collection();
