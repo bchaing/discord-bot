@@ -4,13 +4,14 @@ module.exports = {
 	name: 'bonk',
     description: 'Moves a user to horny jail.',
     guildOnly: true,
-    args: true,
     usage: '<user>',
     cooldown: 60,
 	execute(message, args) {
         // creates variables for taggedMember and bonkChannel
         let taggedMember = (message.mentions.members.first());
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
+
+        if (!args.length) taggedMember = message.member;
 
         // check if taggedMember is valid
         if (!taggedMember) {
