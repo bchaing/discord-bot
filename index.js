@@ -3,14 +3,13 @@ const fs = require('fs');
 const Discord = require('discord.js');
 
 // create a new Discord client
-const { prefix, token } = require('./config.json');
+const { prefix, token, serverID } = require('./config.json');
 const client = new Discord.Client();
 
 // creates an array of commands
 client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
 const cooldowns = new Discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 // loops over the commands in the collection
 for (const file of commandFiles) {
@@ -28,14 +27,16 @@ client.once('ready', () => {
     
     client.user.setActivity('b!help', { type: 'COMPETING' });
 
-    createRoleCache(client.guilds.cache.get('138027449610010625'));
-    createVCRoles(client.guilds.cache.get('138027449610010625'));
+    createRoleCache(client.guilds.cache.get(serverID));
+    createVCRoles(client.guilds.cache.get(serverID));
 });
 
 client.login(token);
 
 // listen for messages
 client.on('message', message => {
+    fixMobileMentions(message);
+
     // checks if the message has the prefix
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -102,13 +103,11 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
 	if (removedRoles.size > 0)  {
         rolePersistCache[newMember.id] = newMember._roles;
-        // console.log(`The roles ${removedRoles.map(r => r.name)} were removed from ${oldMember.displayName}.`);
     }
     // If the role(s) are present on the new member object but are not on the old one (i.e role(s) were added)
 	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
     if (addedRoles.size > 0) {
         rolePersistCache[newMember.id] = newMember._roles;
-        // console.log(`The roles ${addedRoles.map(r => r.name)} were added to ${oldMember.displayName}.`);
     }
 });
 
@@ -161,16 +160,14 @@ client.on('channelDelete', channel => {
     }
 });
 
-// fixing discord mobile @'s
-client.on('message', message => {
+function fixMobileMentions(message) {
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
         sendWebhookMessage(message.channel, message.author, returnMsg);
     }
-});
+}
 
-// fixing discord mobile @'s
 async function sendWebhookMessage(channel, author, message) {
     const webhooks = await channel.fetchWebhooks();
     const webhook = webhooks.first();
