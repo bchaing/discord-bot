@@ -10,6 +10,6 @@ module.exports = {
         const days = Math.floor(hours / 24);
         
         // sends formatted uptime
-        message.channel.send(`Up for ${ days } days, ${ hours % 24} hours, ${ minutes % 60} minutes, ${ seconds % 60} seconds`);
+        message.channel.send(`Up for \*\*${ days }\*\* days, \*\*${ hours % 24}\*\* hours, \*\*${ minutes % 60}\*\* minutes, \*\*${ seconds % 60}\*\* seconds`);
 	},
 };
