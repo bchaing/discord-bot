@@ -64,7 +64,7 @@ module.exports = {
             args: ['--window-size=1920,1080'],
             });
 
-        // create a new browser page
+        /* // create a new browser page
         const page = await browser.newPage();
         try {
             // navagate to csgostats live page
@@ -95,8 +95,25 @@ module.exports = {
             msg.edit(csgoEmbed);
             browser.close();
             return;
-        }
+        } */
 
+        const page = await browser.newPage();
+  
+        const navigationPromise = page.waitForNavigation();
+        
+        await page.goto('https://csgostats.gg/player/76561198185319074#live');
+        
+        await page.setViewport({ width: 1920, height: 969 });
+        
+        await navigationPromise;
+        
+        await page.waitForSelector('div #check-for-live-link');
+        await page.click('div #check-for-live-link');
+
+        const element = await page.$('div #player-live');
+        await element.screenshot({ path: './assets/images/csgostats.png' });
+        browser.close();
+        
         // send image to the chat
         const file = await new MessageAttachment('./assets/images/csgostats.png');
 
