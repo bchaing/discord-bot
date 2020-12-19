@@ -161,6 +161,7 @@ client.on('channelDelete', channel => {
 });
 
 function fixMobileMentions(message) {
+    // check if message has a broken @
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
@@ -191,14 +192,16 @@ function createVCRoles(guild) {
         // check if channel is a voice channel
         if (value.type == "voice") {
             role = guild.roles.cache.find(r => r.name === `${value.name}`);
-            if (!role) {    // check if role exists for each vc
+            
+            // check if roles already exist and are mentionable
+            if (!role) {
                 guild.roles.create({
                     data: {
                       name: `${value.name}`,
                       mentionable: true,
                     },
                 });
-            } else if (!role.mentionable) {     // make sure each voice channel role is mentionable
+            } else if (!role.mentionable) {
                 role.edit({ mentionable: true }).catch(console.error);
             }
         }
