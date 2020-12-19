@@ -11,7 +11,7 @@ module.exports = {
             if (message.member.voice.channel) {
                 connection = await message.member.voice.channel.join().catch(console.error);
             } else {
-                message.reply('You need to join a voice channel first!');
+                message.reply('You are not connected to a valid voice channel!');
                 return;
             }
 
