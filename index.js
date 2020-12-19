@@ -6,6 +6,9 @@ const Discord = require('discord.js');
 const { prefix, token, serverID } = require('./config.json');
 const client = new Discord.Client();
 
+// console timestamps
+require('console-stamp')(console);
+
 // creates an array of commands
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
