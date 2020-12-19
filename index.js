@@ -180,7 +180,6 @@ async function sendWebhookMessage(channel, author, message) {
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
-    fs.writeFileSync('modules/rolepersist.json', JSON.stringify(rolePersistCache), 'utf-8');
 }
 
 function createVCRoles(guild) {
