@@ -82,7 +82,7 @@ module.exports = {
             // wait for page to load and screen shot the stats element
             csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
             msg.edit(csgoEmbed);
-            // await page.waitForSelector('#player-live');          // wait for the selector to load
+            await page.waitForSelector('div #player-live');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
             csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
             msg.edit(csgoEmbed);
