@@ -8,8 +8,10 @@ const client = new Discord.Client();
 
 // creates an array of commands
 client.commands = new Discord.Collection();
-const cooldowns = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+const cooldowns = new Discord.Collection();
+let rolePersistCache;
 
 // loops over the commands in the collection
 for (const file of commandFiles) {
@@ -95,8 +97,6 @@ client.on('message', message => {
         message.reply('there was an error trying to execute that command!');
     }
 });
-
-let rolePersistCache;
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
     // If the role(s) are present on the old member object but no longer on the new one (i.e role(s) were removed)
