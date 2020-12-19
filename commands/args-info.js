@@ -1,5 +1,5 @@
 module.exports = {
-	name: '',
+	name: 'args-info',
     description: '',
     guildOnly: false,
     args: false,
