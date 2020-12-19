@@ -1,4 +1,4 @@
-const { botOwnerID } = require('../config.json');
+const { ownerID } = require('../config.json');
 
 module.exports = {
 	name: 'send',
