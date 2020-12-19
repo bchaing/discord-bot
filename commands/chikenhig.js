@@ -2,8 +2,6 @@ module.exports = {
 	name: 'chikenhig',
     description: 'Plays chikenhig insults.',
     guildOnly: true,
-    args: false,
-    usage: '',
 	execute(message) {
         (async () => {
             // Only try to join the sender's voice channel if they are in one themselves

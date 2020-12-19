@@ -1,11 +1,7 @@
 module.exports = {
 	name: 'kill',
     description: 'Kills the bot process.',
-    guildOnly: true,
-    args: false,
-    usage: '',
-    cooldown: 0,
-	execute(message, args) {
+	execute(message) {
         // checks if the user is an admin on the server
         if(!message.member.hasPermission('ADMINISTRATOR')) {
             message.channel.send('You must have permission to kill the bot!');

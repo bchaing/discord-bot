@@ -2,8 +2,6 @@ module.exports = {
 	name: 'join',
     description: 'Joins the calling member\'s voice channel.',
     guildOnly: true,
-    args: false,
-    usage: '',
 	execute(message) {
         (async () => {
             // Only try to join the sender's voice channel if they are in one themselves

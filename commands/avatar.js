@@ -3,7 +3,6 @@ module.exports = {
 	description: 'Retrieves the profile picture of a user.',
 	aliases: ['av', 'icon', 'pfp'],
 	usage: '<user>, <user>, ...',
-	cooldown: 0,
 	execute(message, args) {
         let taggedMember = message.mentions.members;
 

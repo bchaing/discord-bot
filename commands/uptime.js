@@ -1,9 +1,6 @@
 module.exports = {
 	name: 'uptime',
     description: 'Returns the uptime of the current bot process.',
-    guildOnly: false,
-    args: false,
-    usage: '',
 	execute(message) {
         // variables for total uptime and individual components
         const uptime = message.client.uptime;
