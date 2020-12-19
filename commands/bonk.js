@@ -1,4 +1,5 @@
 const { bonkChannelID } = require('../config.json');
+const { MessageAttachment } = require('discord.js');
 
 module.exports = {
 	name: 'bonk',
@@ -34,7 +35,8 @@ module.exports = {
         } 
 
         // send bonk message
-        message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, { files: ['https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755'] });
+        const bonkGIF = new MessageAttachment('./assets/images/bonk.gif');
+        message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF);
         console.log(`Bonked ${taggedMember.user.username}`);
 
         // move user to bonk channel
