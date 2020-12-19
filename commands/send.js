@@ -7,7 +7,7 @@ module.exports = {
     args: true,
     usage: '<channel> <message>',
 	execute(message) {
-        if(message.author.id == botOwnerID) {
+        if(message.author.id == ownerID) {
             const channel = message.mentions.channels.first();
             if (channel === undefined) {
                 message.channel.send('You need to tag a channel!');

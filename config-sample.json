@@ -2,6 +2,6 @@
 	"prefix": "b!",
 	"token": "BOT_TOKEN_HERE",
 	"bonkChannelID": "CHANNEL_ID_HERE",
-	"botOwnerID": "OWNER_ID_HERE",
+	"ownerID": "OWNER_ID_HERE",
 	"serverID": "SERVER ID HERE"
 }
