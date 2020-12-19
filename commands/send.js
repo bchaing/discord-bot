@@ -1,3 +1,5 @@
+const { botOwnerID } = require('../config.json');
+
 module.exports = {
 	name: 'send',
     description: 'Allows bot owner to send messages as bot.',
@@ -5,7 +7,7 @@ module.exports = {
     args: true,
     usage: '<channel> <message>',
 	execute(message) {
-        if(message.author.id == '140944479090638848') {
+        if(message.author.id == botOwnerID) {
             const channel = message.mentions.channels.first();
             if (channel === undefined) {
                 message.channel.send('You need to tag a channel!');
