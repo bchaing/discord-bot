@@ -68,7 +68,6 @@ module.exports = {
 
         // create a new browser page
         const page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(0); 
         try {
             // navagate to csgostats live page
             csgoEmbed.description = `\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`;
