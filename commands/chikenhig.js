@@ -8,6 +8,7 @@ module.exports = {
             let connection;
             if (message.member.voice.channel) {
                 connection = await message.member.voice.channel.join().catch(console.error);
+                console.log(`Joined voice channel: ${message.member.voice.channel.name}`);
             } else {
                 message.reply('You are not connected to a valid voice channel!');
                 return;
@@ -17,6 +18,7 @@ module.exports = {
             
             dispatcher.on('finish', () => {
                 connection.disconnect();
+                console.log(`Left voice channel: ${message.member.voice.channel.name}`);
             });
         })();
 	},
