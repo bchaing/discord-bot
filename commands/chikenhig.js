@@ -15,7 +15,8 @@ module.exports = {
             }
 
             const dispatcher = connection.play('assets/audio/chikenhig.mp3', { volume: 0.30 });
-            
+            console.log('Playing chickenhig.mp3');            
+
             dispatcher.on('finish', () => {
                 connection.disconnect();
                 console.log(`Left voice channel: ${message.member.voice.channel.name}`);
