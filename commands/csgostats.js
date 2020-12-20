@@ -60,6 +60,9 @@ module.exports = {
         csgoEmbed.description = '\`[00000000------------]\` Starting chromium browser';
         msg.edit(csgoEmbed);
         const browser = await puppeteer.launch({
+                // options for raspberry pi hosting
+                // product: 'chrome'
+                // executablePath: 'chromium-browser',
                 headless: true,
                 ignoreHTTPSErrors: true,
                 args: ['--window-size=1920,1080'],
