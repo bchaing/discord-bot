@@ -145,7 +145,7 @@ client.on('channelUpdate', (oldChannel, newChannel) => {
 
 client.on('channelCreate', channel => {
     // create new role for newly created vc's
-    if (channel.type == "voice") {
+    if (channel.type === 'voice') {
         channel.guild.roles.create({
             data: {
                 name: `${channel.name}`,
@@ -157,7 +157,7 @@ client.on('channelCreate', channel => {
 
 client.on('channelDelete', channel => {
     // delete vc roles on vc deletion
-    if (channel.type == "voice") {
+    if (channel.type === 'voice') {
         const role = channel.guild.roles.cache.find(r => r.name === `${channel.name}`);
         role.delete();
     }
@@ -193,7 +193,7 @@ function createVCRoles(guild) {
     // loop through all channels of a guild
     voiceChannels.each(value => {
         // check if channel is a voice channel
-        if (value.type == "voice") {
+        if (value.type === 'voice') {
             role = guild.roles.cache.find(r => r.name === `${value.name}`);
             
             // check if roles already exist and are mentionable
