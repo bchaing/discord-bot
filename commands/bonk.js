@@ -38,7 +38,7 @@ module.exports = {
         // send bonk message
         const bonkGIF = new MessageAttachment('./assets/images/bonk.gif');
         message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF);
-        console.log(`Bonked ${taggedMember.user.username}`);
+        console.log(`${message.author.username} bonked ${taggedMember.user.username}`);
 
         // move user to bonk channel
         taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err)); 
