@@ -1,5 +1,2 @@
-#node_modules/
-modules/rolepersist.json
+node_modules/
 config.json
-node_modules/puppeteer-extra-plugin-stealth/*
-node_modules/puppeteer/.local-chromium/*
