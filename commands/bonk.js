@@ -12,6 +12,11 @@ module.exports = {
         let taggedMember = (message.mentions.members.first());
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
 
+        if (!bonkChannel) {
+            console.log('You need to specify a valid channel ID in config.json!');
+            return;
+        }
+
         // bonk author if no arguments are passed
         if (!args.length) taggedMember = message.member;
 
