@@ -9,14 +9,15 @@ module.exports = {
 	execute(message) {
         if(message.author.id == ownerID) {
             const channel = message.mentions.channels.first();
-            if (channel === undefined) {
+            if (!channel) {
                 message.channel.send('You need to tag a channel!');
                 return;
             }
    
-            const msg = message.content.replace(`<#${channel.id}>`, '').replace(`b!send `, '');
+            const msg = message.content.replace(`<#${channel.id}> `, '').replace(`b!send `, '');
             if (msg || message.attachments.size) {
                 channel.send(`${msg}`, message.attachments.array()).catch(console.error);
+                console.log(`Sent "${msg}" in #${channel.name}`);
             } 
 
             message.delete();
