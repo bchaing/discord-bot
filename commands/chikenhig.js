@@ -19,7 +19,6 @@ module.exports = {
 
             dispatcher.on('finish', () => {
                 connection.disconnect();
-                console.log(`Left voice channel: ${message.member.voice.channel.name}`);
             });
         })();
 	},
