@@ -23,9 +23,11 @@ module.exports = {
             if (member.roles.cache.some(role => role.name === 'bonk-mute')) {
                 member.roles.remove(muteRole);
                 message.channel.send(`Unmuted ${member.user}`);
+                console.log(`Unmuted ${member.user.username}`);
             } else {
                 member.roles.add(muteRole);
                 message.channel.send(`Muted ${member.user}`);
+                console.log(`Muted ${member.user.username}`);
             }
         });
 	},

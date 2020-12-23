@@ -230,9 +230,10 @@ function muteCheck(message) {
         const messageLength = message.content.trim().split(/ +/);
         let returnMessage = '';
         for (let i = 0; i < messageLength.length; i++) {
-            returnMessage += 'bonk ';
+            returnMessage = `bonk ${returnMessage}`;
         }
         sendWebhookMessage(message.channel, message.author, returnMessage);
+        console.log(`Muted message from ${message.member.user.username}: ${message.content}`);
         return true;
     }
     return false;
