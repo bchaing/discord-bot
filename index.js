@@ -227,9 +227,9 @@ function muteCheck(message) {
     
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
         message.delete();
-        const messageLength = message.content.trim().split(/ +/);
+        const messageLength = message.content.trim().split(/ +/).length;
         let returnMessage = '';
-        for (let i = 0; i < messageLength.length; i++) {
+        for (let i = 0; i < messageLength; i++) {
             returnMessage = `bonk ${returnMessage}`;
         }
         sendWebhookMessage(message.channel, message.author, returnMessage);
