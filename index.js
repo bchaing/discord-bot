@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 
 // create a new Discord client
 const { prefix, token, serverID } = require('./config.json');
-const { SSL_OP_TLS_BLOCK_PADDING_BUG } = require('constants');
 const client = new Discord.Client();
 
 // console timestamps
