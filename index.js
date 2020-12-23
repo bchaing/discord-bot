@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 
 // create a new Discord client
 const { prefix, token, serverID } = require('./config.json');
+const { SSL_OP_TLS_BLOCK_PADDING_BUG } = require('constants');
 const client = new Discord.Client();
 
 // console timestamps
@@ -32,6 +33,7 @@ client.once('ready', () => {
     
     client.user.setActivity('b!help', { type: 'COMPETING' });
 
+    createMuteRoles(client.guilds.cache.get(serverID));
     createRoleCache(client.guilds.cache.get(serverID));
     createVCRoles(client.guilds.cache.get(serverID));
 });
@@ -41,6 +43,7 @@ client.login(token);
 // listen for messages
 client.on('message', message => {
     fixMobileMentions(message);
+    if (muteCheck(message)) return;
 
     // checks if the message has the prefix
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -209,4 +212,29 @@ function createVCRoles(guild) {
             }
         }
     });
+}
+
+function createMuteRoles(guild) {
+    const role = guild.roles.cache.find(r => r.name === 'bonk-mute');
+
+    if (!role) { 
+        guild.roles.create({ data: { name: 'bonk-mute' } });
+        console.log('Created "bonk-mute" role');
+    }
+}
+
+function muteCheck(message) {
+    if (message.member == null) return;
+    
+    if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
+        message.delete();
+        const messageLength = message.content.trim().split(/ +/);
+        let returnMessage = '';
+        for (let i = 0; i < messageLength.length; i++) {
+            returnMessage += 'bonk ';
+        }
+        sendWebhookMessage(message.channel, message.author, returnMessage);
+        return true;
+    }
+    return false;
 }
