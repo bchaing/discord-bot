@@ -223,13 +223,13 @@ function createMuteRoles(guild) {
 }
 
 function muteCheck(message) {
-    if (message.member == null) return;
+    if (message.member === null) return;
     
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
         message.delete();
         const returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
-        sendWebhookMessage(message.channel, message.author, returnMessage);
-        console.log(`Muted message from ${message.member.user.username}: ${message.content}`);
+        sendWebhookMessage(message.channel, message.author, returnMessage || 'bonk');
+        console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
         return true;
     }
     return false;
