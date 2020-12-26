@@ -2,15 +2,23 @@ module.exports = {
 	name: 'chikenhig',
     description: 'Plays chikenhig insults.',
     guildOnly: true,
-	execute(message) {
-        // Only try to join the sender's voice channel if they are in one themselves
-        let connection;
-        if (message.member.voice.channel) {
-            connection = await message.member.voice.channel.join().catch(console.error);
-            console.log(`Joined voice channel: ${message.member.voice.channel.name}`);
+	execute(message, args) {
+        if (args.length === 0) {
+            if (message.member.voice.channel) {
+                message.member.voice.channel.join();
+                console.log(`Joined voice channel: ${message.member.voice.channel.name}`);
+            } else {
+                message.reply('You need to specify a voice channel to join!');
+            }
         } else {
-            message.reply('You are not connected to a valid voice channel!');
-            return;
+            const voiceChannel = message.guild.channels.cache.find(vc => vc.name.toLowerCase() === args.join(' ').toLowerCase());
+            
+            if (voiceChannel) {
+                voiceChannel.join();
+                console.log(`Joined voice channel: ${voiceChannel.name}`);
+            } else {
+                message.reply('You need to specify a valid voice channel to join!');
+            }
         }
 
         const dispatcher = connection.play('assets/audio/chikenhig.mp3', { volume: 0.30 });
