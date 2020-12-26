@@ -7,11 +7,6 @@ module.exports = {
 	usage: '<user>',
 	cooldown: 0,
 	execute(message) {
-        /* if (!message.member.hasPermission('MUTE_MEMBERS')) {
-            message.channel.send('You don\'t have permission to use this command!');
-            return;
-        } */
-        
         if (!message.mentions.members.size) {
             message.channel.send('You didn\'t tag a user to mute!');
             return;
