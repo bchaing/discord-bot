@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'join',
-    description: 'Joins the calling member\'s voice channel or specified voice channel',
+    description: 'Joins the calling member\'s voice channel or specified voice channel.',
     guildOnly: true,
 	usage: '<voice channel>',
 	execute(message, args) {        
