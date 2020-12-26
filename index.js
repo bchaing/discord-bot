@@ -224,12 +224,21 @@ function createMuteRoles(guild) {
 
 function muteCheck(message) {
     if (message.member === null) return;
-    
+
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
         message.delete();
-        const returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
+        
+        let returnMessage;
+        if (message.embeds.size === undefined) {
+            returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
+            console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
+        } else {
+            returnMessage = 'bonk '.repeat(message.embeds.size);
+            console.log(`Muted message from ${message.member.user.username}: [embed]`);
+        }
+
         sendWebhookMessage(message.channel, message.author, returnMessage || 'bonk');
-        console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
+        
         return true;
     }
     return false;
