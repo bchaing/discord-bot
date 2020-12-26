@@ -4,7 +4,7 @@ module.exports = {
     guildOnly: true,
 	cooldown: 0,
 	execute(message) {
-        if (message.guild.me.voice.channel !== undefined) {
+        if (message.guild.me.voice.channel !== null) {
             message.guild.me.voice.channel.leave();
             console.log(`Left voice channel: ${message.guild.me.voice.channel.name}`);
         } else {
