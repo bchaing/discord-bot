@@ -61,7 +61,7 @@ module.exports = {
         msg.edit(csgoEmbed);
         const browser = await puppeteer.launch({
                 /* options for raspberry pi hosting (uncomment the two lines below and delete the headless option) */
-                // product: 'chrome'
+                // product: 'chrome',
                 // executablePath: 'chromium-browser',
                 headless: true,
                 ignoreHTTPSErrors: true,
@@ -104,6 +104,7 @@ module.exports = {
         // send image to the chat
         const file = await new MessageAttachment('./assets/images/csgostats.png');
 
+        // create embed with final screenshot
         const returnEmbed = {
             image: {
                 url: 'attachment://csgostats.png',
@@ -114,12 +115,6 @@ module.exports = {
                 text: 'csgostats.gg', 
             },
         };
-
-        if (file.height == 22) {
-            returnEmbed.description = 'Player is not in a live match!';
-            console.log('not in match');
-            returnEmbed.image = '';
-        }
 
         // delete progress embed and send final image
         msg.delete();
