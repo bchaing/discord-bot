@@ -104,31 +104,52 @@ module.exports = {
         // send image to the chat
         const file = await new MessageAttachment('./assets/images/csgostats.png');
 
+        // get size of image and determine if the player is in a live game
+        const sizeOf = require('image-size');
+        const imageHeight = sizeOf('./assets/images/csgostats.png').height;
+
         // create embed with final screenshot
-        const returnEmbed = {
-            image: {
-                url: 'attachment://csgostats.png',
-            },
-            color: '#0099ff',
-            timestamp: Date.now(),
-            footer: { 
-                text: 'csgostats.gg', 
-            },
-        };
+        let returnEmbed;
+        if (imageHeight === 22) {
+        // player is not in a live match
+            returnEmbed = {
+                description: 'Player is not in a live match.',
+                color: '#0099ff',
+                timestamp: Date.now(),
+                footer: { 
+                    text: 'csgostats.gg', 
+                },
+            };
 
-        // delete progress embed and send final image
+            message.channel.send({ embed: returnEmbed });
+        } else {
+        // player is in a live match
+            returnEmbed = {
+                image: {
+                    url: 'attachment://csgostats.png',
+                },
+                color: '#0099ff',
+                timestamp: Date.now(),
+                footer: { 
+                    text: 'csgostats.gg', 
+                },
+            };
+
+            await message.channel.send({ files: [file], embed: returnEmbed });
+        }
+        
+        // delete progress embed and screenshot
         msg.delete();
-        message.channel.send({ files: [file], embed: returnEmbed })
-            .then(() => {
-                const fs = require('fs');
-                const path = './assets/images/csgostats.png';
+        
+        const fs = require('fs');
+        const path = './assets/images/csgostats.png';
 
-                try {
-                    fs.unlinkSync(path);
-                } catch(err) {
-                    console.error(err);
-                }
-            });
+        try {
+            fs.unlinkSync(path);
+        } catch(err) {
+            console.error(err);
+        }
+
         console.log(`${message.author.username} retreived CSGOSTATS for ${args[0]}`);
 	},
 };
