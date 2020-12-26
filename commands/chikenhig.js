@@ -1,7 +1,8 @@
 module.exports = {
 	name: 'chikenhig',
-    description: 'Plays chikenhig insults.',
+    description: 'Plays chikenhig insults in user\'s voice channel or specified channel.',
     guildOnly: true,
+	usage: '<voice channel>',
 	async execute(message, args) {
         let connection;
         
