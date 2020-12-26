@@ -26,7 +26,8 @@ module.exports = {
             message.channel.send(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``);
         }
 
+        // send response confirming command was reloaded
         message.channel.send(`Command \`${command.name}\` was reloaded!`);
-        console.log(`[CLIENT] Command ${command.name} was reloaded!`);
+        console.log(`Command ${command.name} was reloaded!`);
 	},
 };
