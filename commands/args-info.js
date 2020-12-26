@@ -1,3 +1,5 @@
+// template for writing other commands
+// copy and paste the code below to start writing other commands
 module.exports = {
 	name: 'args-info',
     description: '',
@@ -7,7 +9,6 @@ module.exports = {
 	usage: '',
 	cooldown: 0,
 	execute(message, args) {
-        const { commands } = message.client;
-        message.channel.send(`Command name: ${ commands }\nArguments: ${args}`);
+        message.channel.send(`Arguments: ${args} Size: ${args.length}`);
 	},
 };
