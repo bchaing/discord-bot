@@ -7,7 +7,9 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '[command name]',
 	execute(message, args) {
+        // retrieve collection of commands
         const { commands } = message.client;
+
 
         if (!args.length) {
             const helpEmbed = new MessageEmbed()
@@ -40,7 +42,7 @@ module.exports = {
         if (command.aliases) helpEmbed.addField('Aliases', `\`${command.aliases.join(', ')}\``, true);
         if (command.usage) helpEmbed.addField('Usage', `\`b!${command.name} ${command.usage}\``, true);
 
-        helpEmbed.addField('Cooldown', `\`${command.cooldown || 0}\` second(s)`, true);
+        if (command.cooldown) helpEmbed.addField('Cooldown', `\`${command.cooldown || 0}\` second(s)`, true);
 
         message.channel.send(helpEmbed);
 	},
