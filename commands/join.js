@@ -16,7 +16,11 @@ module.exports = {
             }
         } else {
         // search for user specified channel and attempt to join
-            const voiceChannel = message.guild.channels.cache.find(vc => vc.name.toLowerCase() === args.join(' ').toLowerCase());
+            let voiceChannel;
+
+            // allow for vc mentions or just plain text
+            if (message.mentions.roles.size != 0) voiceChannel = message.guild.channels.cache.find(vc => message.mentions.roles.some(role => role.name === vc.name));
+            else voiceChannel = message.guild.channels.cache.find(vc => vc.name.toLowerCase() === args.join(' ').toLowerCase());
             
             if (voiceChannel) {
             // join voice channel if found
