@@ -243,3 +243,20 @@ function muteCheck(message) {
     }
     return false;
 }
+
+// Janky New Years Countdown
+// update every 5 minutes
+const interval = setInterval (() => {
+    // use the message's channel (TextChannel) to send a new message
+    const milliseconds = 1609488000000 - Date.now();
+    const seconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+
+    // retrieve guild and channel
+    const guild = client.guilds.cache.get(serverID);
+    const channel = guild.channels.cache.get('138027449610010625');
+
+    // set channel topic every loop
+    channel.setTopic(`⏰ ~ ${('0' + hours).slice(-2)} hours and ${('0' + (minutes % 60)).slice(-2)} minutes till 2021`).catch(err => console.error(err));
+}, 300 * 1000);
