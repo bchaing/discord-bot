@@ -12,22 +12,22 @@ module.exports = {
                 if (!member.user.bot) return member.user.username;
             }).filter(member => member != undefined);
 
-        let temp, retString = '\*\*Test pairings:\*\*\n', j, i = members.length;
+            let temp, retString = '\*\*Test pairings:\*\*\n', j, i = members.length;
 
-        while (i) {
-            j = Math.floor(Math.random() * i--);
+            while (i) {
+                j = Math.floor(Math.random() * i--);
 
-            temp = members[i];
-            members[i] = members[j];
-            members[j] = temp;
-        }
+                temp = members[i];
+                members[i] = members[j];
+                members[j] = temp;
+            }
 
-        members.forEach((member, index) => {
-            if (index != members.length - 1) retString = `${retString}${members[index]} -> ${members[index + 1]} \n`;
-            else retString = `${retString}${members[index]} -> ${members[0]}`;
-        });
+            members.forEach((member, index) => {
+                if (index != members.length - 1) retString = `${retString}${members[index]} -> ${members[index + 1]}\n`;
+                else retString = `${retString}${members[index]} -> ${members[0]}`;
+            });
 
-        message.channel.send(retString);
+            message.channel.send(retString);
         } else {
             message.channel.send('Avaliable commands: draw');
         }
