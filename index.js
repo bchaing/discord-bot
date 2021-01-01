@@ -258,6 +258,6 @@ const interval = setInterval (() => {
     const channel = guild.channels.cache.get('138027449610010625');
 
     // set channel topic every loop
-    if (hours <= 0 && minutes <= 0) channel.setTopic('🎆 Happy New Year! 🎆');
+    if (hours <= 0 && minutes <= 0) channel.setTopic('🎉 Happy New Year! 🎉');
     else channel.setTopic(`⏰ ~ ${('0' + hours).slice(-2)} hours and ${('0' + (minutes % 60)).slice(-2)} minutes till 2️⃣0️⃣2️⃣1️⃣`).catch(err => console.error(err));
 }, 300 * 1000);
