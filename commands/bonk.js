@@ -7,7 +7,7 @@ module.exports = {
     guildOnly: true,
     usage: '<user>',
     cooldown: 60,
-	execute(message, args) {
+	async execute(message, args) {
         // creates variables for taggedMember and bonkChannel
         let taggedMember = (message.mentions.members.first());
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
@@ -45,7 +45,20 @@ module.exports = {
         message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF);
         console.log(`${message.author.username} bonked ${taggedMember.user.username}`);
 
+        const connection = await taggedMember.voice.channel.join();
+
+        // play audio file
+        const dispatcher = connection.play('assets/audio/bonk.mp3', { volume: 1.0 });
+
         // move user to bonk channel
-        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err)); 
+        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
+
+        // disconnect on audio file finish
+        dispatcher.on('finish', () => {
+            // leave channel after a delay
+            setTimeout(() => { 
+                if (taggedMember !== message.guild.me) connection.disconnect();
+            }, 1 * 1000);
+        });
 	},
 };
