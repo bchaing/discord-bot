@@ -1,3 +1,5 @@
+const { Collection } = require('discord.js');
+
 module.exports = {
 	name: 'secretsanta',
     description: 'Commands useful for hosting a secret santa gift exchange.',
@@ -12,7 +14,7 @@ module.exports = {
                 if (!member.user.bot) return member.user.username;
             }).filter(member => member != undefined);
 
-            let temp, retString = '\*\*Test pairings:\*\*\n', j, i = members.length;
+            let temp, j, i = members.length;
 
             while (i) {
                 j = Math.floor(Math.random() * i--);
@@ -22,12 +24,15 @@ module.exports = {
                 members[j] = temp;
             }
 
+            const pairs = new Collection();
+
             members.forEach((member, index) => {
-                if (index != members.length - 1) retString = `${retString}${members[index]} -> ${members[index + 1]}\n`;
-                else retString = `${retString}${members[index]} -> ${members[0]}`;
+                if (index != members.length - 1) pairs.set(members[index], members[index + 1]);
+                else pairs.set(members[index], members[0]);
             });
 
-            message.channel.send(retString);
+            console.log(pairs.get('FrozenTorch'));
+
         } else {
             message.channel.send('Avaliable commands: draw');
         }
