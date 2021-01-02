@@ -170,17 +170,22 @@ function fixMobileMentions(message) {
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
-        sendWebhookMessage(message.channel, message.author, returnMsg);
+        sendWebhookMessage(message.channel, message.member, returnMsg);
     }
 }
 
-async function sendWebhookMessage(channel, author, message) {
+async function sendWebhookMessage(channel, member, message) {
     const webhooks = await channel.fetchWebhooks();
     const webhook = webhooks.first();
     
+    let username;
+
+    if (member.nickname) username = member.nickname;
+    else username = member.user.username;
+
     await webhook.send(message, {
-        username: `${author.username}`,
-        avatarURL: `${author.avatarURL()}`,
+        username: `${username}`,
+        avatarURL: `${member.user.avatarURL()}`,
     }).catch(console.error);
 }
 
@@ -237,7 +242,7 @@ function muteCheck(message) {
             console.log(`Muted message from ${message.member.user.username}: [embed]`);
         }
 
-        sendWebhookMessage(message.channel, message.author, returnMessage || 'bonk');
+        sendWebhookMessage(message.channel, message.member, returnMessage || 'bonk');
         
         return true;
     }
