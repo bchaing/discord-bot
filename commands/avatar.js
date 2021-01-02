@@ -5,14 +5,14 @@ module.exports = {
 	usage: '<user>, <user>, ...',
 	execute(message, args) {
         // get collection of members if user @'s users
+        const avatarArray = [];
         let avatar, taggedMember = message.mentions.members;
 
         if (taggedMember.size) {
         // if user uses @'s, retrieve and send avatarURL of each user in the collection
             taggedMember.each((member) => { 
                 avatar = `${member.user.displayAvatarURL({ dynamic : true })}?size=1024`;
-                console.log(avatar);
-                message.channel.send({ files: [avatar] });
+                avatarArray.push(avatar);
             });
         } else {
             // format args array to be seperate comma delimited inputs
@@ -28,12 +28,15 @@ module.exports = {
                 }
 
                 // send avatar if user is found
-                if (taggedMember != undefined) {
+                if (taggedMember !== undefined) {
                     avatar = `${taggedMember.user.displayAvatarURL({ dynamic : true })}?size=1024`;
-                    message.channel.send({ files: [avatar] });
+                    avatarArray.push(avatar);
                 }
             });
         }
+
+        // send array of avatars
+        message.channel.send({ files: avatarArray });
 
         // if no users are specified, send error response
         if (taggedMember === undefined) message.channel.send('Cannot find user!');
