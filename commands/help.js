@@ -14,10 +14,10 @@ module.exports = {
         if (!args.length) {
             const helpEmbed = new MessageEmbed()
                 .setColor('#eda338')
-                .setTitle('Commands')
+                .setTitle('Command List')
                 .setAuthor('Bonk Bot', `${message.client.user.avatarURL()}`)
-                .setDescription(`${commands.map(command => command.name).join(', ')} \n\n \*\*You can send \`${prefix}help [command name]\` to get info on a specific command!\*\*`)
-                .setTimestamp();
+                .setDescription(`\n\n You can send \`${prefix}help [command name]\` to get info on a specific command!`)
+                .addField(`General (${commands.size})`, `\`${commands.map(command => command.name).join('\` \`')}\``);
 
             message.channel.send(helpEmbed);
 
