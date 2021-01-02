@@ -31,8 +31,6 @@ module.exports = {
                 else pairs.set(members[index], members[0]);
             });
 
-            console.log(pairs.get('FrozenTorch'));
-
         } else {
             message.channel.send('Avaliable commands: draw');
         }
