@@ -3,7 +3,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 
 // create a new Discord client
-const { prefix, token, serverID } = require('./config.json');
+const { prefix, token, serverID, ownerID } = require('./config.json');
 const client = new Discord.Client();
 
 // console timestamps
@@ -83,7 +83,7 @@ client.on('message', message => {
     const timestamps = cooldowns.get(command.name);
     const cooldownAmount = (command.cooldown || 0) * 1000;
 
-    if (timestamps.has(message.author.id)) {
+    if (timestamps.has(message.author.id) && message.author.id !== ownerID) {
         const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
         if (now < expirationTime) {
