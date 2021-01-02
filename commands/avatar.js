@@ -28,7 +28,10 @@ module.exports = {
                 }
 
                 // send avatar if user is found
-                if (taggedMember != undefined) message.channel.send({ files: [taggedMember.user.displayAvatarURL({ dynamic : true })] });
+                if (taggedMember != undefined) {
+                    avatar = `${taggedMember.user.displayAvatarURL({ dynamic : true })}?size=1024`;
+                    message.channel.send({ files: [avatar] });
+                }
             });
         }
 
