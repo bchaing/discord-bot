@@ -5,12 +5,14 @@ module.exports = {
 	usage: '<user>, <user>, ...',
 	execute(message, args) {
         // get collection of members if user @'s users
-        let taggedMember = message.mentions.members;
+        let avatar, taggedMember = message.mentions.members;
 
         if (taggedMember.size) {
         // if user uses @'s, retrieve and send avatarURL of each user in the collection
             taggedMember.each((member) => { 
-                message.channel.send({ files: [member.user.displayAvatarURL({ dynamic : true })] });
+                avatar = `${member.user.displayAvatarURL({ dynamic : true })}?size=1024`;
+                console.log(avatar);
+                message.channel.send({ files: [avatar] });
             });
         } else {
             // format args array to be seperate comma delimited inputs
