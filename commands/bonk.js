@@ -32,12 +32,10 @@ module.exports = {
 
         // check if taggedMember is in a voice channel
         if (!taggedMember.voice.channel) {
-            message.channel.send(`${args[0]} is not in a voice channel!`);
+            message.channel.send(`${taggedMember} is not in a voice channel!`);
             taggedMember = message.member;
 
-            if (!taggedMember.voice.channel) {
-                return;
-            }
+            if (!taggedMember.voice.channel) return;
         } 
 
         // send bonk message
