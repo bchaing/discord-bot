@@ -35,23 +35,28 @@ module.exports = class AvatarCommand extends Command {
             
             // iterate through each input and search for the user
             userArray.forEach(query => {
-                taggedMember = message.guild.members.cache.find(m => m.user.username.toLowerCase() === query.toLowerCase());
+                taggedMember = message.guild.members.cache.find(m => 
+                    m.user.username.toLowerCase() === query.toLowerCase());
 
                 if (taggedMember === undefined) {
                 // check nicknames of members if username search fails
-                    taggedMember = message.guild.members.cache.find(m => String(m.nickname).toLowerCase() === query.toLowerCase());
+                    taggedMember = message.guild.members.cache.find(m => 
+                        String(m.nickname).toLowerCase() === query.toLowerCase());
                 }
 
                 // send avatar if user is found
                 if (taggedMember !== undefined) {
-                    avatar = `${taggedMember.user.displayAvatarURL({ dynamic : true })}?size=1024`;
+                    avatar = `${taggedMember.user
+                        .displayAvatarURL({ dynamic : true })}?size=1024`;
                     avatarArray.push(avatar);
                 }
             });
         }
 
         // if no users are specified, send error response
-        if (avatarArray === [] || taggedMember === undefined) return message.say('Cannot find user(s)!');
+        if (avatarArray === [] || taggedMember === undefined) {
+            return message.say('Cannot find user(s)!');
+        }
 
         // send array of avatars
         return message.channel.send({ files: avatarArray });        
