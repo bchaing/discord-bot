@@ -4,7 +4,7 @@ module.exports = class JoinCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'join',
-            group: 'voice',
+            group: 'general',
             memberName: 'join',
             description: 'Joins the calling member\'s voice channel or specified voice channel.',
             guildOnly: true,

@@ -4,7 +4,7 @@ module.exports = class ChikenhigCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'chikenhig',
-            group: 'voice',
+            group: 'general',
             memberName: 'chikenhig',
             description: 'Plays chikenhig\'s insults in user\'s voice channel or specified channel.',
             guildOnly: true,

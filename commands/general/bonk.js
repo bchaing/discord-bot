@@ -6,7 +6,7 @@ module.exports = class BonkCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'bonk',
-            group: 'voice',
+            group: 'general',
             memberName: 'bonk',
             description: 'Kicks a user to horny jail.',
             guildOnly: true,
