@@ -1,29 +1,32 @@
-// require the discord.js module
-const fs = require('fs');
-const Discord = require('discord.js');
-
-// create a new Discord client
+// discord.js-command module
+const { CommandoClient } = require('discord.js-commando');
+const path = require('path');
 const { prefix, token, serverID, ownerID } = require('./config.json');
-const client = new Discord.Client();
+
+let rolePersistCache;
 
 // console timestamps
 require('console-stamp')(console, { pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
 
-// creates an array of commands
-client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+// create command client
+const client = new CommandoClient({
+	commandPrefix: prefix,
+    owner: ownerID,
+});
 
-const cooldowns = new Discord.Collection();
-let rolePersistCache;
-
-// loops over the commands in the collection
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-
-	// set a new item in the Collection
-	// with the key as the command name and the value as the exported module
-	client.commands.set(command.name, command);
-}
+// register the command groups, args types, and default comm
+client.registry
+	.registerDefaultTypes()
+	.registerGroups([
+		['general', 'General'],
+	])
+	.registerDefaultGroups()
+	.registerDefaultCommands({
+        help: false,
+        unknownCommand: false,
+        ping: false,
+    })
+	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
@@ -31,11 +34,12 @@ client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
     
     client.user.setActivity('b!help', { type: 'COMPETING' });
-
-    createMuteRoles(client.guilds.cache.get(serverID));
+    
     createRoleCache(client.guilds.cache.get(serverID));
     createVCRoles(client.guilds.cache.get(serverID));
 });
+
+client.on('error', console.error);
 
 client.login(token);
 
@@ -43,64 +47,6 @@ client.login(token);
 client.on('message', message => {
     fixMobileMentions(message);
     if (muteCheck(message)) return;
-
-    // checks if the message has the prefix
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-    // creates variables for the args and commandName
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
-
-    // creates a command object
-    const command = client.commands.get(commandName)
-		|| client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-
-	if (!command) return;   // returns if command does not exist
-
-    // checks if a command is only for a guild
-    if (command.guildOnly && message.channel.type === 'dm') {
-        return message.reply('I can\'t execute that command inside DMs!');
-    }
-
-    // checks if the number of args is correct
-    if (command.args && !args.length) {
-        let reply = `You didn't provide any arguments, ${message.author}!`;
-
-        // checks if usage exists, and then prints it
-		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-		}
-
-		return message.channel.send(reply);
-    }
-
-    // checks the cooldown status of the command
-    if (!cooldowns.has(command.name)) {
-        cooldowns.set(command.name, new Discord.Collection());
-    }
-
-    const now = Date.now();
-    const timestamps = cooldowns.get(command.name);
-    const cooldownAmount = (command.cooldown || 0) * 1000;
-
-    if (timestamps.has(message.author.id) && message.author.id !== ownerID) {
-        const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-        if (now < expirationTime) {
-            const timeLeft = (expirationTime - now) / 1000;
-            return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-        }
-    }
-
-    timestamps.set(message.author.id, now);
-    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
-    try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply('there was an error trying to execute that command!');
-    }
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
@@ -216,15 +162,6 @@ function createVCRoles(guild) {
             }
         }
     });
-}
-
-function createMuteRoles(guild) {
-    const role = guild.roles.cache.find(r => r.name === 'bonk-mute');
-
-    if (!role) { 
-        guild.roles.create({ data: { name: 'bonk-mute' } });
-        console.log('Created "bonk-mute" role');
-    }
 }
 
 function muteCheck(message) {

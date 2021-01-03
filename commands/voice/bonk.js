@@ -1,28 +1,42 @@
+const { Command } = require('discord.js-commando');
 const { bonkChannelID } = require('../../config.json');
 const { MessageAttachment } = require('discord.js');
 
-module.exports = {
-	name: 'bonk',
-    description: 'Moves a user to horny jail.',
-    guildOnly: true,
-    usage: '<user>',
-    cooldown: 60,
-	async execute(message, args) {
+module.exports = class BonkCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'bonk',
+            group: 'voice',
+            memberName: 'bonk',
+            description: 'Kicks a user to horny jail.',
+            guildOnly: true,
+            args: [
+                {
+                    key: 'user',
+                    prompt: '',
+                    type: 'member',
+                    default: '',
+                },
+            ],
+        });
+    }
+
+    async run(message, { user }) {
         // creates variables for taggedMember and bonkChannel
         let taggedMember = (message.mentions.members.first());
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
 
         if (!bonkChannel) {
-            console.log('You need to specify a valid channel ID in config.json!');
+            console.error('You need to specify a valid channel ID in config.json!');
             return;
         }
 
         // bonk author if no arguments are passed
-        if (!args.length) taggedMember = message.member;
+        if (!user) taggedMember = message.member;
 
         // check if taggedMember is valid
         if (!taggedMember) {
-            message.channel.send(`${args[0]} is not a valid user!`);
+            message.say(`${user} is not a valid user!`);
             taggedMember = message.member;
 
             if (!taggedMember.voice.channel) {
@@ -32,7 +46,7 @@ module.exports = {
 
         // check if taggedMember is in a voice channel
         if (!taggedMember.voice.channel) {
-            message.channel.send(`${taggedMember} is not in a voice channel!`);
+            message.say(`${taggedMember} is not in a voice channel!`);
             taggedMember = message.member;
 
             if (!taggedMember.voice.channel) return;
@@ -57,6 +71,8 @@ module.exports = {
             setTimeout(() => { 
                 if (taggedMember !== message.guild.me) connection.disconnect();
             }, 1 * 1000);
+            
+            return;
         });
-	},
+    }
 };

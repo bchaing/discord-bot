@@ -1,11 +1,20 @@
-module.exports = {
-	name: 'ping',
-    description: 'Responds to the user and prints the latency of message replies.',
-	execute(message) {
+const { Command } = require('discord.js-commando');
+
+module.exports = class PingCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'ping',
+            group: 'general',
+            memberName: 'ping',
+            description: 'Returns the roundtrip latency of messages.',
+        });
+    }
+
+    run(message) {
         // sends an initial message, measures reply latency and edits message with result
-        message.channel.send('🏓 Pong!').then((newMsg) => {
+        message.say('🏓 Pong!').then((newMsg) => {
             const ping = newMsg.createdTimestamp - message.createdTimestamp;
             newMsg.edit(`🏓 Pong! \`${ping}ms\``);
            });
-	},
+    }
 };

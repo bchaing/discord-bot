@@ -1,13 +1,25 @@
+const { Command } = require('discord.js-commando');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 
-module.exports = {
-	name: 'csgostats',
-    description: 'Sends an image with stats of a live csgo game.',
-    guildOnly: true,
-    args: true,
-    usage: '<profile name>',
-    cooldown: 5,
-	async execute(message, args) {
+module.exports = class CSGOSTATSCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'csgostats',
+            group: 'general',
+            memberName: 'csgostats',
+            description: 'Sends an image with stats of a live csgo game.',
+            guildOnly: true,
+            args: [
+                {
+                    key: 'steam_profile',
+                    prompt: 'Who do you want to look up stats for?',
+                    type: 'string',
+                },
+            ],
+        });
+    }
+
+    async run(message, { steam_profile }) {
         // creating puppeteer variables
         const puppeteer = require('puppeteer-extra');
         const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -27,14 +39,14 @@ module.exports = {
             .setFooter(
                 'csgostats.gg', 
             );
-        const msg = await message.channel.send({ embed: csgoEmbed });
+        const msg = await message.embed(csgoEmbed);
 
         // completes URL from input
-        let customUrl = args[0];
+        let customUrl = steam_profile;
         if (customUrl.includes('steamcommunity.com/profiles/')) {
             steamID = customUrl.substring(customUrl.search(/\d/));
         } else if (!customUrl.includes('steamcommunity.com/id/')) {
-            customUrl = `https://steamcommunity.com/id/${ args[0] }`; 
+            customUrl = `https://steamcommunity.com/id/${ steam_profile }`; 
         }
 
         // getting steam id from URL
@@ -121,7 +133,7 @@ module.exports = {
                 },
             };
 
-            message.channel.send({ embed: returnEmbed });
+            message.embed(returnEmbed);
         } else {
         // player is in a live match
             returnEmbed = {
@@ -150,8 +162,6 @@ module.exports = {
             console.error(err);
         }
 
-        console.log(`${message.author.username} retreived CSGOSTATS for ${args[0]}`);
-	},
+        return console.log(`${message.author.username} retreived CSGOSTATS for ${ steam_profile }`);
+    }
 };
-
-

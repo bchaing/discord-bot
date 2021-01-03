@@ -1,12 +1,27 @@
-module.exports = {
-	name: 'avatar',
-	description: 'Retrieves the profile picture of a user.',
-	aliases: ['av', 'icon', 'pfp'],
-	usage: '<user>, <user>, ...',
-	execute(message, args) {
+const { Command } = require('discord.js-commando');
+
+module.exports = class AvatarCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'avatar',
+            aliases: ['av', 'icon', 'pfp'],
+            group: 'general',
+            memberName: 'avatar',
+            description: 'Retrieves the profile picture of a user.',
+            args: [
+                {
+                    key: 'user',
+                    prompt: 'Who\'s avatar do you want to display?',
+                    type: 'string',
+                },
+            ],
+        });
+    }
+
+    run(message, { user }) {
         // get collection of members if user @'s users
         const avatarArray = [];
-        let avatar, taggedMember = message.mentions.members;
+        let avatar, userArray, taggedMember = message.mentions.members;
 
         if (taggedMember.size) {
         // if user uses @'s, retrieve and send avatarURL of each user in the collection
@@ -16,15 +31,15 @@ module.exports = {
             });
         } else {
             // format args array to be seperate comma delimited inputs
-            args = args.toString().split(',,').map(elem => elem.replace(/,/g, ' ').trim());
+            userArray = user.split(',').map(userElem => userElem.trim());
             
             // iterate through each input and search for the user
-            args.forEach(arg => {
-                taggedMember = message.guild.members.cache.find(m => m.user.username.toLowerCase() === arg.toLowerCase());
+            userArray.forEach(query => {
+                taggedMember = message.guild.members.cache.find(m => m.user.username.toLowerCase() === query.toLowerCase());
 
                 if (taggedMember === undefined) {
                 // check nicknames of members if username search fails
-                    taggedMember = message.guild.members.cache.find(m => String(m.nickname).toLowerCase() === arg.toLowerCase());
+                    taggedMember = message.guild.members.cache.find(m => String(m.nickname).toLowerCase() === query.toLowerCase());
                 }
 
                 // send avatar if user is found
@@ -35,10 +50,10 @@ module.exports = {
             });
         }
 
-        // send array of avatars
-        message.channel.send({ files: avatarArray });
-
         // if no users are specified, send error response
-        if (taggedMember === undefined) message.channel.send('Cannot find user!');
-	},
+        if (avatarArray === [] || taggedMember === undefined) return message.say('Cannot find user(s)!');
+
+        // send array of avatars
+        return message.channel.send({ files: avatarArray });        
+    }
 };

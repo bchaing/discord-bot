@@ -1,12 +1,28 @@
-module.exports = {
-	name: 'chikenhig',
-    description: 'Plays chikenhig insults in user\'s voice channel or specified channel.',
-    guildOnly: true,
-	usage: '<voice channel>',
-	async execute(message, args) {
+const { Command } = require('discord.js-commando');
+
+module.exports = class ChikenhigCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'chikenhig',
+            group: 'voice',
+            memberName: 'chikenhig',
+            description: 'Plays chikenhig\'s insults in user\'s voice channel or specified channel.',
+            guildOnly: true,
+            args: [
+                {
+                    key: 'channel',
+                    prompt: '',
+                    type: 'string',
+                    default: '',
+                },
+            ],
+        });
+    }
+
+    async run(message, { channel }) {
         let connection;
         
-        if (args.length === 0) {
+        if (!channel) {
         // if no channel is explicitly specified, join author's voice channel if possible
             if (message.member.voice.channel) {
                 connection = await message.member.voice.channel.join();
@@ -20,7 +36,7 @@ module.exports = {
 
             // allow for vc mentions or just plain text
             if (message.mentions.roles.size != 0) voiceChannel = message.guild.channels.cache.find(vc => message.mentions.roles.some(role => role.name === vc.name));
-            else voiceChannel = message.guild.channels.cache.find(vc => vc.name.toLowerCase() === args.join(' ').toLowerCase());
+            else voiceChannel = message.guild.channels.cache.find(vc => vc.name.toLowerCase() === channel.toLowerCase());
             
             if (voiceChannel) {
                 connection = await voiceChannel.join();
@@ -37,7 +53,7 @@ module.exports = {
         // disconnect on audio file finish
         dispatcher.on('finish', () => {
             connection.disconnect();
-            console.log(`Left voice channel: ${message.guild.me.voice.channel.name}`);
+            return console.log(`Left voice channel: ${message.guild.me.voice.channel.name}`);
         });
-	},
+    }
 };
