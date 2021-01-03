@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { oneLineTrim } = require('common-tags');
 
 module.exports = class AvatarCommand extends Command {
     constructor(client) {
@@ -24,9 +25,12 @@ module.exports = class AvatarCommand extends Command {
         let avatar, userArray, taggedMember = message.mentions.members;
 
         if (taggedMember.size) {
-        // if user uses @'s, retrieve and send avatarURL of each user in the collection
+        // retrieve and send avatarURL of each mentioned user in the collection
             taggedMember.each((member) => { 
-                avatar = `${member.user.displayAvatarURL({ dynamic : true })}?size=1024`;
+                avatar = oneLineTrim`
+                    ${member.user.displayAvatarURL({ dynamic : true })}
+                    ?size=1024
+                `;
                 avatarArray.push(avatar);
             });
         } else {
@@ -46,8 +50,10 @@ module.exports = class AvatarCommand extends Command {
 
                 // send avatar if user is found
                 if (taggedMember !== undefined) {
-                    avatar = `${taggedMember.user
-                        .displayAvatarURL({ dynamic : true })}?size=1024`;
+                    avatar = oneLineTrim`
+                        ${taggedMember.user.displayAvatarURL({ dynamic : true })}
+                        ?size=1024
+                    `;
                     avatarArray.push(avatar);
                 }
             });

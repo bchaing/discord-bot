@@ -1,6 +1,7 @@
 const { Command } = require('discord.js-commando');
 const { bonkChannelID } = require('../../config.json');
 const { MessageAttachment } = require('discord.js');
+const { oneLine } = require('common-tags');
 
 module.exports = class BonkCommand extends Command {
     constructor(client) {
@@ -27,7 +28,9 @@ module.exports = class BonkCommand extends Command {
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
 
         if (!bonkChannel) {
-            console.error('You need to specify a valid channel ID in config.json!');
+            console.error(oneLine`
+                You need to specify a valid channel ID in config.json!
+            `);
             return;
         }
 
@@ -55,15 +58,20 @@ module.exports = class BonkCommand extends Command {
         // send bonk message
         const bonkGIF = new MessageAttachment('./assets/images/bonk.gif');
         message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF);
-        console.log(`${message.author.username} bonked ${taggedMember.user.username}`);
+        console.log(oneLine`
+            ${message.author.username} bonked ${taggedMember.user.username}
+        `);
 
         const connection = await taggedMember.voice.channel.join();
 
         // play audio file
-        const dispatcher = connection.play('assets/audio/bonk.mp3', { volume: 1.0 });
+        const dispatcher = connection.play(
+            'assets/audio/bonk.mp3', 
+            { volume: 1.0 },
+            );
 
         // move user to bonk channel
-        taggedMember.edit({ channel:bonkChannel }).catch(err => console.log(err));
+        taggedMember.edit({ channel:bonkChannel }).catch(console.error);
 
         // disconnect on audio file finish
         dispatcher.on('finish', () => {

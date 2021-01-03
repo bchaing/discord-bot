@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { oneLine } = require('common-tags');
 
 module.exports = class CSGOSTATSCommand extends Command {
     constructor(client) {
@@ -58,10 +59,14 @@ module.exports = class CSGOSTATSCommand extends Command {
                 const doc = new DOMParser().parseFromString(text);
                 const ele = doc.documentElement.getElementsByTagName("steamID64");
                 steamID = ele.item(0).firstChild.nodeValue;
-                csgoEmbed.description = `\`[0000----------------]\` Found steamID: ${steamID}`;
+                csgoEmbed.description = oneLine`
+                    \`[0000----------------]\` Found steamID: ${steamID}
+                `;
                 msg.edit({ embed: csgoEmbed });
             } catch (error) {
-                csgoEmbed.description = "An error occurred retrieving your steam id";
+                csgoEmbed.description = oneLine`
+                    An error occurred retrieving your steam id
+                `;
                 msg.edit(csgoEmbed);
                 return;
             }
@@ -84,7 +89,10 @@ module.exports = class CSGOSTATSCommand extends Command {
         const page = await browser.newPage();
         try {
             // navagate to csgostats live page
-            csgoEmbed.description = `\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`;
+            csgoEmbed.description = oneLine`
+                \`[000000000000--------]\` Navigating to 
+                https://csgostats.gg/player/${ steamID }#/live
+            `;
             msg.edit(csgoEmbed);
             await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
@@ -97,13 +105,16 @@ module.exports = class CSGOSTATSCommand extends Command {
             // wait for page to load and screen shot the stats element
             csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
             msg.edit(csgoEmbed);
+            
             await page.waitForSelector('div #player-live.content-tab.current-tab');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
             csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
             msg.edit(csgoEmbed);
+            
             await element.screenshot({ path: './assets/images/csgostats.png' }); // take screenshot element in puppeteer
             csgoEmbed.description = '\`[00000000000000000000]\` Sending image';
             msg.edit(csgoEmbed);
+            
             await browser.close();
         } catch (error) {
             console.log(error);
@@ -162,6 +173,9 @@ module.exports = class CSGOSTATSCommand extends Command {
             console.error(err);
         }
 
-        return console.log(`${message.author.username} retreived CSGOSTATS for ${ steam_profile }`);
+        return console.log(oneLine`
+            ${message.author.username} retreived CSGOSTATS for 
+            ${ steam_profile }
+        `);
     }
 };
