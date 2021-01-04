@@ -94,7 +94,7 @@ client.on('guildMemberAdd', GuildMember => {
     GuildMember.roles.set(rolePersistCache[GuildMember.id]).catch(console.error);
 });
 
-client.on('voiceStateUpdate', (oldState, newState) => {
+client.on('voiceStateUpdate', async (oldState, newState) => {
     const updatedUser = oldState.member;
 
     // remove vc role when leaving channel
@@ -105,14 +105,29 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
     // add vc role when joining channel
     if (newState.channel != oldState.channel && newState.channel != null) {
+
+        // create role if it doesn't yet exist
+        let voiceChannelRole = newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`);
+
+        if (!voiceChannelRole) {
+            voiceChannelRole = await newState.guild.roles.create({
+                data: {
+                  name: `${newState.channel.name}`,
+                  mentionable: true,
+                },
+            });
+        } else if (!voiceChannelRole.mentionable) {
+            voiceChannelRole.edit({ mentionable: true }).catch(console.error);
+        }
+
         updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
-        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`)).catch(console.error);
+        updatedUser.roles.add(voiceChannelRole).catch(console.error);
     } 
 });
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
     // change name of vc role when vc is updated
-    if (oldChannel.name != newChannel.name) {
+    if (oldChannel.type === 'voice' && oldChannel.name !== newChannel.name) {
         const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
         VCRole.edit({ name: `${newChannel.name}` });
     }
