@@ -176,7 +176,3 @@ function createVCRoles(guild) {
         }
     });
 }
-
-function muteCheck(message) {
-    
-}
