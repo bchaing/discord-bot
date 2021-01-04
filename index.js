@@ -32,7 +32,6 @@ client.dispatcher.addInhibitor(msg => {
     if(msg.member.roles.cache.some(r => r.name === 'bonk-mute')) return 'bonked';
 });
   
-
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
