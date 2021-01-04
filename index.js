@@ -41,7 +41,6 @@ client.once('ready', () => {
     client.user.setActivity('b!help', { type: 'COMPETING' });
     
     createRoleCache(client.guilds.cache.get(serverID));
-    createVCRoles(client.guilds.cache.get(serverID));
 });
 
 client.on('error', console.error);
@@ -170,29 +169,4 @@ async function sendWebhookMessage(channel, member, message) {
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
-}
-
-function createVCRoles(guild) {
-    const voiceChannels = guild.channels.cache;         // get guild channel cache
-    let role;                                           // declare role variable
-    
-    // loop through all channels of a guild
-    voiceChannels.each(value => {
-        // check if channel is a voice channel
-        if (value.type === 'voice') {
-            role = guild.roles.cache.find(r => r.name === `${value.name}`);
-            
-            // check if roles already exist and are mentionable
-            if (!role) {
-                guild.roles.create({
-                    data: {
-                      name: `${value.name}`,
-                      mentionable: true,
-                    },
-                });
-            } else if (!role.mentionable) {
-                role.edit({ mentionable: true }).catch(console.error);
-            }
-        }
-    });
 }
