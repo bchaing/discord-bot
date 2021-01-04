@@ -1,13 +1,26 @@
+const { Command } = require('discord.js-commando');
 const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { oneLine } = require('common-tags');
 
-module.exports = {
-	name: 'csgostats',
-    description: 'Sends an image with stats of a live csgo game.',
-    guildOnly: true,
-    args: true,
-    usage: '<profile name>',
-    cooldown: 5,
-	async execute(message, args) {
+module.exports = class CSGOSTATSCommand extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'csgostats',
+            group: 'general',
+            memberName: 'csgostats',
+            description: 'Sends an image with stats of a live csgo game.',
+            guildOnly: true,
+            args: [
+                {
+                    key: 'steam_profile',
+                    prompt: 'Who do you want to look up stats for?',
+                    type: 'string',
+                },
+            ],
+        });
+    }
+
+    async run(message, { steam_profile }) {
         // creating puppeteer variables
         const puppeteer = require('puppeteer-extra');
         const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -27,14 +40,14 @@ module.exports = {
             .setFooter(
                 'csgostats.gg', 
             );
-        const msg = await message.channel.send({ embed: csgoEmbed });
+        const msg = await message.embed(csgoEmbed);
 
         // completes URL from input
-        let customUrl = args[0];
+        let customUrl = steam_profile;
         if (customUrl.includes('steamcommunity.com/profiles/')) {
             steamID = customUrl.substring(customUrl.search(/\d/));
         } else if (!customUrl.includes('steamcommunity.com/id/')) {
-            customUrl = `https://steamcommunity.com/id/${ args[0] }`; 
+            customUrl = `https://steamcommunity.com/id/${ steam_profile }`; 
         }
 
         // getting steam id from URL
@@ -46,10 +59,14 @@ module.exports = {
                 const doc = new DOMParser().parseFromString(text);
                 const ele = doc.documentElement.getElementsByTagName("steamID64");
                 steamID = ele.item(0).firstChild.nodeValue;
-                csgoEmbed.description = `\`[0000----------------]\` Found steamID: ${steamID}`;
+                csgoEmbed.description = oneLine`
+                    \`[0000----------------]\` Found steamID: ${steamID}
+                `;
                 msg.edit({ embed: csgoEmbed });
             } catch (error) {
-                csgoEmbed.description = "An error occurred retrieving your steam id";
+                csgoEmbed.description = oneLine`
+                    An error occurred retrieving your steam id
+                `;
                 msg.edit(csgoEmbed);
                 return;
             }
@@ -72,7 +89,10 @@ module.exports = {
         const page = await browser.newPage();
         try {
             // navagate to csgostats live page
-            csgoEmbed.description = `\`[000000000000--------]\` Navigating to https://csgostats.gg/player/${ steamID }#/live`;
+            csgoEmbed.description = oneLine`
+                \`[000000000000--------]\` Navigating to 
+                https://csgostats.gg/player/${ steamID }#/live
+            `;
             msg.edit(csgoEmbed);
             await page.goto(`https://csgostats.gg/player/${ steamID }#/live`, { waitUntil: 'networkidle0' });
 
@@ -85,13 +105,16 @@ module.exports = {
             // wait for page to load and screen shot the stats element
             csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
             msg.edit(csgoEmbed);
+            
             await page.waitForSelector('div #player-live.content-tab.current-tab');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
             csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
             msg.edit(csgoEmbed);
+            
             await element.screenshot({ path: './assets/images/csgostats.png' }); // take screenshot element in puppeteer
             csgoEmbed.description = '\`[00000000000000000000]\` Sending image';
             msg.edit(csgoEmbed);
+            
             await browser.close();
         } catch (error) {
             console.log(error);
@@ -121,7 +144,7 @@ module.exports = {
                 },
             };
 
-            message.channel.send({ embed: returnEmbed });
+            message.embed(returnEmbed);
         } else {
         // player is in a live match
             returnEmbed = {
@@ -150,8 +173,9 @@ module.exports = {
             console.error(err);
         }
 
-        console.log(`${message.author.username} retreived CSGOSTATS for ${args[0]}`);
-	},
+        return console.log(oneLine`
+            ${message.author.username} retreived CSGOSTATS for 
+            ${ steam_profile }
+        `);
+    }
 };
-
-
