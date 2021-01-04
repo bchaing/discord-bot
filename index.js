@@ -2,6 +2,7 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const { prefix, token, serverID, ownerID } = require('./config.json');
+const { sendWebhookMessage } = require('./util/Util');
 
 let rolePersistCache;
 
@@ -155,16 +156,6 @@ client.on('channelDelete', channel => {
         role.delete();
     }
 });
-
-async function sendWebhookMessage(channel, name, avatarURL, message) {
-    const webhooks = await channel.fetchWebhooks();
-    const webhook = webhooks.first();
-
-    await webhook.send(message, {
-        username: `${name}`,
-        avatarURL: `${avatarURL}`,
-    }).catch(console.error);
-}
 
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
