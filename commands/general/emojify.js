@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { sendWebhookMessage, getNickname } = require('../../util/Util');
 
 module.exports = class EmojifyCommand extends Command {
     constructor(client) {
@@ -18,7 +19,7 @@ module.exports = class EmojifyCommand extends Command {
         });
     }
 
-    async run(message, { msg }) {
+    run(message, { msg }) {
         const args = msg.split(/ +/), emojis = message.guild.emojis.cache;      // stores the emojis of the guild
         let randomEmoji, returnMsg, emoji;                                      // variables for parsing animated emoji's
         let returnMessage = '';                                                 // message to send at the end
@@ -36,14 +37,12 @@ module.exports = class EmojifyCommand extends Command {
             returnMessage = `${returnMessage}${returnMsg}${randomEmoji}`;
         }
 
-        // fetches webhooks for sending message
-        const webhooks = await message.channel.fetchWebhooks();
-        const webhook = webhooks.first();
-        
-        await webhook.send(returnMessage, {
-            username: `${message.author.username}`,
-            avatarURL: `${message.author.avatarURL()}`,
-        }).catch(console.error);
+        sendWebhookMessage(
+            message.channel, 
+            getNickname(message.member),
+            message.author.avatarURL(),
+            returnMessage,
+        );
 
         // deletes original message
         message.delete().catch(error => {
