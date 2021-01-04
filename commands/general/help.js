@@ -34,41 +34,59 @@ module.exports = class HelpCommand extends Command {
 		const showAll = args.command && args.command.toLowerCase() === 'all';
 
         if(args.command && !showAll) {
-			if(commands.length === 1) {
-				let help = stripIndents`
-					${oneLine`
-						__Command **${commands[0].name}**:__ ${commands[0].description}
-						${commands[0].guildOnly ? ' (Usable only in servers)' : ''}
-						${commands[0].nsfw ? ' (NSFW)' : ''}
-					`}
-					**Format:** ${msg.anyUsage(`${commands[0].name}${commands[0].format ? ` ${commands[0].format}` : ''}`)}
-				`;
-				if(commands[0].aliases.length > 0) help += `\n**Aliases:** ${commands[0].aliases.join(', ')}`;
-				help += `\n${oneLine`
-					**Group:** ${commands[0].group.name}
-					(\`${commands[0].groupID}:${commands[0].memberName}\`)
-				`}`;
-				if(commands[0].details) help += `\n**Details:** ${commands[0].details}`;
-				if(commands[0].examples) help += `\n**Examples:**\n${commands[0].examples.join('\n')}`;
+			if(commands.length === 1) {		
+				const helpEmbed = { 
+					color: 0xeda338,
+					author: {
+						name: commands[0].name,
+						icon_url: this.client.user.displayAvatarURL(),
+					},
+					description: oneLine`${commands[0].description}
+					${commands[0].guildOnly ? ' (Usable only in servers)' : ''}
+					${commands[0].nsfw ? ' (NSFW)' : ''}
+					`,
+					fields: [
+						{
+							name: 'Format',
+							value: `${msg.anyUsage(`${commands[0].name}${commands[0].format ? ` ${commands[0].format}` : ''}`)}`,
+							inline: true,
+						},
+					],
+				};
 
-				const messages = [];
-				try {
-					messages.push(await msg.direct(help));
-					if(msg.channel.type !== 'dm') messages.push(await msg.reply('Sent you a DM with information.'));
-				} catch(err) {
-					messages.push(await msg.reply('Unable to send you the help DM. You probably have DMs disabled.'));
+				if(commands[0].aliases.length > 0) {
+					helpEmbed.fields.push({
+						name: 'Aliases',
+						value: `\`${commands[0].aliases.join('\` \`')}\``,
+						inline: true,
+					});
 				}
-				return messages;
-			} else if(commands.length > 15) {
-				return msg.reply('Multiple commands found. Please be more specific.');
+
+				if(commands[0].details) {
+					helpEmbed.fields.push({
+						name: 'Details',
+						value: `${commands[0].details}`,
+					});
+				} 
+
+				if(commands[0].examples) {
+					helpEmbed.fields.push({
+						name: 'Examples',
+						value: `${commands[0].examples.join('\n')}`,
+					});
+				}
+
+				msg.embed(helpEmbed);
+
+				return;
 			} else if(commands.length > 1) {
-				return msg.reply(disambiguation(commands, 'commands'));
+				return msg.reply('Multiple commands found. Please be more specific.');
 			} else {
 				return msg.reply(
 					`Unable to identify command. Use ${msg.usage(
-						null, msg.channel.type === 'dm' ? null : undefined, msg.channel.type === 'dm' ? null : undefined
-					)} to view the list of all commands.`
-				);
+						null, msg.channel.type === 'dm' ? null : undefined, msg.channel.type === 'dm' ? null : undefined,
+					)} to view the list of all commands.
+				`);
 			}
 		} else {
             let returnMessage;
@@ -87,7 +105,7 @@ module.exports = class HelpCommand extends Command {
 			try {
                 groups.forEach(grp => {
                     helpEmbed.fields.push({
-                        name: `${grp.name} (${grp.commands.size})`,
+                        name: oneLine`${grp.name} (${grp.commands.size - grp.commands.filter(cmd => cmd.hidden).size})`,
                         value: `\`${grp.commands.filter(cmd => !cmd.hidden).map(cmd => cmd.name).join('\` \`')}\``,
                     });
                 });
@@ -101,53 +119,3 @@ module.exports = class HelpCommand extends Command {
 		}
 	}
 };
-
-/* module.exports = {
-	name: 'help',
-	description: 'List all of my commands or info about a specific command.',
-	aliases: ['commands'],
-	usage: '[command name]',
-	execute(message, args) {
-        // retrieve collection of commands
-        const { commands } = message.client;
-
-        // display main help page
-        if (!args.length) {
-            const helpEmbed = new MessageEmbed()
-                .setColor('#eda338')
-                .setTitle('Command List')
-                .setAuthor('Bonk Bot', `${message.client.user.avatarURL()}`)
-                .setDescription(`\n\n You can send \`${prefix}help [command name]\` to get info on a specific command!`)
-                .addField(`General (${commands.size})`, `\`${commands.map(command => command.name).join('\` \`')}\``);
-
-            message.channel.send(helpEmbed);
-
-            return;
-        }
-
-        // search for command by inputted name
-        const name = args[0].toLowerCase();
-        const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
-
-        // check if command exists
-        if (!command) {
-            return message.channel.send(`${command} is not a valid command!`);
-        }
-
-        // displays specific command help page
-        const helpEmbed = new MessageEmbed()
-            .setColor('#eda338')
-            .setTitle(`${command.name}`)
-            .setAuthor('Bonk Bot', `${message.client.user.avatarURL()}`)
-            .setDescription(`${command.description}`)
-            .setTimestamp();
-
-        // displays options for specific commands
-        if (command.description) helpEmbed.discription = `${command.description}`;
-        if (command.aliases) helpEmbed.addField('Aliases', `\`${command.aliases.join(', ')}\``, true);
-        if (command.usage) helpEmbed.addField('Usage', `\`b!${command.name} ${command.usage}\``, true);
-        if (command.cooldown) helpEmbed.addField('Cooldown', `\`${command.cooldown || 0} second(s)\``, true);
-
-        message.channel.send(helpEmbed);
-	},
-}; */
