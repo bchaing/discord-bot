@@ -57,7 +57,9 @@ client.on('message', message => {
         sendWebhookMessage(message.channel, username, message.author.avatarURL(), returnMsg);
     }
 
-    // code for bonk-mute
+    //
+    //  code for bonk-mute
+    // 
     if (message.member === null) return;
 
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
