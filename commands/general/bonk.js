@@ -25,7 +25,7 @@ module.exports = class BonkCommand extends Command {
     async run(message, { user }) {
         // creates variables for taggedMember and bonkChannel
         let taggedMember = (message.mentions.members.first());
-        const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
+        const messages = [], bonkChannel = message.guild.channels.cache.get(bonkChannelID);
 
         if (!bonkChannel) {
             console.error(oneLine`
@@ -39,7 +39,7 @@ module.exports = class BonkCommand extends Command {
 
         // check if taggedMember is valid
         if (!taggedMember) {
-            message.say(`${user} is not a valid user!`);
+            messages.push(message.say(`${user} is not a valid user!`));
             taggedMember = message.member;
 
             if (!taggedMember.voice.channel) {
@@ -49,7 +49,7 @@ module.exports = class BonkCommand extends Command {
 
         // check if taggedMember is in a voice channel
         if (!taggedMember.voice.channel) {
-            message.say(`${taggedMember} is not in a voice channel!`);
+            messages.push(message.say(`${taggedMember} is not in a voice channel!`));
             taggedMember = message.member;
 
             if (!taggedMember.voice.channel) return;
@@ -57,7 +57,7 @@ module.exports = class BonkCommand extends Command {
 
         // send bonk message
         const bonkGIF = new MessageAttachment('./assets/images/bonk.gif');
-        message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF);
+        messages.push(message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF));
         console.log(oneLine`
             ${message.author.username} bonked ${taggedMember.user.username}
         `);
@@ -80,7 +80,7 @@ module.exports = class BonkCommand extends Command {
                 if (taggedMember !== message.guild.me) connection.disconnect();
             }, 1 * 1000);
             
-            return;
+            return messages;
         });
     }
 };
