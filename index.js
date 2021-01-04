@@ -52,7 +52,9 @@ client.on('message', message => {
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
-        sendWebhookMessage(message.channel, message.member, returnMsg);
+
+        const username = (message.member.nickname ? message.member.nickname : message.author.username);
+        sendWebhookMessage(message.channel, username, message.author.avatarURL(), returnMsg);
     }
 
     // code for bonk-mute
@@ -70,7 +72,8 @@ client.on('message', message => {
             console.log(`Muted message from ${message.member.user.username}: [embed]`);
         }
 
-        sendWebhookMessage(message.channel, message.member, returnMessage || 'bonk');
+        const username = (message.member.nickname ? message.member.nickname : message.author.username);
+        sendWebhookMessage(message.channel, username, message.author.avatarURL(), returnMessage || 'bonk');
     }
 });
 
@@ -151,18 +154,13 @@ client.on('channelDelete', channel => {
     }
 });
 
-async function sendWebhookMessage(channel, member, message) {
+async function sendWebhookMessage(channel, name, avatarURL, message) {
     const webhooks = await channel.fetchWebhooks();
     const webhook = webhooks.first();
-    
-    let username;
-
-    if (member.nickname) username = member.nickname;
-    else username = member.user.username;
 
     await webhook.send(message, {
-        username: `${username}`,
-        avatarURL: `${member.user.avatarURL()}`,
+        username: `${name}`,
+        avatarURL: `${avatarURL}`,
     }).catch(console.error);
 }
 
