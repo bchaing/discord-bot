@@ -45,8 +45,30 @@ client.login(token);
 
 // listen for messages
 client.on('message', message => {
-    fixMobileMentions(message);
-    if (muteCheck(message)) return;
+    // check if message has a broken @
+    if (message.content.includes('<<@&')) {
+        const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
+        message.delete();
+        sendWebhookMessage(message.channel, message.member, returnMsg);
+    }
+
+    // code for bonk-mute
+    if (message.member === null) return;
+
+    if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
+        message.delete();
+        
+        let returnMessage;
+        if (message.embeds.size === undefined) {
+            returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
+            console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
+        } else {
+            returnMessage = 'bonk '.repeat(message.embeds.size);
+            console.log(`Muted message from ${message.member.user.username}: [embed]`);
+        }
+
+        sendWebhookMessage(message.channel, message.member, returnMessage || 'bonk');
+    }
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
@@ -111,15 +133,6 @@ client.on('channelDelete', channel => {
     }
 });
 
-function fixMobileMentions(message) {
-    // check if message has a broken @
-    if (message.content.includes('<<@&')) {
-        const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
-        message.delete();
-        sendWebhookMessage(message.channel, message.member, returnMsg);
-    }
-}
-
 async function sendWebhookMessage(channel, member, message) {
     const webhooks = await channel.fetchWebhooks();
     const webhook = webhooks.first();
@@ -165,23 +178,5 @@ function createVCRoles(guild) {
 }
 
 function muteCheck(message) {
-    if (message.member === null) return;
-
-    if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
-        message.delete();
-        
-        let returnMessage;
-        if (message.embeds.size === undefined) {
-            returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
-            console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
-        } else {
-            returnMessage = 'bonk '.repeat(message.embeds.size);
-            console.log(`Muted message from ${message.member.user.username}: [embed]`);
-        }
-
-        sendWebhookMessage(message.channel, message.member, returnMessage || 'bonk');
-        
-        return true;
-    }
-    return false;
+    
 }
