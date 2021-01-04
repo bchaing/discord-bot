@@ -24,7 +24,7 @@ module.exports = class EmojifyCommand extends Command {
         let returnMessage = '';                                                 // message to send at the end
 
         // loops through every word, adding emoji's between
-        for (let i = 0; i < args.length; i++) {
+        for (let i = 0, j = args.length; i < j; i++) {
             randomEmoji = emojis.random();
             returnMsg = args[i];
             emoji = message.guild.emojis.cache.find(e => 
