@@ -11,6 +11,10 @@ module.exports = class BonkCommand extends Command {
             memberName: 'bonk',
             description: 'Kicks a user to horny jail.',
             guildOnly: true,
+            throttling: {
+                usages: 1,
+                duration: 30,
+            },
             args: [
                 {
                     key: 'user',
