@@ -23,7 +23,6 @@ client.registry
 	.registerDefaultGroups()
 	.registerDefaultCommands({
         help: false,
-        unknownCommand: false,
         ping: false,
     })
 	.registerCommandsIn(path.join(__dirname, 'commands'));
