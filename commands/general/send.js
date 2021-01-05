@@ -24,7 +24,6 @@ module.exports = class SendCommand extends Command {
         const msg = message.content.replace(`<#${channel.id}> `, '').replace(`b!send `, '');
         if (msg || message.attachments.size) {
             channel.send(`${msg}`, message.attachments.array()).catch(console.error);
-            console.log(`Sent "${msg}" in #${channel.name}`);
         } 
 
         // delete the original message

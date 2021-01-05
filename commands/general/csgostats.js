@@ -173,9 +173,6 @@ module.exports = class CSGOSTATSCommand extends Command {
             console.error(err);
         }
 
-        return console.log(oneLine`
-            ${message.author.username} retreived CSGOSTATS for 
-            ${ steam_profile }
-        `);
+        return;
     }
 };

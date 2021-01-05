@@ -32,11 +32,9 @@ module.exports = class MuteCommand extends Command {
             if (member.roles.cache.some(role => role.name === 'bonk-mute')) {
                 member.roles.remove(muteRole);
                 message.say(`Unmuted ${member.user}`);
-                console.log(`Unmuted ${member.user.username}`);
             } else {
                 member.roles.add(muteRole);
                 message.say(`Muted ${member.user}`);
-                console.log(`Muted ${member.user.username}`);
             }
         });
     }
