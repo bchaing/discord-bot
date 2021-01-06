@@ -10,7 +10,6 @@ module.exports = class NASACommand extends Command {
             group: 'general',
             memberName: 'nasa',
             description: 'Displays NASA\'s astronomy picture of the day.',
-            guildOnly: true,
         });
     }
 
