@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { oneLine } = require('common-tags');
 
 module.exports = class CSGOSTATSCommand extends Command {
@@ -123,9 +123,6 @@ module.exports = class CSGOSTATSCommand extends Command {
             browser.close();
             return;
         }
-        
-        // send image to the chat
-        const file = await new MessageAttachment('./assets/images/csgostats.png');
 
         // get size of image and determine if the player is in a live game
         const sizeOf = require('image-size');
@@ -158,7 +155,7 @@ module.exports = class CSGOSTATSCommand extends Command {
                 },
             };
 
-            await message.channel.send({ files: [file], embed: returnEmbed });
+            await message.channel.send({ files: ['./assets/images/csgostats.png'], embed: returnEmbed });
         }
         
         // delete progress embed and screenshot
