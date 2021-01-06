@@ -21,6 +21,8 @@ module.exports = class CoinflipCommand extends Command {
     }
 
     run(message, { number }) {
+        if (number > 180) return message.say('Number must be between 1 and 180');
+
         const coins = [];
 
         for (let i = 0; i < number; i++) { 
