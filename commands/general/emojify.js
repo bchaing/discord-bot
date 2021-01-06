@@ -39,7 +39,7 @@ module.exports = class EmojifyCommand extends Command {
 
         sendWebhookMessage(
             message.channel, 
-            message.member.displayName(),
+            message.member.displayName,
             message.author.avatarURL(),
             returnMessage,
         );
