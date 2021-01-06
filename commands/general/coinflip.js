@@ -3,13 +3,13 @@ const { oneLine } = require('common-tags');
 const coin = ['heads', 'tails'];
 
 
-module.exports = class CoinCommand extends Command {
+module.exports = class CoinflipCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'coin',
-            aliases: ['coinflip', 'coin-flip', 'flip'],
+            name: 'coinflip',
+            aliases: ['coin', 'coin-flip', 'flip'],
             group: 'general',
-            memberName: 'coin',
+            memberName: 'coinflip',
             description: 'Flips a coin.',
         });
     }
