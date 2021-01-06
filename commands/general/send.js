@@ -6,8 +6,7 @@ module.exports = class SendCommand extends Command {
             name: 'send',
             group: 'general',
             memberName: 'send',
-            description: 'Allows bot owner to send messages as bot.',
-            ownerOnly: true,
+            description: 'Allows user to send messages as bot.',
             guildOnly: true,
         });
     }
