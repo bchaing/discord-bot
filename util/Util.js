@@ -8,8 +8,4 @@ module.exports = class Util {
             avatarURL: `${avatarURL}`,
         }).catch(console.error);
     }
-
-    static getNickname(member) {
-        return (member.nickname ? member.nickname : member.user.username);
-    }
 };

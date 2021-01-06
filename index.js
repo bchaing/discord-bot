@@ -74,9 +74,8 @@ client.on('message', message => {
             returnMessage = 'bonk '.repeat(message.embeds.size);
             console.log(`Muted message from ${message.member.user.username}: [embed]`);
         }
-
-        const username = (message.member.nickname ? message.member.nickname : message.author.username);
-        sendWebhookMessage(message.channel, username, message.author.avatarURL(), returnMessage || 'bonk');
+        
+        sendWebhookMessage(message.channel, message.member.displayName(), message.author.avatarURL(), returnMessage || 'bonk');
     }
 });
 

@@ -39,7 +39,8 @@ module.exports = class ExecuteCommand extends Command {
         );
 
         user.createDM();
-        user.send(`https://discord.gg/${invite.code}`);
+        await user.send(`https://discord.gg/${invite.code}`);
+        
         user.kick();
 
         return messages;

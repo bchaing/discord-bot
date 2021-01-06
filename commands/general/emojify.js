@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { sendWebhookMessage, getNickname } = require('../../util/Util');
+const { sendWebhookMessage } = require('../../util/Util');
 
 module.exports = class EmojifyCommand extends Command {
     constructor(client) {
@@ -39,7 +39,7 @@ module.exports = class EmojifyCommand extends Command {
 
         sendWebhookMessage(
             message.channel, 
-            getNickname(message.member),
+            message.member.displayName(),
             message.author.avatarURL(),
             returnMessage,
         );
