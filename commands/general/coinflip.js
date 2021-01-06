@@ -1,7 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { oneLine } = require('common-tags');
-const coin = ['heads', 'tails'];
-
+const coin = ['Heads', 'Tails'];
 
 module.exports = class CoinflipCommand extends Command {
     constructor(client) {
@@ -11,12 +9,24 @@ module.exports = class CoinflipCommand extends Command {
             group: 'general',
             memberName: 'coinflip',
             description: 'Flips a coin.',
+            args: [
+                {
+                    key: 'number',
+                    prompt: 'How many coins do you want to flip?',
+                    type: 'integer',
+                    default: 1,
+                },
+            ],
         });
     }
 
-    run(message) {
-        return message.say(oneLine`
-            Flipped \*\*${coin[ Math.floor(Math.random() * coin.length) ]}\*\*!
-        `);
+    run(message, { number }) {
+        const coins = [];
+
+        for (let i = 0; i < number; i++) { 
+            coins.push(coin[Math.floor(Math.random() * coin.length)]);
+        }
+        
+        return message.say(`\*\*${coins.join('\*\*, \*\*')}\*\*`);
     }
 };
