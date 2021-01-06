@@ -1,6 +1,7 @@
 const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const { getNickname } = require('../../util/Util');
+const { unregisterCustomQueryHandler } = require('puppeteer');
 
 module.exports = class ExecuteCommand extends Command {
     constructor(client) {
@@ -32,11 +33,12 @@ module.exports = class ExecuteCommand extends Command {
         
         const invite = await message.channel.createInvite(
             {
-              maxAge: 86400, // maximum time for the invite, in milliseconds
-              maxUses: 1, // maximum times it can be used
+                maxAge: 86400, // maximum time for the invite, in milliseconds
+                maxUses: 1, // maximum times it can be used
             },
         );
 
+        user.createDM();
         user.send(`https://discord.gg/${invite.code}`);
         user.kick();
 
