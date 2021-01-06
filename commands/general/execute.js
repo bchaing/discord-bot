@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const { getNickname } = require('../../util/Util');
-const { unregisterCustomQueryHandler } = require('puppeteer');
 
 module.exports = class ExecuteCommand extends Command {
     constructor(client) {
