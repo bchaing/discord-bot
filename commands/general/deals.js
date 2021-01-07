@@ -7,7 +7,7 @@ module.exports = class DealsCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'deals',
-            aliases: ['isthereanydeals', 'gamedeals', 'deal'],
+            aliases: ['isthereanydeals', 'isthereanydeal', 'gamedeals', 'deal'],
             group: 'general',
             memberName: 'deals',
             description: 'Displays information on a game from isthereanydeals.com',
