@@ -28,20 +28,20 @@ module.exports = class DealsCommand extends Command {
         `);
         const responseJSON = await response.json();
         const messages = [], search = [];
+        let choice, list;
 
         responseJSON.data.results.forEach((value, index) => search.push(`[${index + 1}] ${value.title}`));
         if (search.length !== 0) {
-            messages.push(message.say(stripIndents`
+            list = await message.say(stripIndents`
                 \*\*Search results for:\*\* ${game}
                 ${search.join('\n')}
                 \*Respond with the number of the game you want to find\*
-            `));
+            `);
+            messages.push(list);
         } else {
             return message.say('No results found.');
         }
         
-    
-        let choice;
         try {
             choice = await message.channel.awaitMessages(
                 m => m.author.id === message.author.id, 
@@ -52,6 +52,7 @@ module.exports = class DealsCommand extends Command {
                 },
             );
         } catch (error) {
+            list.delete();
             messages.push(message.say(`Cancelling search, you didn't specify a choice in time!`));
             return messages;
         }
@@ -60,6 +61,7 @@ module.exports = class DealsCommand extends Command {
 
         if (!choice || choice > search.length) return message.say('You didn\'t input a valid number.');
 
+        list.delete();
         const gamePlain = responseJSON.data.results[choice - 1].plain;
 
         const gameDetails = await fetch(oneLineTrim`
