@@ -59,9 +59,9 @@ module.exports = class DealsCommand extends Command {
         
         choice = parseInt(choice.first().content);
 
+        list.delete();
         if (!choice || choice > search.length) return message.say('You didn\'t input a valid number.');
 
-        list.delete();
         const gamePlain = responseJSON.data.results[choice - 1].plain;
 
         const gameDetails = await fetch(oneLineTrim`
