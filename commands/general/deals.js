@@ -76,10 +76,11 @@ module.exports = class DealsCommand extends Command {
         const gameData = gameDetailsJSON.data[gamePlain];
 
         messages.push(message.say(stripIndents`
+            On sale? ${gameData.price.cut !== 0 ? 'Yes' : 'No'} (${gameData.price.cut}% off)
             Current Best Price: ${gameData.price.price_formatted} (${gameData.price.store})
             Link: ${gameData.price.url}
 
-            Historical Low Price: ${gameData.lowest.price_formatted} (${gameData.lowest.store})
+            Historical Low Price: ${gameData.lowest.price_formatted} (${gameData.lowest.cut}% off) (${gameData.lowest.store})
             Last seen: ${gameData.lowest.recorded_formatted}
         `));
         
