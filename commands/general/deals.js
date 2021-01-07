@@ -22,6 +22,8 @@ module.exports = class DealsCommand extends Command {
     }
 
     async run(message, { game }) {
+        if (!dealAPIKey) return message.say('The API key has not been set up for this command.');
+
         const response = await fetch(oneLineTrim`
             https://api.isthereanydeal.com/v02/search/search/
             ?key=${dealAPIKey}&q=${game}&limit=10&strict=0
