@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
 const fetch = require('node-fetch');
 
-module.exports = class DogCommand extends Command {
+module.exports = class RandomDogCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'randomdog',
