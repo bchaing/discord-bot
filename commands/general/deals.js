@@ -67,11 +67,11 @@ module.exports = class DealsCommand extends Command {
         const gamePlain = responseJSON.data.results[choice - 1].plain;
 
         const gameDetails = await fetch(oneLineTrim`
-        https://api.isthereanydeal.com/v01/game/overview/
-        ?key=${dealAPIKey}&region=us&country=US&plains=${gamePlain}
-        &allowed=steam,gog,amazonus,battlenet,discord,epic,bundlestars,
-        humblestore,indiegalastore,microsoft,newegg,origin,
-        squenix,uplay
+            https://api.isthereanydeal.com/v01/game/overview/
+            ?key=${dealAPIKey}&region=us&country=US&plains=${gamePlain}
+            &allowed=steam,gog,amazonus,battlenet,discord,epic,bundlestars,
+            humblestore,indiegalastore,microsoft,newegg,origin,
+            squenix,uplay
         `);
 
         const gameDetailsJSON = await gameDetails.json();
