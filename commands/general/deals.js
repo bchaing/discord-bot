@@ -77,14 +77,20 @@ module.exports = class DealsCommand extends Command {
         const gameDetailsJSON = await gameDetails.json();
         const gameData = gameDetailsJSON.data[gamePlain];
 
-        messages.push(message.say(stripIndents`
-            On sale? ${gameData.price.cut !== 0 ? 'Yes' : 'No'} (${gameData.price.cut}% off)
-            Current Best Price: ${gameData.price.price_formatted} (${gameData.price.store})
-            Link: ${gameData.price.url}
+        try {
+            messages.push(message.say(stripIndents`
+                On sale? ${gameData.price.cut !== 0 ? 'Yes' : 'No'} (${gameData.price.cut}% off)
+                Current Best Price: ${gameData.price.price_formatted} (${gameData.price.store})
+                Link: ${gameData.price.url}
 
-            Historical Low Price: ${gameData.lowest.price_formatted} (${gameData.lowest.cut}% off) (${gameData.lowest.store})
-            Last seen: ${gameData.lowest.recorded_formatted}
-        `));
+                Historical Low Price: ${gameData.lowest.price_formatted} (${gameData.lowest.cut}% off) (${gameData.lowest.store})
+                Last seen: ${gameData.lowest.recorded_formatted}
+            `));
+        } catch (err) {
+            console.error(err);
+            message.push('An error occurred, please retry in a few seconds.');
+            return messages;
+        }
         
         return messages;
     }
