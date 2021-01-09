@@ -52,7 +52,6 @@ module.exports = class ChikenhigCommand extends Command {
             
             if (voiceChannel) {
                 connection = await voiceChannel.join();
-                console.log(`Joined voice channel: ${voiceChannel.name}`);
             } else {
                 message.reply('You need to specify a voice channel to join!');
             }
@@ -62,15 +61,11 @@ module.exports = class ChikenhigCommand extends Command {
         const dispatcher = connection.play(
             'assets/audio/chikenhig.mp3', 
             { volume: 0.30 },
-            );
-        console.log('Playing chickenhig.mp3');            
+            );  
 
         // disconnect on audio file finish
         dispatcher.on('finish', () => {
             connection.disconnect();
-            return console.log(oneLine`
-                Left voice channel: ${message.guild.me.voice.channel.name}
-            `);
         });
     }
 };

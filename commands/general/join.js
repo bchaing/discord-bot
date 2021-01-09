@@ -25,7 +25,6 @@ module.exports = class JoinCommand extends Command {
                 if (message.member.voice.channel) {
                 // join user's voice channel if possible
                     message.member.voice.channel.join();
-                    console.log(`Joined voice channel: ${message.member.voice.channel.name}`);
                 } else {
                 // sends response if unable to join
                     message.reply('You need to specify a voice channel to join!');
@@ -46,7 +45,6 @@ module.exports = class JoinCommand extends Command {
                 if (voiceChannel) {
                 // join voice channel if found
                     voiceChannel.join();
-                    return console.log(`Joined voice channel: ${voiceChannel.name}`);
                 } else {
                 // notifies user that voice channel could not be found
                     return message.reply('You need to specify a voice channel to join!');

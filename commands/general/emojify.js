@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const { sendWebhookMessage } = require('../../util/Util');
 
 module.exports = class EmojifyCommand extends Command {
     constructor(client) {
@@ -7,6 +8,7 @@ module.exports = class EmojifyCommand extends Command {
             group: 'general',
             memberName: 'emojify',
             description: 'Adds emojis between words in a message.',
+            format: '<message>',
             args: [
                 {
                     key: 'msg',
@@ -18,13 +20,13 @@ module.exports = class EmojifyCommand extends Command {
         });
     }
 
-    async run(message, { msg }) {
+    run(message, { msg }) {
         const args = msg.split(/ +/), emojis = message.guild.emojis.cache;      // stores the emojis of the guild
         let randomEmoji, returnMsg, emoji;                                      // variables for parsing animated emoji's
         let returnMessage = '';                                                 // message to send at the end
 
         // loops through every word, adding emoji's between
-        for (let i = 0; i < args.length; i++) {
+        for (let i = 0, j = args.length; i < j; i++) {
             randomEmoji = emojis.random();
             returnMsg = args[i];
             emoji = message.guild.emojis.cache.find(e => 
@@ -36,14 +38,12 @@ module.exports = class EmojifyCommand extends Command {
             returnMessage = `${returnMessage}${returnMsg}${randomEmoji}`;
         }
 
-        // fetches webhooks for sending message
-        const webhooks = await message.channel.fetchWebhooks();
-        const webhook = webhooks.first();
-        
-        await webhook.send(returnMessage, {
-            username: `${message.author.username}`,
-            avatarURL: `${message.author.avatarURL()}`,
-        }).catch(console.error);
+        sendWebhookMessage(
+            message.channel, 
+            message.member.displayName,
+            message.author.avatarURL(),
+            returnMessage,
+        );
 
         // deletes original message
         message.delete().catch(error => {

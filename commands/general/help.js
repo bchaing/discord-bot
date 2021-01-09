@@ -16,7 +16,6 @@ module.exports = class HelpCommand extends Command {
 			`,
 			examples: ['help', 'help prefix'],
 			guarded: true,
-
 			args: [
 				{
 					key: 'command',
@@ -73,7 +72,17 @@ module.exports = class HelpCommand extends Command {
 					helpEmbed.fields.push({
 						name: 'Examples',
 						value: `${commands[0].examples.join('\n')}`,
-					});
+					});	
+				}
+
+				if(commands[0].throttling) {
+					helpEmbed.fields.push({
+						name: 'Cooldown',
+						value: oneLine`
+							\*\*${commands[0].throttling.usages}\*\* use(s) every
+							\*\*${commands[0].throttling.duration}\*\* seconds.
+						`,
+					});	
 				}
 
 				msg.embed(helpEmbed);

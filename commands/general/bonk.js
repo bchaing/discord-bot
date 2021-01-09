@@ -11,6 +11,10 @@ module.exports = class BonkCommand extends Command {
             memberName: 'bonk',
             description: 'Kicks a user to horny jail.',
             guildOnly: true,
+            throttling: {
+                usages: 1,
+                duration: 30,
+            },
             args: [
                 {
                     key: 'user',
@@ -58,9 +62,6 @@ module.exports = class BonkCommand extends Command {
         // send bonk message
         const bonkGIF = new MessageAttachment('./assets/images/bonk.gif');
         messages.push(message.channel.send(`GO TO HORNY JAIL ${taggedMember.user}`, bonkGIF));
-        console.log(oneLine`
-            ${message.author.username} bonked ${taggedMember.user.username}
-        `);
 
         const connection = await taggedMember.voice.channel.join();
 

@@ -16,7 +16,6 @@ module.exports = class LeaveCommand extends Command {
         if (message.guild.me.voice.channel !== null) {
             // leave current voice channel
             message.guild.me.voice.channel.leave();
-            return console.log(`Left voice channel: ${message.guild.me.voice.channel.name}`);
         } else {
             // bot is not in a voice channel
             return message.reply('No active voice channel connections!');

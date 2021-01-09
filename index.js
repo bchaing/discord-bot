@@ -2,6 +2,7 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const { prefix, token, serverID, ownerID } = require('./config.json');
+const { sendWebhookMessage } = require('./util/Util');
 
 let rolePersistCache;
 
@@ -32,7 +33,6 @@ client.dispatcher.addInhibitor(msg => {
     if(msg.member.roles.cache.some(r => r.name === 'bonk-mute')) return 'bonked';
 });
   
-
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', () => {
@@ -41,7 +41,6 @@ client.once('ready', () => {
     client.user.setActivity('b!help', { type: 'COMPETING' });
     
     createRoleCache(client.guilds.cache.get(serverID));
-    createVCRoles(client.guilds.cache.get(serverID));
 });
 
 client.on('error', console.error);
@@ -54,10 +53,13 @@ client.on('message', message => {
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
         message.delete();
-        sendWebhookMessage(message.channel, message.member, returnMsg);
+
+        sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMsg);
     }
 
-    // code for bonk-mute
+    //
+    //  code for bonk-mute
+    // 
     if (message.member === null) return;
 
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
@@ -71,8 +73,8 @@ client.on('message', message => {
             returnMessage = 'bonk '.repeat(message.embeds.size);
             console.log(`Muted message from ${message.member.user.username}: [embed]`);
         }
-
-        sendWebhookMessage(message.channel, message.member, returnMessage || 'bonk');
+        
+        sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMessage || 'bonk');
     }
 });
 
@@ -94,7 +96,7 @@ client.on('guildMemberAdd', GuildMember => {
     GuildMember.roles.set(rolePersistCache[GuildMember.id]).catch(console.error);
 });
 
-client.on('voiceStateUpdate', (oldState, newState) => {
+client.on('voiceStateUpdate', async (oldState, newState) => {
     const updatedUser = oldState.member;
 
     // remove vc role when leaving channel
@@ -105,14 +107,29 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
     // add vc role when joining channel
     if (newState.channel != oldState.channel && newState.channel != null) {
+
+        // create role if it doesn't yet exist
+        let voiceChannelRole = newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`);
+
+        if (!voiceChannelRole) {
+            voiceChannelRole = await newState.guild.roles.create({
+                data: {
+                  name: `${newState.channel.name}`,
+                  mentionable: true,
+                },
+            });
+        } else if (!voiceChannelRole.mentionable) {
+            voiceChannelRole.edit({ mentionable: true }).catch(console.error);
+        }
+
         updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
-        updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === `${newState.channel.name}`)).catch(console.error);
+        updatedUser.roles.add(voiceChannelRole).catch(console.error);
     } 
 });
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
     // change name of vc role when vc is updated
-    if (oldChannel.name != newChannel.name) {
+    if (oldChannel.type === 'voice' && oldChannel.name !== newChannel.name) {
         const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
         VCRole.edit({ name: `${newChannel.name}` });
     }
@@ -138,46 +155,6 @@ client.on('channelDelete', channel => {
     }
 });
 
-async function sendWebhookMessage(channel, member, message) {
-    const webhooks = await channel.fetchWebhooks();
-    const webhook = webhooks.first();
-    
-    let username;
-
-    if (member.nickname) username = member.nickname;
-    else username = member.user.username;
-
-    await webhook.send(message, {
-        username: `${username}`,
-        avatarURL: `${member.user.avatarURL()}`,
-    }).catch(console.error);
-}
-
 async function createRoleCache(guild) {
     rolePersistCache = await guild.members.fetch();
-}
-
-function createVCRoles(guild) {
-    const voiceChannels = guild.channels.cache;         // get guild channel cache
-    let role;                                           // declare role variable
-    
-    // loop through all channels of a guild
-    voiceChannels.each(value => {
-        // check if channel is a voice channel
-        if (value.type === 'voice') {
-            role = guild.roles.cache.find(r => r.name === `${value.name}`);
-            
-            // check if roles already exist and are mentionable
-            if (!role) {
-                guild.roles.create({
-                    data: {
-                      name: `${value.name}`,
-                      mentionable: true,
-                    },
-                });
-            } else if (!role.mentionable) {
-                role.edit({ mentionable: true }).catch(console.error);
-            }
-        }
-    });
 }
