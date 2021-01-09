@@ -118,7 +118,7 @@ module.exports = class CSGOSTATSCommand extends Command {
             
             await browser.close();
         } catch (error) {
-            console.log(error);
+            console.error(error);
             csgoEmbed.description = "An error occurred retrieving your csgostats page";
             msg.edit(csgoEmbed);
             browser.close();
