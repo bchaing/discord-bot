@@ -72,14 +72,18 @@ module.exports = class DealsCommand extends Command {
             );
         } catch (error) {
             list.delete();
-            messages.push(message.say(`Cancelling search, you didn't specify a choice in time!`));
+            messages.push(message.say(oneLine`
+                Cancelling search, you didn't specify a choice in time!
+            `));
             return messages;
         }
         
-        choice = parseInt(choice.first().content) - 1;
         list.delete();
+        choice = parseInt(choice.first().content) - 1;
 
-        if (!choice || choice > search.length) return message.say('You didn\'t input a valid number.');
+        if (!choice || choice > search.length) {
+            return message.say('You didn\'t input a valid number.');
+        }
 
         const gamePlain = json.data.results[choice].plain;
 

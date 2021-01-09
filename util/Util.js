@@ -8,4 +8,9 @@ module.exports = class Util {
             avatarURL: `${avatarURL}`,
         }).catch(console.error);
     }
+
+    static progressBar(curr, total) {
+        const elements = `${'0'.repeat(total)}${'-'.repeat(total)}`;
+        return `[${elements.slice(-curr + total, -curr + 2 * total)}]`;
+    }
 };

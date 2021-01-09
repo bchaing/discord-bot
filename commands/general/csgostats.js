@@ -1,6 +1,7 @@
 const { Command } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
 const { oneLine } = require('common-tags');
+const { progressBar } = require('../../util/Util');
 
 module.exports = class CSGOSTATSCommand extends Command {
     constructor(client) {
@@ -9,7 +10,6 @@ module.exports = class CSGOSTATSCommand extends Command {
             group: 'general',
             memberName: 'csgostats',
             description: 'Sends an image with stats of a live csgo game.',
-            guildOnly: true,
             format: '<steam user>',
             args: [
                 {
@@ -36,8 +36,7 @@ module.exports = class CSGOSTATSCommand extends Command {
         const csgoEmbed = new MessageEmbed()
             .setColor('#0099ff')
             .setTitle('CSGOSTATS')
-            .setDescription('\`[--------------------]\` Retrieving steamID')
-            .setTimestamp()
+            .setDescription(`\`${progressBar(0, 20)}\` Retrieving steamID`)
             .setFooter(
                 'csgostats.gg', 
             );
@@ -61,7 +60,7 @@ module.exports = class CSGOSTATSCommand extends Command {
                 const ele = doc.documentElement.getElementsByTagName("steamID64");
                 steamID = ele.item(0).firstChild.nodeValue;
                 csgoEmbed.description = oneLine`
-                    \`[0000----------------]\` Found steamID: ${steamID}
+                    \`${progressBar(4, 20)}\` Found steamID: ${steamID}
                 `;
                 msg.edit({ embed: csgoEmbed });
             } catch (error) {
@@ -75,7 +74,7 @@ module.exports = class CSGOSTATSCommand extends Command {
 
 
         // creating browser
-        csgoEmbed.description = '\`[00000000------------]\` Starting chromium browser';
+        csgoEmbed.description = `\`${progressBar(8, 20)}\` Starting chromium browser`;
         msg.edit(csgoEmbed);
         const browser = await puppeteer.launch({
                 /* options for raspberry pi hosting (uncomment the two lines below and delete the headless option) */
@@ -91,7 +90,7 @@ module.exports = class CSGOSTATSCommand extends Command {
         try {
             // navagate to csgostats live page
             csgoEmbed.description = oneLine`
-                \`[000000000000--------]\` Navigating to 
+                \`${progressBar(12, 20)}\` Navigating to 
                 https://csgostats.gg/player/${ steamID }#/live
             `;
             msg.edit(csgoEmbed);
@@ -104,16 +103,16 @@ module.exports = class CSGOSTATSCommand extends Command {
             }
 
             // wait for page to load and screen shot the stats element
-            csgoEmbed.description = '\`[000000000000--------]\` Waiting for page to load';
+            csgoEmbed.description = `\`${progressBar(12, 20)}\` Waiting for page to load`;
             msg.edit(csgoEmbed);
             
             await page.waitForSelector('div #player-live.content-tab.current-tab');          // wait for the selector to load
             const element = await page.$('#player-live');        // declare a variable with an ElementHandle
-            csgoEmbed.description = '\`[0000000000000000----]\` Taking screenshot';
+            csgoEmbed.description = `\`${progressBar(16, 20)}\` Taking screenshot`;
             msg.edit(csgoEmbed);
             
             await element.screenshot({ path: './assets/images/csgostats.png' }); // take screenshot element in puppeteer
-            csgoEmbed.description = '\`[00000000000000000000]\` Sending image';
+            csgoEmbed.description = `\`${progressBar(20, 20)}\` Sending image`;
             msg.edit(csgoEmbed);
             
             await browser.close();
@@ -136,7 +135,6 @@ module.exports = class CSGOSTATSCommand extends Command {
             returnEmbed = {
                 description: 'Player is not in a live match.',
                 color: '#0099ff',
-                timestamp: Date.now(),
                 footer: { 
                     text: 'csgostats.gg', 
                 },
@@ -150,7 +148,6 @@ module.exports = class CSGOSTATSCommand extends Command {
                     url: 'attachment://csgostats.png',
                 },
                 color: '#0099ff',
-                timestamp: Date.now(),
                 footer: { 
                     text: 'csgostats.gg', 
                 },
@@ -166,7 +163,7 @@ module.exports = class CSGOSTATSCommand extends Command {
         const path = './assets/images/csgostats.png';
 
         try {
-            fs.unlinkSync(path);
+            fs.unlink(path);
         } catch(err) {
             console.error(err);
         }
