@@ -16,7 +16,6 @@ module.exports = class HelpCommand extends Command {
 			`,
 			examples: ['help', 'help prefix'],
 			guarded: true,
-
 			args: [
 				{
 					key: 'command',

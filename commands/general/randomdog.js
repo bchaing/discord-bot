@@ -14,8 +14,8 @@ module.exports = class RandomDogCommand extends Command {
 
     async run(message) {
         const response = await fetch('https://random.dog/woof.json');
-        const responseJSON = await response.json();
+        const json = await response.json();
 
-        return message.say(responseJSON.url);
+        return message.say(json.url);
     }
 };

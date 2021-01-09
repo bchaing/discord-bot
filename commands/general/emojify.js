@@ -8,6 +8,7 @@ module.exports = class EmojifyCommand extends Command {
             group: 'general',
             memberName: 'emojify',
             description: 'Adds emojis between words in a message.',
+            format: '<message>',
             args: [
                 {
                     key: 'msg',

@@ -14,8 +14,8 @@ module.exports = class RandomCatCommand extends Command {
 
     async run(message) {
         const response = await fetch('https://api.thecatapi.com/v1/images/search');
-        const responseJSON = await response.json();
+        const json = await response.json();
 
-        return message.say(responseJSON[0].url);
+        return message.say(json[0].url);
     }
 };
