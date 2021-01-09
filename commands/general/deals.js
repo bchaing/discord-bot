@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 const fetch = require('node-fetch');
-const { oneLineTrim, stripIndents } = require('common-tags');
+const { oneLine, oneLineTrim, stripIndents } = require('common-tags');
 const { dealAPIKey } = require('../../config.json');
 
 const allowedStores = [
@@ -16,7 +16,7 @@ module.exports = class DealsCommand extends Command {
             aliases: ['isthereanydeals', 'isthereanydeal', 'gamedeals', 'deal'],
             group: 'general',
             memberName: 'deals',
-            description: 'Displays information on a game from isthereanydeals.com',
+            description: 'Displays information on a game from IsThereAnyDeals.',
             args: [
                 {
                     key: 'game',
@@ -28,7 +28,12 @@ module.exports = class DealsCommand extends Command {
     }
 
     async run(message, { game }) {
-        if (!dealAPIKey) return message.say('The API key has not been set up for this command.');
+        if (!dealAPIKey) {
+            return message.reply(oneLine`
+                The API key has not been set up for this command.
+                If you like to use this command, please contact the bot owner.
+            `);
+        }
 
         const messages = [], search = [];
         let choice, list;
