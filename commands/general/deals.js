@@ -1,7 +1,7 @@
 const { Command } = require('discord.js-commando');
-const fetch = require('node-fetch');
 const { oneLine, oneLineTrim, stripIndents } = require('common-tags');
 const { dealAPIKey } = require('../../config.json');
+const fetch = require('node-fetch');
 
 const allowedStores = [
     'steam', 'gog', 'amazonus', 'battlenet', 'discord', 'epic', 'bundlestars', 

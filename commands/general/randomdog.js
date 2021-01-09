@@ -13,7 +13,8 @@ module.exports = class RandomDogCommand extends Command {
     }
 
     async run(message) {
-        const response = await fetch('https://random.dog/woof.json');
+        const url = 'https://random.dog/woof.json';
+        const response = await fetch(url);
         const json = await response.json();
 
         return message.say(json.url);

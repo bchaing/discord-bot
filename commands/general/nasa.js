@@ -1,7 +1,8 @@
 const { Command } = require('discord.js-commando');
-const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const { nasaAPIKey } = require('../../config.json');
+const { oneLine } = require('common-tags');
+const fetch = require('node-fetch');
 
 module.exports = class NASACommand extends Command {
     constructor(client) {
@@ -15,11 +16,15 @@ module.exports = class NASACommand extends Command {
 
     async run(message) {
         if (!nasaAPIKey) {
-            return message.channel.send('The API keys have not been set up for this command.');
+            return message.reply(oneLine`
+                The API key has not been set up for this command.
+                If you like to use this command, please contact the bot owner.
+            `);
         }
-        
-        const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${nasaAPIKey}`);
-        const data = await response.json();    
+
+        const url = `https://api.nasa.gov/planetary/apod?api_key=${nasaAPIKey}`;
+        const response = await fetch(url);
+        const json = await response.json();    
         
         const APODEmbed = new MessageEmbed()
             .setColor(0x0B3D91)
@@ -28,9 +33,9 @@ module.exports = class NASACommand extends Command {
                 'attachment://nasa.png',
             )
             .attachFiles('./assets/images/nasa.png')
-            .setTitle(data.title)
-            .setDescription(data.explanation)
-            .setImage(data.hdurl);
+            .setTitle(json.title)
+            .setDescription(json.explanation)
+            .setImage(json.hdurl);
 
         return message.channel.send({ embed: APODEmbed });
     }
