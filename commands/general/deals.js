@@ -3,9 +3,11 @@ const fetch = require('node-fetch');
 const { oneLineTrim, stripIndents } = require('common-tags');
 const { dealAPIKey } = require('../../config.json');
 
-const allowedStores = ['steam', 'gog', 'amazonus', 'battlenet', 'discord', 
-    'epic', 'bundlestars', 'humblestore', 'indiegalastore', 'microsoft', 
-    'newegg', 'origin', 'squenix', 'uplay'];
+const allowedStores = [
+    'steam', 'gog', 'amazonus', 'battlenet', 'discord', 'epic', 'bundlestars', 
+    'humblestore', 'indiegalastore', 'microsoft', 'newegg', 'origin', 'squenix', 
+    'uplay',
+];
 
 module.exports = class DealsCommand extends Command {
     constructor(client) {
@@ -40,7 +42,9 @@ module.exports = class DealsCommand extends Command {
         let response = await fetch(url);
         let json = await response.json();
 
-        json.data.results.forEach((value, index) => search.push(`[${index + 1}] ${value.title}`));
+        const results = json.data.results;
+
+        results.forEach((value, i) => search.push(`[${i + 1}] ${value.title}`));
         if (search.length !== 0) {
             list = await message.say(stripIndents`
                 \*\*Search results for:\*\* ${game}
@@ -81,6 +85,7 @@ module.exports = class DealsCommand extends Command {
             &plains=${gamePlain}
             &allowed=${allowedStores.join(',')}
         `;
+
         response = await fetch(url);
         json = await response.json();
         
