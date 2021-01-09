@@ -10,9 +10,10 @@ module.exports = class CSGOSTATSCommand extends Command {
             memberName: 'csgostats',
             description: 'Sends an image with stats of a live csgo game.',
             guildOnly: true,
+            format: '<steam user>',
             args: [
                 {
-                    key: 'steam_profile',
+                    key: 'user',
                     prompt: 'Who do you want to look up stats for?',
                     type: 'string',
                 },
@@ -20,7 +21,7 @@ module.exports = class CSGOSTATSCommand extends Command {
         });
     }
 
-    async run(message, { steam_profile }) {
+    async run(message, { user }) {
         // creating puppeteer variables
         const puppeteer = require('puppeteer-extra');
         const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -43,11 +44,11 @@ module.exports = class CSGOSTATSCommand extends Command {
         const msg = await message.embed(csgoEmbed);
 
         // completes URL from input
-        let customUrl = steam_profile;
+        let customUrl = user;
         if (customUrl.includes('steamcommunity.com/profiles/')) {
             steamID = customUrl.substring(customUrl.search(/\d/));
         } else if (!customUrl.includes('steamcommunity.com/id/')) {
-            customUrl = `https://steamcommunity.com/id/${ steam_profile }`; 
+            customUrl = `https://steamcommunity.com/id/${ user }`; 
         }
 
         // getting steam id from URL
