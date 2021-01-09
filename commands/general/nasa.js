@@ -37,6 +37,6 @@ module.exports = class NASACommand extends Command {
             .setDescription(json.explanation)
             .setImage(json.hdurl);
 
-        return message.channel.send({ embed: APODEmbed });
+        return message.embed(APODEmbed);
     }
 };

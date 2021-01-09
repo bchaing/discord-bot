@@ -26,7 +26,8 @@ module.exports = class ExecuteCommand extends Command {
     async run(message, { user }) {
         const messages = [];
         
-        messages.push(message.say(oneLine`${getNickname(message.member)}
+        messages.push(message.say(oneLine`
+            ${getNickname(message.member)}
             \*\*executed\*\* ${getNickname(user)}
         `));
         
