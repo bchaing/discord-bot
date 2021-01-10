@@ -81,7 +81,7 @@ module.exports = class DealsCommand extends Command {
         list.delete();
         choice = parseInt(choice.first().content) - 1;
 
-        if (!choice || choice > search.length) {
+        if (!choice || choice > search.length - 1) {
             return message.say('You didn\'t input a valid number.');
         }
 
