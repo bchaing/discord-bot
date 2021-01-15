@@ -46,14 +46,14 @@ Reflect.defineProperty(persistentRoles, 'update', {
             const newUser = await Users.create({ user_id: id, roles: roles });
             persistentRoles.set(id, newUser); 
             return newUser;
-        }
+        },
 });
 
 Reflect.defineProperty(persistentRoles, 'getRoles', {
     value: function getRoles(id) {
         const user = persistentRoles.get(id);
         return user ? user.roles : 'no roles';
-    }
+    },
 });
 
 // when the client is ready, run this code
