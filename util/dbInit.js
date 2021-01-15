@@ -7,8 +7,11 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-require('./models/Roles')(sequelize, Sequelize.DataTypes);
+require('../models/Users')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
-sequelize.sync({ force }).catch(console.error);
+sequelize.sync({ force }).catch(console.error).then(() => {
+	console.log('Database Synced');
+	sequelize.close();
+});
