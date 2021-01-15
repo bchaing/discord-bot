@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const { persistentRoles } = require('../../index');
+const { stripIndents } = require('common-tags');
 const Discord = require('discord.js');
 
 module.exports = class RolePersistCommand extends Command {
@@ -15,31 +16,61 @@ module.exports = class RolePersistCommand extends Command {
                     key: 'command',
                     prompt: 'What role persist command do you want to perform?',
                     type: 'string',
+                }, 
+                {
+                    key: 'member',
+                    prompt: '',
+                    type: 'member',
+                    default: '',
+                },
+                {
+                    key: 'source',
+                    prompt: 'Who do you want to get the roles from?',
+                    type: 'member',
+                    default: '',
                 },
             ],
         });
     }
 
-    run(message, { command }) {
+    run(message, { command, member, source }) {
         if (command === 'update') {
             message.guild.members.cache.forEach(m => {
                 persistentRoles.update(m.user.id, m.roles.cache);
             });
 
             return message.say('Updated persistent roles database!');
-        } else if (command.includes('list') || command.includes('ls')) {
-            const member = message.mentions.members.first() || message.member;
+        } else if (command === 'list' || command === 'ls') {
+            const taggedMember = member || message.member;
             let memberRoles = '';
-            persistentRoles.getRoles(member.user.id).forEach(r => {
+
+            persistentRoles.getRoles(taggedMember.user.id).forEach(r => {
                 memberRoles += `${r.name}\n`;
             });
-            return message.say(`${member.user.tag} roles:\n ${Discord.Util.removeMentions(memberRoles)}`);
-        } else if (command.includes('set')) {
-            const member = message.mentions.members.first();
-            const roles = persistentRoles.get(member.user.id);
 
-            const updateMember = message.guild.members.cache.get('387014337409187842');
+            return message.say(`${taggedMember.user.tag} roles:\n ${Discord.Util.removeMentions(memberRoles)}`);
+        } else if (command === 'set') {
+            let roleMember, updateMember;
+            if (source) {
+                roleMember = source;
+                updateMember = member;
+            } else {
+                roleMember = member || message.member;
+            }
+            
+            const roles = persistentRoles.getRoles(roleMember.user.id).map(r => r.id);
             updateMember.roles.set(roles);
+
+            return message.say(`Set roles for ${updateMember.user.tag}`);
+        } else if (command === 'help') {
+            return message.say(stripIndents`
+                Help: 
+                \`update\` - updates role persist database for all members in a guild
+                \`set <destination_member> <source_member> \` - sets roles of destination with source
+                \`list <member>\` - lists the roles stored for role persistence of a member.
+            `); 
+        } else {
+            return message.say('Available commands: \`update\` \`set\` \`list\`');
         }
     }
 };

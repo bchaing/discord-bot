@@ -6,7 +6,6 @@ const { sendWebhookMessage } = require('./util/Util');
 const path = require('path');
 
 const { Users } = require('./util/dbObjects');
-const { Op } = require('sequelize');
 const persistentRoles = new Collection();
 module.exports = { persistentRoles };
 
@@ -104,18 +103,17 @@ client.on('message', message => {
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
-    // If the role(s) are present on the old member object but no longer on the new one (i.e role(s) were removed)
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
-	if (removedRoles.size > 0)  {
-    }
-    // If the role(s) are present on the new member object but are not on the old one (i.e role(s) were added)
 	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
-    if (addedRoles.size > 0) {
+	if (removedRoles.size > 0 || addedRoles.size > 0)  {
+        persistentRoles.update(newMember.user.id, newMember.roles.cache);
     }
 });
 
 client.on('guildMemberAdd', GuildMember => {
-    // set new member's roles to what is stored in the cache
+    const roles = persistentRoles.getRoles(GuildMember.user.id).map(r => r.id);
+
+    if (roles) GuildMember.roles.set(roles);
 });
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
