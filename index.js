@@ -37,20 +37,27 @@ client.dispatcher.addInhibitor(msg => {
 });
   
 Reflect.defineProperty(persistentRoles, 'update', {
-    value: async function update(id, roles) {
+    value: async function update(user_id, guild_id, role_ids) {
+            const id = `${guild_id}-${user_id}`;    
             const user = persistentRoles.get(id);
             if (user) {
-                user.roles = roles;
+                user.roles = role_ids;
                 return user.save();
             }
-            const newUser = await Users.create({ user_id: id, roles: roles });
+            const newUser = await Users.create({ 
+                id: id,
+                user_id: user_id, 
+                guild_id: guild_id,
+                roles: role_ids,
+            });
             persistentRoles.set(id, newUser); 
             return newUser;
         },
 });
 
 Reflect.defineProperty(persistentRoles, 'getRoles', {
-    value: function getRoles(id) {
+    value: function getRoles(user_id, guild_id) {
+        const id = `${guild_id}-${user_id}`;
         const user = persistentRoles.get(id);
         return user ? user.roles : 'no roles';
     },
@@ -64,7 +71,7 @@ client.once('ready', async () => {
     client.user.setActivity('b!help', { type: 'COMPETING' });
     
     const storedRoles = await Users.findAll();
-    storedRoles.forEach(r => persistentRoles.set(r.user_id, r));
+    storedRoles.forEach(r => persistentRoles.set(r.id, r));
 });
 
 client.on('error', console.error);
@@ -106,14 +113,14 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
 	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
 	if (removedRoles.size > 0 || addedRoles.size > 0)  {
-        persistentRoles.update(newMember.user.id, newMember.roles.cache);
+        persistentRoles.update(newMember.user.id, newMember.guild.id, newMember.roles.cache.map(r => r.id));
     }
 });
 
 client.on('guildMemberAdd', GuildMember => {
-    const roles = persistentRoles.getRoles(GuildMember.user.id).map(r => r.id);
-
-    if (roles) GuildMember.roles.set(roles);
+    const roles = persistentRoles.getRoles(GuildMember.user.id, GuildMember.guild.id);
+    
+    if (roles !== 'no roles') GuildMember.roles.set(roles);
 });
 
 client.on('voiceStateUpdate', async (oldState, newState) => {

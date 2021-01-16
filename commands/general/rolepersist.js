@@ -36,7 +36,7 @@ module.exports = class RolePersistCommand extends Command {
     run(message, { command, member, source }) {
         if (command === 'update') {
             message.guild.members.cache.forEach(m => {
-                persistentRoles.update(m.user.id, m.roles.cache);
+                persistentRoles.update(m.user.id, message.guild.id, m.roles.cache.map(r => r.id));
             });
 
             return message.say('Updated persistent roles database!');
@@ -44,11 +44,16 @@ module.exports = class RolePersistCommand extends Command {
             const taggedMember = member || message.member;
             let memberRoles = '';
 
-            persistentRoles.getRoles(taggedMember.user.id).forEach(r => {
-                memberRoles += `${r.name}\n`;
-            });
+            const roles = persistentRoles.getRoles(taggedMember.user.id, message.guild.id);
+            if (roles !== 'no roles') {
+                roles.forEach(r => {
+                    if (message.guild.roles.cache.get(r)) {
+                        memberRoles += `${message.guild.roles.cache.get(r).name}\n`;
+                    }
+                });
+            }
 
-            return message.say(`${taggedMember.user.tag} roles:\n ${Discord.Util.removeMentions(memberRoles)}`);
+            return message.say(`${taggedMember.user.tag} roles:\n${Discord.Util.removeMentions(memberRoles)}`);
         } else if (command === 'set') {
             let roleMember, updateMember;
             if (source) {
@@ -57,9 +62,9 @@ module.exports = class RolePersistCommand extends Command {
             } else {
                 roleMember = member || message.member;
             }
-            
-            const roles = persistentRoles.getRoles(roleMember.user.id).map(r => r.id);
-            updateMember.roles.set(roles);
+           
+            const roles = persistentRoles.getRoles(roleMember.user.id, message.guild.id);
+            if (roles !== 'no roles') updateMember.roles.set(roles);
 
             return message.say(`Set roles for ${updateMember.user.tag}`);
         } else if (command === 'help') {
