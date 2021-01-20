@@ -79,13 +79,13 @@ module.exports = class DealsCommand extends Command {
         }
         
         list.delete();
-        choice = parseInt(choice.first().content) - 1;
+        choice = parseInt(choice.first().content);
 
         if (!choice || choice > search.length) {
             return message.say('You didn\'t input a valid number.');
         }
 
-        const gamePlain = json.data.results[choice].plain;
+        const gamePlain = json.data.results[choice - 1].plain;
 
         url = oneLineTrim`
             https://api.isthereanydeal.com/v01/game/overview/
