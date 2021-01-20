@@ -5,7 +5,7 @@ module.exports = class BreadCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'bread',
-            group: 'general',
+            group: 'fun',
             memberName: 'bread',
             description: 'Sends bread related puns.',
         });

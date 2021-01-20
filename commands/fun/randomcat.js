@@ -1,22 +1,22 @@
 const { Command } = require('discord.js-commando');
 const fetch = require('node-fetch');
 
-module.exports = class RandomDogCommand extends Command {
+module.exports = class RandomCatCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'randomdog',
-            aliases: ['woof', 'dog', 'bark'],
+            name: 'fun',
+            aliases: ['meow', 'cat', 'purr'],
             group: 'general',
-            memberName: 'randomdog',
+            memberName: 'randomcat',
             description: 'Sends a random image of a dog.',
         });
     }
 
     async run(message) {
-        const url = 'https://random.dog/woof.json';
+        const url = 'https://api.thecatapi.com/v1/images/search';
         const response = await fetch(url);
         const json = await response.json();
 
-        return message.say(json.url);
+        return message.say(json[0].url);
     }
 };
