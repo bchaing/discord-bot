@@ -4,11 +4,11 @@ const fetch = require('node-fetch');
 module.exports = class RandomCatCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'fun',
+            name: 'randomcat',
             aliases: ['meow', 'cat', 'purr'],
-            group: 'general',
+            group: 'fun',
             memberName: 'randomcat',
-            description: 'Sends a random image of a dog.',
+            description: 'Sends a random image of a cat.',
         });
     }
 
