@@ -5,7 +5,7 @@ module.exports = class ChikenhigCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'chikenhig',
-            group: 'general',
+            group: 'voice',
             memberName: 'chikenhig',
             description: oneLine`
                 Plays chikenhig\'s insults in user\'s

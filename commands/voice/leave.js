@@ -4,7 +4,7 @@ module.exports = class LeaveCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'leave',
-            group: 'general',
+            group: 'voice',
             memberName: 'leave',
             description: 'Disconnects the bot from any voice channel connection.',
             guildOnly: true,
