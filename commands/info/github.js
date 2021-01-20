@@ -5,7 +5,7 @@ module.exports = class GitHubCommand extends Command {
         super(client, {
             name: 'github',
             aliases: ['git'],
-            group: 'general',
+            group: 'info',
             memberName: 'github',
             description: 'Displays the github link to the project.',
         });
