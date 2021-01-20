@@ -74,6 +74,8 @@ module.exports = class RolePersistCommand extends Command {
                 \`set <destination_member> <source_member> \` - sets roles of destination with source
                 \`list <member>\` - lists the roles stored for role persistence of a member.
             `); 
+        } else if (command === 'download') {
+            return message.channel.send({ files: ['./database.sqlite'] });
         } else {
             return message.say('Available commands: \`update\` \`set\` \`list\`');
         }
