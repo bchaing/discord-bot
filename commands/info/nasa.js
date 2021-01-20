@@ -8,7 +8,7 @@ module.exports = class NASACommand extends Command {
     constructor(client) {
         super(client, {
             name: 'nasa',
-            group: 'general',
+            group: 'info',
             memberName: 'nasa',
             description: 'Displays NASA\'s astronomy picture of the day.',
         });
