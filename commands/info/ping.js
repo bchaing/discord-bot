@@ -4,7 +4,7 @@ module.exports = class PingCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'ping',
-            group: 'general',
+            group: 'info',
             memberName: 'ping',
             description: 'Returns the roundtrip latency of messages.',
         });

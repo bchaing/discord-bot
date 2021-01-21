@@ -4,7 +4,7 @@ module.exports = class ServerCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'server',
-            group: 'general',
+            group: 'info',
             memberName: 'server',
             description: 'Displays information on the server.',
             guildOnly: true,

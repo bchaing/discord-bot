@@ -23,6 +23,9 @@ client.registry
 	.registerDefaultTypes()
 	.registerGroups([
         ['general', 'General'],
+        ['voice', 'Voice'],
+        ['info', 'Info'],
+        ['fun', 'Fun'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({

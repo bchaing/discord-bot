@@ -6,7 +6,7 @@ module.exports = class RandomDogCommand extends Command {
         super(client, {
             name: 'randomdog',
             aliases: ['woof', 'dog', 'bark'],
-            group: 'general',
+            group: 'fun',
             memberName: 'randomdog',
             description: 'Sends a random image of a dog.',
         });

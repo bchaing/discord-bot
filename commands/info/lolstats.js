@@ -4,7 +4,7 @@ module.exports = class LOLSTATSCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'lolstats',
-            group: 'general',
+            group: 'info',
             memberName: 'lolstats',
             description: 'Sends an image with stats of a live League of Legends game.',
             args: [

@@ -4,7 +4,7 @@ module.exports = class UptimeCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'uptime',
-            group: 'general',
+            group: 'info',
             memberName: 'uptime',
             description: 'Returns the uptime of the current bot process.',
         });

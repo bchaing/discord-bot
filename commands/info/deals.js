@@ -14,7 +14,7 @@ module.exports = class DealsCommand extends Command {
         super(client, {
             name: 'deals',
             aliases: ['isthereanydeals', 'isthereanydeal', 'gamedeals', 'deal'],
-            group: 'general',
+            group: 'info',
             memberName: 'deals',
             description: 'Displays information on a game from IsThereAnyDeals.',
             args: [

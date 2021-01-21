@@ -7,7 +7,7 @@ module.exports = class CSGOSTATSCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'csgostats',
-            group: 'general',
+            group: 'info',
             memberName: 'csgostats',
             description: 'Sends an image with stats of a live csgo game.',
             format: '<steam user>',

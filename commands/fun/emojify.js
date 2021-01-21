@@ -5,7 +5,7 @@ module.exports = class EmojifyCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'emojify',
-            group: 'general',
+            group: 'fun',
             memberName: 'emojify',
             description: 'Adds emojis between words in a message.',
             format: '<message>',
