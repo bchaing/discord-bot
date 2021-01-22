@@ -6,13 +6,13 @@ module.exports = class SecretSantaCommand extends Command {
         super(client, {
             name: 'secretsanta',
             aliases: ['drawnames'],
-            group: 'general',
+            group: 'fun',
             memberName: 'secretsanta',
             description: 'Options and utilities for hosting a secret santa gift exchange.',
             guildOnly: true,
             args: [
                 {
-                    key: 'action',
+                    key: 'command',
                     prompt: 'What action do you want to perform?',
                     type: 'string',
                     default: '',
@@ -27,8 +27,10 @@ module.exports = class SecretSantaCommand extends Command {
         });
     }
 
-    run(message, { action }) {
-        if (action === 'draw') {
+    run(message, { command }) {
+        if (command === 'create') {
+            
+        } else if (comand === 'draw') {
             const members = message.channel.members.map(member => {
                 if (!member.user.bot) return member.user.username;
             }).filter(member => member != undefined);
