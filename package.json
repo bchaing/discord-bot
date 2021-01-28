@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
+    "cheerio": "^1.0.0-rc.5",
     "common-tags": "^1.8.0",
     "console-stamp": "^0.2.9",
     "date-fns": "^2.16.1",
