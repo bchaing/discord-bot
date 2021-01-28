@@ -10,7 +10,7 @@ module.exports = class Util {
     }
 
     static progressBar(curr, total) {
-        const elements = `${'0'.repeat(total)}${'-'.repeat(total)}`;
-        return `[${elements.slice(-curr + total, -curr + 2 * total)}]`;
+        const elements = `${'0'.repeat(curr)}${'-'.repeat(total - curr)}`;
+        return `[${elements}]`;
     }
 };
