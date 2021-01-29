@@ -7,7 +7,8 @@ const path = require('path');
 
 const { Users } = require('./util/dbObjects');
 const persistentRoles = new Collection();
-module.exports = { persistentRoles };
+const currency = new Collection();
+module.exports = { persistentRoles, currency };
 
 // console timestamps
 require('console-stamp')(console, { pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
@@ -26,6 +27,7 @@ client.registry
         ['voice', 'Voice'],
         ['info', 'Info'],
         ['fun', 'Fun'],
+        ['currency', 'Currency'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
@@ -66,6 +68,35 @@ Reflect.defineProperty(persistentRoles, 'getRoles', {
     },
 });
 
+Reflect.defineProperty(currency, 'add', {
+	/* eslint-disable-next-line func-name-matching */
+	value: async function add(user_id, guild_id, amount) {
+        const id = `${guild_id}-${user_id}`;
+        const user = currency.get(id);
+		if (user) {
+			user.balance += Number(amount);
+			return user.save();
+		}
+		const newUser = await Users.create({ 
+            id: id,
+            user_id: user_id, 
+            guild_id: guild_id,
+            balance: amount,
+        });
+		currency.set(id, newUser);
+		return newUser;
+	},
+});
+
+Reflect.defineProperty(currency, 'getBalance', {
+	/* eslint-disable-next-line func-name-matching */
+	value: function getBalance(user_id, guild_id) {
+        const id = `${guild_id}-${user_id}`;
+		const user = currency.get(id);
+		return user ? user.balance : 0;
+	},
+});
+
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', async () => {
@@ -75,6 +106,9 @@ client.once('ready', async () => {
     
     const storedRoles = await Users.findAll();
     storedRoles.forEach(r => persistentRoles.set(r.id, r));
+
+    const balances = await Users.findAll();
+    balances.forEach(b => currency.set(b.id, b));
 });
 
 client.on('error', console.error);
