@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { currency } = require('../../index');
+const { userData } = require('../../index');
 
 module.exports = class BalanceCommand extends Command {
     constructor(client) {
@@ -26,6 +26,6 @@ module.exports = class BalanceCommand extends Command {
             member = message.member;
         }
         
-        return message.say(`${member.displayName} has ${currency.getBalance(member.user.id, message.guild.id)} bonkus.`);
+        return message.say(`\*\*${member.displayName}\*\* has \*\*${userData.getBalance(member.user.id, message.guild.id)}\*\* bonkus.`);
     }
 };

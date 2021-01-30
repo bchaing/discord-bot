@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { currency } = require('../../index');
+const { userData } = require('../../index');
 
 module.exports = class AddCommand extends Command {
     constructor(client) {
@@ -30,8 +30,8 @@ module.exports = class AddCommand extends Command {
             member = message.member;
         }
         
-        currency.add(member.user.id, message.guild.id, amount);
+        userData.addBalance(member.user.id, message.guild.id, amount);
 
-        return message.say(`Added ${amount} bonkus to ${member.displayName}`);
+        return message.say(`Added ${amount} bonkus to ${member.displayName}.`);
     }
 };

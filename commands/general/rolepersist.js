@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { persistentRoles } = require('../../index');
+const { userData } = require('../../index');
 const { stripIndents } = require('common-tags');
 const Discord = require('discord.js');
 
@@ -36,7 +36,7 @@ module.exports = class RolePersistCommand extends Command {
     run(message, { command, member, source }) {
         if (command === 'update') {
             message.guild.members.cache.forEach(m => {
-                persistentRoles.update(m.user.id, message.guild.id, m.roles.cache.map(r => r.id));
+                userData.updateRoles(m.user.id, message.guild.id, m.roles.cache.map(r => r.id));
             });
 
             return message.say('Updated persistent roles database!');
@@ -44,7 +44,7 @@ module.exports = class RolePersistCommand extends Command {
             const taggedMember = member || message.member;
             let memberRoles = '';
 
-            const roles = persistentRoles.getRoles(taggedMember.user.id, message.guild.id);
+            const roles = userData.getRoles(taggedMember.user.id, message.guild.id);
             if (roles !== 'no roles') {
                 roles.forEach(r => {
                     if (message.guild.roles.cache.get(r)) {
@@ -63,7 +63,7 @@ module.exports = class RolePersistCommand extends Command {
                 roleMember = member || message.member;
             }
            
-            const roles = persistentRoles.getRoles(roleMember.user.id, message.guild.id);
+            const roles = userData.getRoles(roleMember.user.id, message.guild.id);
             if (roles !== 'no roles') updateMember.roles.set(roles);
 
             return message.say(`Set roles for ${updateMember.user.tag}`);
