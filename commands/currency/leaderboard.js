@@ -44,7 +44,12 @@ module.exports = class LeaderboardCommand extends Command {
                     ${user.balance} bonkus`)
                 .join('\n');
 
-            msg = await message.say(page, { code: true });
+            if (!msg) {
+                msg = await message.say(page, { code: true });
+            } else {
+                msg = await msg.edit(page, { code: true });
+            }
+
             messages.push(msg);
 
             if (pages[pageNumber - 2]) await msg.react('⬅️');
@@ -66,12 +71,12 @@ module.exports = class LeaderboardCommand extends Command {
             reaction = reaction.firstKey();
             if (reaction === '➡️' && pages[pageNumber]) {
                 pageNumber++;
-                msg.delete();
+                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
             } else if (reaction === '⬅️' && pages[pageNumber - 2]) {
                 pageNumber--;
-                msg.delete();
+                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
             } else {
-                msg.delete();
+                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
             }
         }
     }
