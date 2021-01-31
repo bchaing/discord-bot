@@ -6,6 +6,7 @@ module.exports = class LeaderboardCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'leaderboard',
+            aliases: ['lb', 'leaderboards'],
             group: 'currency',
             memberName: 'leaderboard',
             description: 'Displays the leaderboard of user balances.',
@@ -18,6 +19,7 @@ module.exports = class LeaderboardCommand extends Command {
         const leaderboard = userData.sort((a, b) => b.balance - a.balance)
             .filter(user => message.guild.members.cache.has(user.user_id))
             .filter(user => user.guild_id === message.guild.id)
+            .filter(user => !message.guild.members.cache.get(user.user_id).user.bot)
             .array();
        
         if (!leaderboard) {
