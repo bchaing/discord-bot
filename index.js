@@ -22,11 +22,11 @@ const client = new CommandoClient({
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
-        ['general', 'General'],
-        ['voice', 'Voice'],
-        ['info', 'Info'],
-        ['fun', 'Fun'],
         ['currency', 'Currency'],
+        ['fun', 'Fun'],
+        ['general', 'General'],
+        ['info', 'Info'],
+        ['voice', 'Voice'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
