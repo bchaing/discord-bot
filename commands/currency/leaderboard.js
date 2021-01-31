@@ -71,13 +71,11 @@ module.exports = class LeaderboardCommand extends Command {
             reaction = reaction.firstKey();
             if (reaction === '➡️' && pages[pageNumber]) {
                 pageNumber++;
-                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
             } else if (reaction === '⬅️' && pages[pageNumber - 2]) {
                 pageNumber--;
-                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
-            } else {
-                msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
             }
+
+            msg.reactions.removeAll().catch(/* ignore messages with no reactions */);
         }
     }
 };
