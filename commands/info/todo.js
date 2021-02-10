@@ -21,7 +21,7 @@ module.exports = class TodoCommand extends Command {
                     prompt: 'What is the argument for the command?',
                     type: 'string',
                     default: '',
-                }
+                },
             ],
         });
     }
@@ -31,8 +31,8 @@ module.exports = class TodoCommand extends Command {
             const todoList = await Todos.findAll();
             let formattedList = '';
 
-            todoList.forEach(t => {
-                formattedList += `\*\*#\*\* ${t.task}\n`;
+            todoList.forEach((t, i) => {
+                formattedList += `${i + 1}. ${t.task}\n`;
             });
 
             message.say(stripIndents`
@@ -53,36 +53,41 @@ module.exports = class TodoCommand extends Command {
             }
         } else if (command === 'remove' || command === 'rm') {
             const todoList = await Todos.findAll();
-            let formattedList = '';
+            let choice, formattedList = '';
 
-            todoList.forEach((t, i) => {
-                formattedList += `[${i + 1}] ${t.task}\n`; 
-            });
+            if (todoList.length === 0) return message.say('Todo list is empty.');
 
-            let choice;
-            const list = await message.say(stripIndents`
-                \*\*Which task do you want to remove?\*\*
-                ${formattedList}
-            `);
+            if (args) choice = parseInt(args);
+            
+            if (!choice) {
+                todoList.forEach((t, i) => {
+                    formattedList += `[${i + 1}] ${t.task}\n`; 
+                });
 
-            try {
-                choice = await message.channel.awaitMessages(
-                    m => m.author.id === message.author.id,
-                    {
-                        max: 1,
-                        time: 30000,
-                        errors: ['time'],
-                    },
-                );
-            } catch (err) {
+                const list = await message.say(stripIndents`
+                    \*\*Which task do you want to remove?\*\*
+                    ${formattedList}
+                `);
+
+                try {
+                    choice = await message.channel.awaitMessages(
+                        m => m.author.id === message.author.id,
+                        {
+                            max: 1,
+                            time: 30000,
+                            errors: ['time'],
+                        },
+                    );
+                } catch (err) {
+                    list.delete();
+                    message.say('You didn\'t specify a choice');
+                }
+
                 list.delete();
-                message.say('You didn\'t specify a choice');
+                choice = parseInt(choice.first().content);
             }
 
-            list.delete();
-            choice = parseInt(choice.first().content);
-
-            if (!choice || choice > todoList.length) {
+            if (!choice || choice > todoList.length || choice <= 0) {
                 return message.say('You didn\'t specify a valid choice');
             } else {
                 choice = todoList[choice - 1].task;
@@ -92,6 +97,8 @@ module.exports = class TodoCommand extends Command {
             if (!rowCount) return message.say('That task does not exist.');
 
             return message.say(`Task deleted.`);
+        } else {
+            return message.say('Available Commands: \`list\` \`add\` \`remove\`');
         }
     }
 };
