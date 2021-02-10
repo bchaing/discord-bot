@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const allowedStores = [
     'steam', 'gog', 'amazonus', 'battlenet', 'discord', 'epic', 'bundlestars', 
-    'humblestore', 'indiegalastore', 'microsoft', 'newegg', 'origin', 'squenix', 
+    'humblestore', 'indiegalastore', 'microsoft', 'origin', 'squenix', 
     'uplay',
 ];
 
