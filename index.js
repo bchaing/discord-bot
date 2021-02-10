@@ -6,8 +6,8 @@ const { sendWebhookMessage } = require('./util/Util');
 const path = require('path');
 
 const { Users } = require('./util/dbObjects');
-const persistentRoles = new Collection();
-module.exports = { persistentRoles };
+const userData = new Collection();
+module.exports = { userData };
 
 // console timestamps
 require('console-stamp')(console, { pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
@@ -22,10 +22,11 @@ const client = new CommandoClient({
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
-        ['general', 'General'],
-        ['voice', 'Voice'],
-        ['info', 'Info'],
+        ['currency', 'Currency'],
         ['fun', 'Fun'],
+        ['general', 'General'],
+        ['info', 'Info'],
+        ['voice', 'Voice'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
@@ -39,10 +40,10 @@ client.dispatcher.addInhibitor(msg => {
     if(msg.member.roles.cache.some(r => r.name === 'bonk-mute')) return 'bonked';
 });
   
-Reflect.defineProperty(persistentRoles, 'update', {
-    value: async function update(user_id, guild_id, role_ids) {
+Reflect.defineProperty(userData, 'updateRoles', {
+    value: async function updateRoles(user_id, guild_id, role_ids) {
             const id = `${guild_id}-${user_id}`;    
-            const user = persistentRoles.get(id);
+            const user = userData.get(id);
             if (user) {
                 user.roles = role_ids;
                 return user.save();
@@ -53,17 +54,46 @@ Reflect.defineProperty(persistentRoles, 'update', {
                 guild_id: guild_id,
                 roles: role_ids,
             });
-            persistentRoles.set(id, newUser); 
+            userData.set(id, newUser); 
             return newUser;
         },
 });
 
-Reflect.defineProperty(persistentRoles, 'getRoles', {
+Reflect.defineProperty(userData, 'getRoles', {
     value: function getRoles(user_id, guild_id) {
         const id = `${guild_id}-${user_id}`;
-        const user = persistentRoles.get(id);
+        const user = userData.get(id);
         return user ? user.roles : 'no roles';
     },
+});
+
+Reflect.defineProperty(userData, 'addBalance', {
+	/* eslint-disable-next-line func-name-matching */
+	value: async function addBalance(user_id, guild_id, amount) {
+        const id = `${guild_id}-${user_id}`;
+        const user = userData.get(id);
+		if (user) {
+			user.balance += Number(amount);
+			return user.save();
+		}
+		const newUser = await Users.create({ 
+            id: id,
+            user_id: user_id, 
+            guild_id: guild_id,
+            balance: amount,
+        });
+		userData.set(id, newUser);
+		return newUser;
+	},
+});
+
+Reflect.defineProperty(userData, 'getBalance', {
+	/* eslint-disable-next-line func-name-matching */
+	value: function getBalance(user_id, guild_id) {
+        const id = `${guild_id}-${user_id}`;
+		const user = userData.get(id);
+		return user ? user.balance : 0;
+	},
 });
 
 // when the client is ready, run this code
@@ -73,8 +103,8 @@ client.once('ready', async () => {
     
     client.user.setActivity('b!help', { type: 'COMPETING' });
     
-    const storedRoles = await Users.findAll();
-    storedRoles.forEach(r => persistentRoles.set(r.id, r));
+    const allUsers = await Users.findAll();
+    allUsers.forEach(r => userData.set(r.id, r));
 });
 
 client.on('error', console.error);
@@ -116,12 +146,12 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
 	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
 	if (removedRoles.size > 0 || addedRoles.size > 0)  {
-        persistentRoles.update(newMember.user.id, newMember.guild.id, newMember.roles.cache.map(r => r.id));
+        userData.updateRoles(newMember.user.id, newMember.guild.id, newMember.roles.cache.map(r => r.id));
     }
 });
 
 client.on('guildMemberAdd', GuildMember => {
-    const roles = persistentRoles.getRoles(GuildMember.user.id, GuildMember.guild.id);
+    const roles = userData.getRoles(GuildMember.user.id, GuildMember.guild.id);
     
     if (roles !== 'no roles') GuildMember.roles.set(roles);
 });

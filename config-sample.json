@@ -1,9 +1,9 @@
 {
 	"prefix": "b!",
-	"token": "BOT_TOKEN_HERE",
-	"bonkChannelID": "CHANNEL_ID_HERE",
-	"ownerID": "OWNER_ID_HERE",
-	"serverID": "SERVER_ID_HERE",
-	"nasaAPIKey": "(OPTIONAL) NASA_API_KEY_HERE",
-	"dealAPIKey": "(OPTIONAL) ISTHEREANYDEAL_API_KEY_HERE"
+	"token": "",
+	"bonkChannelID": "",
+	"ownerID": "",
+	"serverID": "",
+	"nasaAPIKey": "",
+	"dealAPIKey": ""
 }

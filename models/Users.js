@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
 		guild_id: {
 			type: DataTypes.TEXT,
 		},
+		balance: {
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+			allowNull: false,
+		},
 		roles: {
 			type: DataTypes.JSON,
 		},
