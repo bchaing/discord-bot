@@ -14,13 +14,19 @@ module.exports = class RedditCommand extends Command {
                     key: 'url',
                     prompt: 'What is the reddit video url?',
                     type: 'string',
-                }
-            ]
+                },
+            ],
         });
     }
 
     run(message, { url }) {
-        const submissionid = url.split('/')[6];
+        fetch(url).then(resp => {
+            return resp.text();
+        }).then(html => {
+            const $ = cheerio.load(html);
+            console.log($('#t3_lgs0b6 > div:nth-child(1) > div:nth-child(5) > div:nth-child(1) > a:nth-child(1) > img:nth-child(1)').find('src'));
+        });
+        /* const submissionid = url.split('/')[6];
         const vredditlink = `https://vreddit.cc/${submissionid}`;
 
         fetch(vredditlink).then(resp => {
@@ -37,6 +43,6 @@ module.exports = class RedditCommand extends Command {
         }).catch(err => {
             console.log(err);
             return;
-        });
+        }); */
     }
 };
