@@ -27,7 +27,7 @@ module.exports = class MockCommand extends Command {
             if (Math.random() < 0.5) {
                 retString += text.charAt(i).toUpperCase();
             } else {
-                retString += text.charAt(i);
+                retString += text.charAt(i).toLowerCase();
             }
         }
 
