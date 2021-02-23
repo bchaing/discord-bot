@@ -18,8 +18,11 @@ module.exports = class MockCommand extends Command {
         });
     }
 
-    run(message, { text }) {
-        if (!text) return;
+    async run(message, { text }) {
+        if (!text) {
+            const lastMessage = await message.channel.messages.fetch({ limit: 2 });
+            text = lastMessage.filter(m => m.author != message.author).first().content;
+        }
 
         let retString = '';
 
