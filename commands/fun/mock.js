@@ -19,18 +19,21 @@ module.exports = class MockCommand extends Command {
     }
 
     async run(message, { text }) {
+        let mockingText = '';
         if (!text) {
             const lastMessage = await message.channel.messages.fetch({ limit: 2 });
-            text = lastMessage.filter(m => m.author != message.author).first().content;
+            mockingText = lastMessage.filter(m => m.id !== message.id).first().content;
+        } else {
+            mockingText = text;
         }
 
         let retString = '';
 
-        for (let i = 0; i < text.length; i++) {
+        for (let i = 0; i < mockingText.length; i++) {
             if (Math.random() < 0.5) {
-                retString += text.charAt(i).toUpperCase();
+                retString += mockingText.charAt(i).toUpperCase();
             } else {
-                retString += text.charAt(i).toLowerCase();
+                retString += mockingText.charAt(i).toLowerCase();
             }
         }
 
