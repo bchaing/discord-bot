@@ -37,6 +37,6 @@ module.exports = class MockCommand extends Command {
             }
         }
 
-        return message.say(retString);
+        return message.say(retString).catch(console.error);
     }
 };
