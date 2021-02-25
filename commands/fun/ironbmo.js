@@ -8,7 +8,7 @@ module.exports = class IronBMOCommand extends Command {
             name: 'ironbmo',
             group: 'fun',
             memberName: 'ironbmo',
-            description: 'Displays the github link to the project.',
+            description: 'Inserts image in to ironbmo template.',
             args: [
                 {
                     key: 'image',
