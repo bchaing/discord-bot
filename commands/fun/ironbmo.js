@@ -31,8 +31,10 @@ module.exports = class IronBMOCommand extends Command {
         try {
             if (image) {
                 face = await Canvas.loadImage(image);
-            } else {
+            } else if (message.attachments.size()) {
                 face = await Canvas.loadImage(message.attachments.first().url);
+            } else {
+
             }
         } catch (err) {
            return message.say('You didn\'t provide a valid image.'); 
