@@ -144,31 +144,32 @@ client.on('message', async message => {
 
     // reddit embeds
     if (isURL(message.content) && message.content.includes("reddit")) {
-        let submissionid;
+        let submissionid, resp, html, result, json;
         const url = message.content;
-        for (let i = 0; i < 5; i++) {
-            const resp = await fetch(url);
-            const html = await resp.text();
+        for (let i = 0; i < 3; i++) {
+            resp = await fetch(url);
+            html = await resp.text();
 
-            const result = html.match(/(v.redd.it\/)(.+)(\/HLS)/gm);
+            result = html.match(/(v.redd.it\/)(.+)(\/HLS)/gm);
 
             if (result !== null) {
                 submissionid = result[0].split('/')[1];
                 break;
             }
-            console.log("LOOP!");
         }
 
-        console.log(submissionid);
         if (submissionid !== null) {
-            const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
-
-            fetch(apiURL)
-                .then(res => res.text())
-                .then(async json => {
-                    const data = await JSON.parse(json);
-                    return message.say(data.video_url);
-                });
+            for (let i = 0; i < 2; i++) {
+                const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
+                try {
+                    resp = await fetch(apiURL);
+                    json = await resp.json();
+                } catch {
+                    continue;
+                }
+                message.say(json.video_url);
+                break;
+            }
         }
     }
 });
