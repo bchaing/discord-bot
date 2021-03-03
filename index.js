@@ -158,7 +158,7 @@ client.on('message', async message => {
             }
         }
 
-        if (submissionid) {
+        if (submissionid !== null) {
             const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
 
             fetch(apiURL)
