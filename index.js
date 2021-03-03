@@ -2,8 +2,7 @@
 const { CommandoClient } = require('discord.js-commando');
 const { Collection } = require('discord.js');
 const { prefix, token, ownerID } = require('./config.json');
-const { sendWebhookMessage, isURL } = require('./util/Util');
-const fetch = require('node-fetch');
+const { sendWebhookMessage } = require('./util/Util');
 const path = require('path');
 
 const { Users } = require('./util/dbObjects');
@@ -113,7 +112,7 @@ client.on('error', console.error);
 client.login(token);
 
 // listen for messages
-client.on('message', async message => {
+client.on('message', message => {
     // check if message has a broken @
     if (message.content.includes('<<@&')) {
         const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
@@ -141,34 +140,6 @@ client.on('message', async message => {
         
         sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMessage || 'bonk');
     }
-
-    /* // reddit embeds
-    if (isURL(message.content) && message.content.includes("reddit")) {
-        let submissionid;
-        const url = message.content;
-        for (let i = 0; i < 3; i++) {
-            const resp = await fetch(url);
-            const html = await resp.text();
-
-            const result = html.match(/(v.redd.it\/)(.+)(\/HLS)/gm);
-
-            if (result !== null) {
-                submissionid = result[0].split('/')[1];
-                break;
-            }
-        }
-        if (submissionid) {
-            const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
-        
-            fetch(apiURL)
-                .then(res => res.text())
-                .then(async json => {
-                    const data = await JSON.parse(json);
-                    return message.say(data.video_url);
-                });
-        } */
-    }
-
 });
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
