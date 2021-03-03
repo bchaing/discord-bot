@@ -142,7 +142,7 @@ client.on('message', async message => {
         sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMessage || 'bonk');
     }
 
-    /* // reddit embeds
+    // reddit embeds
     if (isURL(message.content) && message.content.includes("reddit")) {
         let submissionid;
         const url = message.content;
@@ -166,7 +166,7 @@ client.on('message', async message => {
                     const data = await JSON.parse(json);
                     return message.say(data.video_url);
                 });
-        } */
+        }
     }
 
 });
