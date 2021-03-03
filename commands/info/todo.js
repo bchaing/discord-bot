@@ -38,7 +38,7 @@ module.exports = class TodoCommand extends Command {
             message.say(stripIndents`
                \*\*Bonk Bot Project Todo List:\*\*
                 ${formattedList}
-            `);
+            `, { split: true });
         } else if (command === 'add' || command === 'create') {
             try {
                 await Todos.create({
