@@ -5,11 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
-<<<<<<< HEAD
-    "cheerio": "^1.0.0-rc.5",
-=======
     "canvas": "^2.6.1",
->>>>>>> 04ea9c3fa534c9b06e0d46225533f13c88f4f1d8
     "common-tags": "^1.8.0",
     "console-stamp": "^0.2.9",
     "date-fns": "^2.16.1",
