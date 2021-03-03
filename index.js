@@ -156,8 +156,10 @@ client.on('message', async message => {
                 submissionid = result[0].split('/')[1];
                 break;
             }
+            console.log("LOOP!");
         }
 
+        console.log(submissionid);
         if (submissionid !== null) {
             const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
 
