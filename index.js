@@ -146,7 +146,7 @@ client.on('message', async message => {
     if (isURL(message.content) && message.content.includes("reddit")) {
         let submissionid;
         const url = message.content;
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 5; i++) {
             const resp = await fetch(url);
             const html = await resp.text();
 
