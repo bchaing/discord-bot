@@ -158,18 +158,16 @@ client.on('message', async message => {
                 break;
             }
         }
-        if (!submissionid) {
-            return;
+        if (submissionid) {
+            const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
+        
+            fetch(apiURL)
+                .then(res => res.text())
+                .then(async json => {
+                    const data = await JSON.parse(json);
+                    return message.say(data.video_url);
+                });
         }
-
-        const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
-    
-        fetch(apiURL)
-            .then(res => res.text())
-            .then(async json => {
-                const data = await JSON.parse(json);
-                return message.say(data.video_url);
-            });
     }
 
 });
