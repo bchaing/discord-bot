@@ -7,7 +7,6 @@ const fetch = require('node-fetch');
 const path = require('path');
 
 const { Users } = require('./util/dbObjects');
-const RedditVideoCommand = require('./commands/general/redditvideo');
 const userData = new Collection();
 module.exports = { userData };
 
