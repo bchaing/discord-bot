@@ -156,7 +156,8 @@ client.on('message', async message => {
 
         const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
         
-        if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission)) {
+        if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission) ||
+            /clips.twitch.tv/.test(submission)) {
             message.say(submission);
         } else if (/v.redd.it/.test(submission)) {
             const id = submission.split('/')[3];
