@@ -1,9 +1,10 @@
 // discord.js-command module
 const { CommandoClient } = require('discord.js-commando');
 const { Collection } = require('discord.js');
-const { prefix, token, ownerID } = require('./config.json');
+const { prefix, token, ownerID, redditClientId, redditSecret, redditToken } = require('./config.json');
 const { sendWebhookMessage, isURL } = require('./util/Util');
 const fetch = require('node-fetch');
+const snoowrap = require('snoowrap');
 const path = require('path');
 
 const { Users } = require('./util/dbObjects');
@@ -144,29 +145,33 @@ client.on('message', async message => {
 
     // reddit embeds
     if (isURL(message.content) && message.content.includes("reddit")) {
-        let submissionid, resp, html, result, json;
-        const url = message.content;
-        for (let i = 0; i < 3; i++) {
-            resp = await fetch(url);
-            html = await resp.text();
+        const submissionid = message.content.split('/')[6];
 
-            result = html.match(/(v.redd.it\/)(.+)(\/HLS)/gm);
+        const r = new snoowrap({
+            userAgent: 'A random string.',
+            clientId: redditClientId,
+            clientSecret: redditSecret,
+            refreshToken: redditToken,
+        });
 
-            if (result !== null) {
-                submissionid = result[0].split('/')[1];
-                break;
-            }
-        }
+        const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
+        
+        if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission)) {
+            message.say(submission);
+        } else if (/v.redd.it/.test(submission)) {
+            const id = submission.split('/')[3];
 
-        if (submissionid !== null) {
             for (let i = 0; i < 2; i++) {
-                const apiURL = `https://vred.rip/api/vreddit/${submissionid}`;
+                const apiURL = `https://vred.rip/api/vreddit/${id}`;
+                
+                let resp, json;
                 try {
                     resp = await fetch(apiURL);
                     json = await resp.json();
                 } catch {
                     continue;
                 }
+
                 message.say(json.video_url);
                 break;
             }

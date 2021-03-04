@@ -5,5 +5,8 @@
 	"ownerID": "",
 	"serverID": "",
 	"nasaAPIKey": "",
-	"dealAPIKey": ""
+	"dealAPIKey": "",
+	"redditClientId": "",
+	"redditSecret": "",
+	"redditToken": ""
 }
