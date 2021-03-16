@@ -1,6 +1,5 @@
 const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
-const { getNickname } = require('../../util/Util');
 
 module.exports = class ExecuteCommand extends Command {
     constructor(client) {
@@ -27,8 +26,8 @@ module.exports = class ExecuteCommand extends Command {
         const messages = [];
         
         messages.push(message.say(oneLine`
-            ${getNickname(message.member)}
-            \*\*executed\*\* ${getNickname(user)}
+            ${user.displayName}
+            \*\*executed\*\* ${user.displayName}
         `));
         
         const invite = await message.channel.createInvite(
@@ -39,7 +38,8 @@ module.exports = class ExecuteCommand extends Command {
         );
 
         user.createDM();
-        await user.send(`https://discord.gg/${invite.code}`);
+        const member = await this.client.users.fetch(user.id);
+        member.send(`https://discord.gg/${invite.code}`);
         
         user.kick();
 
