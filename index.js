@@ -123,9 +123,7 @@ client.on('message', async message => {
         sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMsg);
     }
 
-    //
     //  code for bonk-mute
-    // 
     if (message.member === null) return;
 
     if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
@@ -157,7 +155,7 @@ client.on('message', async message => {
         const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
         
         if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission) ||
-            /clips.twitch.tv/.test(submission)) {
+            /clips.twitch.tv/.test(submission) || /streamable.com/.test(submission)) {
             message.say(submission);
         } else if (/v.redd.it/.test(submission)) {
             const id = submission.split('/')[3];
