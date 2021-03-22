@@ -44,7 +44,9 @@ module.exports = class DealsCommand extends Command {
             &q=${game}
             &limit=10&strict=0
         `;
-        let response = await fetch(url);
+        let response = await fetch(url).catch(() => {
+            return message.say("An error occured, please try again later.");
+        });
         let json = await response.json();
 
         const results = json.data.results;
