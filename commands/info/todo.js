@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const { Command } = require('discord.js-commando');
 const { Todos } = require('../../util/dbObjects');
 const { stripIndents } = require('common-tags');
@@ -27,78 +28,84 @@ module.exports = class TodoCommand extends Command {
     }
 
     async run(message, { command, args }) {
-        if (command === 'list' || command == 'ls') {
-            const todoList = await Todos.findAll();
-            let formattedList = '';
+        switch (command) {
+            case "ls":
+            case "list": {
+                const todoList = await Todos.findAll();
+                let formattedList = '';
 
-            todoList.forEach((t, i) => {
-                formattedList += `${i + 1}. ${t.task}\n`;
-            });
-
-            message.say(stripIndents`
-               \*\*Bonk Bot Project Todo List:\*\*
-                ${formattedList}
-            `, { split: true });
-        } else if (command === 'add' || command === 'create') {
-            try {
-                await Todos.create({
-                    task: args,
-                });
-                return message.say(`Todo list updated!`);
-            } catch (e) {
-                if (e.name === 'SequelizeUniqueConstraintError') {
-                    return message.say('That task is already in the todo list.');
-                }
-                return message.say('An error occured when adding a task.');
-            }
-        } else if (command === 'remove' || command === 'rm') {
-            const todoList = await Todos.findAll();
-            let choice, formattedList = '';
-
-            if (todoList.length === 0) return message.say('Todo list is empty.');
-
-            if (args) choice = parseInt(args);
-            
-            if (!choice) {
                 todoList.forEach((t, i) => {
-                    formattedList += `[${i + 1}] ${t.task}\n`; 
+                    formattedList += `${i + 1}. ${t.task}\n`;
                 });
 
-                const list = await message.say(stripIndents`
-                    \*\*Which task do you want to remove?\*\*
+                return message.say(stripIndents`
+                \*\*Bonk Bot Project Todo List:\*\*
                     ${formattedList}
-                `);
-
+                `, { split: true });
+            }
+            case "add":
+            case "create":
                 try {
-                    choice = await message.channel.awaitMessages(
-                        m => m.author.id === message.author.id,
-                        {
-                            max: 1,
-                            time: 30000,
-                            errors: ['time'],
-                        },
-                    );
-                } catch (err) {
+                    await Todos.create({
+                        task: args,
+                    });
+                    return message.say(`Todo list updated!`);
+                } catch (e) {
+                    if (e.name === 'SequelizeUniqueConstraintError') {
+                        return message.say('That task is already in the todo list.');
+                    }
+                    return message.say('An error occured when adding a task.');
+                }
+            case "rm":
+            case "remove": {
+                const todoList = await Todos.findAll();
+                let formattedList = '';
+
+                if (todoList.length === 0) return message.say('Todo list is empty.');
+
+                let choice;
+                if (args) choice = parseInt(args);
+                
+                if (!choice) {
+                    todoList.forEach((t, i) => {
+                        formattedList += `[${i + 1}] ${t.task}\n`; 
+                    });
+
+                    const list = await message.say(stripIndents`
+                        \*\*Which task do you want to remove?\*\*
+                        ${formattedList}
+                    `);
+
+                    try {
+                        choice = await message.channel.awaitMessages(
+                            m => m.author.id === message.author.id,
+                            {
+                                max: 1,
+                                time: 30000,
+                                errors: ['time'],
+                            },
+                        );
+                    } catch (err) {
+                        list.delete();
+                        return message.say('You didn\'t specify a choice');
+                    }
+
                     list.delete();
-                    message.say('You didn\'t specify a choice');
+                    choice = parseInt(choice.first().content);
                 }
 
-                list.delete();
-                choice = parseInt(choice.first().content);
-            }
-
-            if (!choice || choice > todoList.length || choice <= 0) {
-                return message.say('You didn\'t specify a valid choice');
-            } else {
+                if (!choice || choice > todoList.length || choice <= 0) {
+                    return message.say('You didn\'t specify a valid choice');
+                }
+                    
                 choice = todoList[choice - 1].task;
+                const rowCount = await Todos.destroy({ where: { task: choice } });
+                if (!rowCount) return message.say('That task does not exist.');
+
+                return message.say(`Task deleted.`);
             }
-
-            const rowCount = await Todos.destroy({ where: { task: choice } });
-            if (!rowCount) return message.say('That task does not exist.');
-
-            return message.say(`Task deleted.`);
-        } else {
-            return message.say('Available Commands: \`list\` \`add\` \`remove\`');
+            default:
+                return message.say('Available Commands: \`list\` \`add\` \`remove\`');
         }
     }
 };
