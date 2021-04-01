@@ -124,7 +124,7 @@ client.on('message', async message => {
     }
 
     // APRIL FOOLS MOCKING
-    if (!message.author.bot) {
+    if (!message.author.bot && !isURL(message.content)) {
         let mockingText = '';
         if (message.content) {
             mockingText = message.content;
