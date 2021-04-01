@@ -123,6 +123,24 @@ client.on('message', async message => {
         sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMsg);
     }
 
+    // APRIL FOOLS MOCKING
+    if (!message.author.bot) {
+        let mockingText = '';
+        if (message.content) {
+            mockingText = message.content;
+            let retString = '';
+
+            for (let i = 0; i < mockingText.length; i++) {
+                if (Math.random() < 0.5) {
+                    retString += mockingText.charAt(i).toUpperCase();
+                } else {
+                    retString += mockingText.charAt(i).toLowerCase();
+                }
+            }
+            message.say(retString).catch(console.error);
+        }
+    }
+
     //  code for bonk-mute
     if (message.member === null) return;
 
@@ -155,7 +173,8 @@ client.on('message', async message => {
         const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
         
         if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission) ||
-            /clips.twitch.tv/.test(submission) || /streamable.com/.test(submission)) {
+            /clips.twitch.tv/.test(submission) || /streamable.com/.test(submission) ||
+            /youtube.com/.test(submission)) {
             message.say(submission);
         } else if (/v.redd.it/.test(submission)) {
             const id = submission.split('/')[3];
