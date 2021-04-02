@@ -123,24 +123,6 @@ client.on('message', async message => {
         sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMsg);
     }
 
-    // APRIL FOOLS MOCKING
-    if (!message.author.bot && !isURL(message.content)) {
-        let mockingText = '';
-        if (message.content) {
-            mockingText = message.content;
-            let retString = '';
-
-            for (let i = 0; i < mockingText.length; i++) {
-                if (Math.random() < 0.5) {
-                    retString += mockingText.charAt(i).toUpperCase();
-                } else {
-                    retString += mockingText.charAt(i).toLowerCase();
-                }
-            }
-            message.say(retString).catch(console.error);
-        }
-    }
-
     //  code for bonk-mute
     if (message.member === null) return;
 
