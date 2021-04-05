@@ -154,9 +154,10 @@ client.on('message', async message => {
 
         const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
         
-        if (/i.redd.it/.test(submission) || /i.imgur.com/.test(submission) ||
-            /clips.twitch.tv/.test(submission) || /streamable.com/.test(submission) ||
-            /youtube.com/.test(submission) || /gfycat.com/.test(submission)) {
+        const embedSites = [/i.redd.it/, /i.imgur.com/, /clips.twitch.tv/,
+            /streamable.com/, /youtube.com/, /gfycat.com/];
+        
+        if (embedSites.some(site => site.test(submission))) {
             message.say(submission);
         } else if (/v.redd.it/.test(submission)) {
             const id = submission.split('/')[3];
@@ -178,6 +179,7 @@ client.on('message', async message => {
         }
     } else if (isURL(message.content) && message.content.includes("v.redd.it")) {
         const id = message.content.split('/')[3];
+        
         for (let i = 0; i < 2; i++) {
             const apiURL = `https://vred.rip/api/vreddit/${id}`;
             
