@@ -28,8 +28,11 @@ module.exports = class BonkCommand extends Command {
 
     async run(message, { user }) {
         // creates variables for taggedMember and bonkChannel
-        let taggedMember = (message.mentions.members.first());
-        const messages = [], bonkChannel = message.guild.channels.cache.get(bonkChannelID);
+        const messages = [];
+        const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
+        let taggedMember = user;
+
+        console.log(user);
 
         if (!bonkChannel) {
             console.error(oneLine`
