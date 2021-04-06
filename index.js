@@ -212,7 +212,7 @@ client.on('guildMemberAdd', GuildMember => {
 });
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
-    const updatedUser = oldState.member;
+    /* const updatedUser = oldState.member;
 
     // remove vc role when leaving channel
     if (newState.channel != oldState.channel && oldState.channel != null) {
@@ -239,19 +239,19 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 
         updatedUser.roles.add(newState.guild.roles.cache.find(r => r.name === '━━━━━━ Voice ━━━━━━')).catch(console.error);
         updatedUser.roles.add(voiceChannelRole).catch(console.error);
-    } 
+    } */ 
 });
 
 client.on('channelUpdate', (oldChannel, newChannel) => {
-    // change name of vc role when vc is updated
+    /* // change name of vc role when vc is updated
     if (oldChannel.type === 'voice' && oldChannel.name !== newChannel.name) {
         const VCRole = newChannel.guild.roles.cache.find(r => r.name === `${oldChannel.name}`);
         VCRole.edit({ name: `${newChannel.name}` });
-    }
+    } */
 });
 
 client.on('channelCreate', channel => {
-    // create new role for newly created vc's
+    /* // create new role for newly created vc's
     if (channel.type === 'voice') {
         channel.guild.roles.create({
             data: {
@@ -259,13 +259,13 @@ client.on('channelCreate', channel => {
                 mentionable: true,
             },
         });
-    }
+    } */
 });
 
 client.on('channelDelete', channel => {
-    // delete vc roles on vc deletion
+    /* // delete vc roles on vc deletion
     if (channel.type === 'voice') {
         const role = channel.guild.roles.cache.find(r => r.name === `${channel.name}`);
         role.delete();
-    }
+    } */
 });
