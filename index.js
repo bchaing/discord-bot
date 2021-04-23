@@ -1,11 +1,10 @@
 // discord.js-command module
 const { CommandoClient } = require('discord.js-commando');
 const { Collection } = require('discord.js');
-const { prefix, token, ownerID, redditClientId, redditSecret, redditToken } = require('./config.json');
+const { prefix, token, ownerID } = require('./config.json');
 const { sendWebhookMessage, isURL } = require('./util/Util');
-const fetch = require('node-fetch');
-const snoowrap = require('snoowrap');
 const path = require('path');
+const fs = require('fs');
 
 const { Users } = require('./util/dbObjects');
 const userData = new Collection();
@@ -98,7 +97,19 @@ Reflect.defineProperty(userData, 'getBalance', {
 	},
 });
 
-// when the client is ready, run this code
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args, client));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args, client));
+	}
+}
+
+
+/* // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -107,13 +118,13 @@ client.once('ready', async () => {
     
     const allUsers = await Users.findAll();
     allUsers.forEach(r => userData.set(r.id, r));
-});
+}); */
 
 client.on('error', console.error);
 
 client.login(token);
 
-// listen for messages
+/* // listen for messages
 client.on('message', async message => {
     // check if message has a broken @
     if (message.content.includes('<<@&')) {
@@ -195,7 +206,7 @@ client.on('message', async message => {
             break;
         }
     }
-});
+}); */
 
 client.on('guildMemberUpdate', (oldMember, newMember) => {
 	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
