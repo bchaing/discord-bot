@@ -1,7 +1,7 @@
 const { userData } = require('../index');
 
 module.exports = {
-	name: 'ready',
+	name: 'guildMemberAdd',
 	execute(GuildMember) {
         const roles = userData.getRoles(GuildMember.user.id, GuildMember.guild.id);
     

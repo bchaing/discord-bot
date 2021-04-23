@@ -1,7 +1,7 @@
 const { userData } = require('../index');
 
 module.exports = {
-	name: 'ready',
+	name: 'guildMememberUpdate',
 	execute(oldMember, newMember) {
         const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
         const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
