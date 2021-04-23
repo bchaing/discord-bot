@@ -96,6 +96,7 @@ Reflect.defineProperty(userData, 'getBalance', {
 	},
 });
 
+// event handler
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
@@ -106,7 +107,5 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args, client));
 	}
 }
-
-client.on('error', console.error);
 
 client.login(token);
