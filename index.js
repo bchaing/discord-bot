@@ -2,7 +2,6 @@
 const { CommandoClient } = require('discord.js-commando');
 const { Collection } = require('discord.js');
 const { prefix, token, ownerID } = require('./config.json');
-const { sendWebhookMessage, isURL } = require('./util/Util');
 const path = require('path');
 const fs = require('fs');
 
@@ -108,119 +107,9 @@ for (const file of eventFiles) {
 	}
 }
 
-
-/* // when the client is ready, run this code
-// this event will only trigger one time after logging in
-client.once('ready', async () => {
-    console.log(`Logged in as ${client.user.tag}`);
-    
-    client.user.setActivity('b!help', { type: 'COMPETING' });
-    
-    const allUsers = await Users.findAll();
-    allUsers.forEach(r => userData.set(r.id, r));
-}); */
-
 client.on('error', console.error);
 
 client.login(token);
-
-/* // listen for messages
-client.on('message', async message => {
-    // check if message has a broken @
-    if (message.content.includes('<<@&')) {
-        const returnMsg = message.content.replace(/<@&773265799875919912>/g, '@');
-        message.delete();
-
-        sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMsg);
-    }
-
-    //  code for bonk-mute
-    if (message.member === null) return;
-
-    if (message.member.roles.cache.some(role => role.name === 'bonk-mute')) {
-        message.delete();
-        
-        let returnMessage;
-        if (message.embeds.size === undefined) {
-            returnMessage = message.content.replace(/([^\s]+)/g, 'bonk');
-            console.log(`Muted message from ${message.member.user.username}: ${message.content || '[attachment]'}`);
-        } else {
-            returnMessage = 'bonk '.repeat(message.embeds.size);
-            console.log(`Muted message from ${message.member.user.username}: [embed]`);
-        }
-        
-        sendWebhookMessage(message.channel, message.member.displayName, message.author.avatarURL(), returnMessage || 'bonk');
-    }
-
-    // reddit embeds
-    if (isURL(message.content) && message.content.includes("reddit")) {
-        const submissionid = message.content.split('/')[6];
-
-        const r = new snoowrap({
-            userAgent: 'A random string.',
-            clientId: redditClientId,
-            clientSecret: redditSecret,
-            refreshToken: redditToken,
-        });
-
-        const submission = await (await r.getSubmission(submissionid)).fetch().url.catch();
-        
-        const embedSites = [/i.redd.it/, /i.imgur.com/, /clips.twitch.tv/,
-            /streamable.com/, /youtube.com/, /gfycat.com/];
-        
-        if (embedSites.some(site => site.test(submission))) {
-            message.say(submission);
-        } else if (/v.redd.it/.test(submission)) {
-            const id = submission.split('/')[3];
-
-            for (let i = 0; i < 2; i++) {
-                const apiURL = `https://vred.rip/api/vreddit/${id}`;
-                
-                let resp, json;
-                try {
-                    resp = await fetch(apiURL);
-                    json = await resp.json();
-                } catch {
-                    continue;
-                }
-
-                message.say(json.video_url);
-                break;
-            }
-        }
-    } else if (isURL(message.content) && message.content.includes("v.redd.it")) {
-        const id = message.content.split('/')[3];
-        
-        for (let i = 0; i < 2; i++) {
-            const apiURL = `https://vred.rip/api/vreddit/${id}`;
-            
-            let resp, json;
-            try {
-                resp = await fetch(apiURL);
-                json = await resp.json();
-            } catch {
-                continue;
-            }
-
-            message.say(json.video_url);
-            break;
-        }
-    }
-}); */
-
-client.on('guildMemberUpdate', (oldMember, newMember) => {
-	const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
-	const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
-	if (removedRoles.size > 0 || addedRoles.size > 0)  {
-        userData.updateRoles(newMember.user.id, newMember.guild.id, newMember.roles.cache.map(r => r.id));
-    }
-});
-
-client.on('guildMemberAdd', GuildMember => {
-    const roles = userData.getRoles(GuildMember.user.id, GuildMember.guild.id);
-    
-    if (roles !== 'no roles') GuildMember.roles.set(roles);
-});
 
 client.on('voiceStateUpdate', async (oldState, newState) => {
     /* const updatedUser = oldState.member;
