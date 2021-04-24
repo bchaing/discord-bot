@@ -1,12 +1,12 @@
 {
-	"prefix": "b!",
-	"token": "",
-	"bonkChannelID": "",
-	"ownerID": "",
-	"serverID": "",
-	"nasaAPIKey": "",
-	"dealAPIKey": "",
-	"redditClientId": "",
-	"redditSecret": "",
-	"redditToken": ""
+    "prefix": "b!",
+    "token": "",
+    "bonkChannelID": "",
+    "ownerID": "",
+    "serverID": "",
+    "nasaAPIKey": "",
+    "dealAPIKey": "",
+    "redditClientId": "",
+    "redditSecret": "",
+    "redditToken": ""
 }

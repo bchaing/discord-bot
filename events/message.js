@@ -4,8 +4,8 @@ const { isURL, sendWebhookMessage } = require('../util/Util');
 const { redditClientId, redditSecret, redditToken } = require('../config.json');
 
 module.exports = {
-	name: 'message',
-	async execute(message) {
+    name: 'message',
+    async execute(message) {
         //  code for bonk-mute
         if (message.member === null) return;
     
@@ -56,7 +56,7 @@ module.exports = {
             const url = await getVredLink(message.content);
             if (url) return message.say(url);
         }
-	},
+    },
 };
 
 // get link to vred.rip video

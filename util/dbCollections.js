@@ -35,28 +35,28 @@ Reflect.defineProperty(userData, 'addBalance', {
     value: async function addBalance(user_id, guild_id, amount) {
         const id = `${guild_id}-${user_id}`;
         const user = userData.get(id);
-		if (user) {
-			user.balance += Number(amount);
-			return user.save();
-		}
-		const newUser = await Users.create({ 
+        if (user) {
+            user.balance += Number(amount);
+            return user.save();
+        }
+        const newUser = await Users.create({ 
             id: id,
             user_id: user_id, 
             guild_id: guild_id,
             balance: amount,
         });
-		userData.set(id, newUser);
-		return newUser;
-	},
+        userData.set(id, newUser);
+        return newUser;
+    },
 });
 
 Reflect.defineProperty(userData, 'getBalance', {
     /* eslint-disable-next-line func-name-matching */
     value: function getBalance(user_id, guild_id) {
         const id = `${guild_id}-${user_id}`;
-		const user = userData.get(id);
-		return user ? user.balance : 0;
-	},
+        const user = userData.get(id);
+        return user ? user.balance : 0;
+    },
 });
 
 module.exports = { userData };
