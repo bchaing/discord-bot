@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { userData } = require('../../index');
+const { userData } = require('../../util/dbCollections');
 
 module.exports = class AddCommand extends Command {
     constructor(client) {
