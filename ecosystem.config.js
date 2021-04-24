@@ -5,9 +5,9 @@ module.exports = {
     watch: '.',
     ignore_watch: ["node_modules", "assets", "database.sqlite", "database.sqlite-journal"],
     args: [
-	    "--color"
-        ]
-    }
+          "--color",
+        ],
+    },
   ],
 
   deploy : {
@@ -19,7 +19,7 @@ module.exports = {
       path : 'DESTINATION_PATH',
       'pre-deploy-local': '',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production',
-      'pre-setup': ''
-    }
-  }
-}
+      'pre-setup': '',
+    },
+  },
+};
