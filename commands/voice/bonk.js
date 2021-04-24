@@ -32,8 +32,6 @@ module.exports = class BonkCommand extends Command {
         const bonkChannel = message.guild.channels.cache.get(bonkChannelID);
         let taggedMember = user;
 
-        console.log(user);
-
         if (!bonkChannel) {
             console.error(oneLine`
                 You need to specify a valid channel ID in config.json!

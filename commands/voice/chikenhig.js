@@ -30,9 +30,6 @@ module.exports = class ChikenhigCommand extends Command {
         // if no channel is explicitly specified, join author's voice channel
             if (message.member.voice.channel) {
                 connection = await message.member.voice.channel.join();
-                console.log(oneLine`
-                    Joined voice channel: ${message.member.voice.channel.name}
-                `);
             } else {
                 message.reply('You need to specify a voice channel to join!');
             }
