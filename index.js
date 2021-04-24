@@ -7,7 +7,7 @@ const fs = require('fs');
 // console timestamps
 require('console-stamp')(console, { pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
 
-// create command clientnpm in
+// create commando client
 const client = new CommandoClient({
 	commandPrefix: prefix,
     owner: ownerID,
