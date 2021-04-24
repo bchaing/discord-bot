@@ -1,11 +1,12 @@
 // discord.js-command module
 const { CommandoClient } = require('discord.js-commando');
-const { prefix, token, ownerID } = require('./config.json');
 const path = require('path');
 const fs = require('fs');
+const { prefix, token, ownerID } = require('./config.json');
 
 // console timestamps
-require('console-stamp')(console, { pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
+require('console-stamp')(console, 
+	{ pattern: 'm/dd/yy HH:MM:ss', label: false, colors: { stamp: 'green' } });
 
 // create commando client
 const client = new CommandoClient({
@@ -36,7 +37,8 @@ client.dispatcher.addInhibitor(msg => {
 });
   
 // event handler
-const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+const eventFiles = 
+	fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
