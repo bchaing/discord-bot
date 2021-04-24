@@ -1,5 +1,5 @@
 const { Users } = require('../util/dbObjects');
-const { userData } = require('../index');
+const { userData } = require('../util/dbCollections');
 
 module.exports = {
 	name: 'ready',

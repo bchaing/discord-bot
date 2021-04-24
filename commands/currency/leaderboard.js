@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const { userData } = require('../../index');
+const { userData } = require('../../util/dbCollections');
 const { oneLine } = require('common-tags');
 
 module.exports = class LeaderboardCommand extends Command {
