@@ -32,7 +32,7 @@ Reflect.defineProperty(userData, 'getRoles', {
 
 Reflect.defineProperty(userData, 'addBalance', {
 	/* eslint-disable-next-line func-name-matching */
-	value: async function addBalance(user_id, guild_id, amount) {
+    value: async function addBalance(user_id, guild_id, amount) {
         const id = `${guild_id}-${user_id}`;
         const user = userData.get(id);
 		if (user) {
@@ -52,7 +52,7 @@ Reflect.defineProperty(userData, 'addBalance', {
 
 Reflect.defineProperty(userData, 'getBalance', {
 	/* eslint-disable-next-line func-name-matching */
-	value: function getBalance(user_id, guild_id) {
+    value: function getBalance(user_id, guild_id) {
         const id = `${guild_id}-${user_id}`;
 		const user = userData.get(id);
 		return user ? user.balance : 0;
