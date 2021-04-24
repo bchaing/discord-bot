@@ -1,6 +1,6 @@
 module.exports = {
-	name: 'warn',
-	execute(info) {
+    name: 'warn',
+    execute(info) {
         console.error(info);
     },
 };
