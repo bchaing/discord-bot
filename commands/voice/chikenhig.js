@@ -25,7 +25,6 @@ module.exports = class ChikenhigCommand extends Command {
 
   async run(message, { channel }) {
     let connection;
-
     if (!channel) {
       // if no channel is explicitly specified, join author's voice channel
       if (message.member.voice.channel) {
@@ -52,6 +51,7 @@ module.exports = class ChikenhigCommand extends Command {
         connection = await voiceChannel.join();
       } else {
         message.reply("You need to specify a voice channel to join!");
+        return;
       }
     }
 
