@@ -41,7 +41,9 @@ module.exports = class RolePersistCommand extends Command {
           userData.updateRoles(
             m.user.id,
             message.guild.id,
-            m.roles.cache.map((r) => r.id),
+            m.roles.cache
+              .filter((r) => r.id != 756254966662037614) // filter out server booster role
+              .map((r) => r.id),
           );
         });
         return message.say("Updated persistent roles database!");

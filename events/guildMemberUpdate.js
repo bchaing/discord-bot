@@ -13,7 +13,9 @@ module.exports = {
       userData.updateRoles(
         newMember.user.id,
         newMember.guild.id,
-        newMember.roles.cache.map((r) => r.id),
+        newMember.roles.cache
+          .filter((r) => r.id != 756254966662037614) // filter out server booster role
+          .map((r) => r.id),
       );
     }
   },
