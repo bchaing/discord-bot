@@ -6,9 +6,7 @@ const { prefix, token, ownerID } = require("./config.json");
 
 // console timestamps
 require("console-stamp")(console, {
-  pattern: "m/dd/yy HH:MM:ss",
-  label: false,
-  colors: { stamp: "green" },
+  format: ":date(m/dd/yy HH:MM:ss).green",
 });
 
 // create commando client

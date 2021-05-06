@@ -7,7 +7,7 @@
     "@discordjs/opus": "^0.3.3",
     "canvas": "^2.6.1",
     "common-tags": "^1.8.0",
-    "console-stamp": "^0.2.9",
+    "console-stamp": "^3.0.2",
     "date-fns": "^2.16.1",
     "discord.js": "^12.5.1",
     "discord.js-commando": "github:discordjs/Commando",

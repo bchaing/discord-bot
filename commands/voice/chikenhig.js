@@ -15,8 +15,8 @@ module.exports = class ChikenhigCommand extends Command {
       args: [
         {
           key: "channel",
-          prompt: "",
-          type: "string",
+          prompt: "Which voice channel should the bot join?",
+          type: "voice-channel",
           default: "",
         },
       ],
@@ -24,36 +24,13 @@ module.exports = class ChikenhigCommand extends Command {
   }
 
   async run(message, { channel }) {
-    let connection;
-    if (!channel) {
-      // if no channel is explicitly specified, join author's voice channel
-      if (message.member.voice.channel) {
-        connection = await message.member.voice.channel.join();
-      } else {
-        message.reply("You need to specify a voice channel to join!");
-      }
-    } else {
-      // channel is explicitly specified, search for channel and join
-      let voiceChannel;
-
-      // allow for vc mentions or just plain text
-      if (message.mentions.roles.size != 0) {
-        voiceChannel = message.guild.channels.cache.find((vc) =>
-          message.mentions.roles.some((role) => role.name === vc.name),
-        );
-      } else {
-        voiceChannel = message.guild.channels.cache.find(
-          (vc) => vc.name.toLowerCase() === channel.toLowerCase(),
-        );
-      }
-
-      if (voiceChannel) {
-        connection = await voiceChannel.join();
-      } else {
-        message.reply("You need to specify a voice channel to join!");
-        return;
-      }
+    if (!channel && message.member.voice.channel) {
+      channel = message.member.voice.channel;
+    } else if (!channel) {
+      return message.reply("You need to specify a voice channel!");
     }
+
+    const connection = await channel.join();
 
     // play audio file
     const dispatcher = connection.play("assets/audio/chikenhig.mp3", {
