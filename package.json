@@ -22,7 +22,8 @@
     "snoowrap": "^1.22.0",
     "sqlite": "^3.0.0",
     "sqlite3": "^5.0.1",
-    "xmldom": "^0.5.0"
+    "xmldom": "^0.5.0",
+    "youtube-dl-exec": "^1.2.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
