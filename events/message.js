@@ -71,8 +71,9 @@ module.exports = {
       const url = await getVredLink(messageURL);
       if (url) return message.say(url);
     } else if (
-      messageURL.includes("www.tiktok.com") &&
-      messageURL.includes("/video/")
+      (messageURL.includes("www.tiktok.com") &&
+        messageURL.includes("/video/")) ||
+      messageURL.includes("vm.tiktok.com")
     ) {
       const destRegex = new RegExp(/[\n\r].*Destination:\s*([^\n\r]*)/gm);
       const output = await youtubedl(messageURL, {
