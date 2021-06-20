@@ -77,7 +77,7 @@ module.exports = {
     ) {
       const destRegex = new RegExp(/[\n\r].*Destination:\s*([^\n\r]*)/gm);
       const output = await youtubedl(messageURL, {
-        output: "assets/%(title)s.%(ext)s",
+        output: "assets/tiktok/%(title)s.%(ext)s",
       });
 
       const videoPath = destRegex.exec(output)[1];
