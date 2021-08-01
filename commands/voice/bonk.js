@@ -9,7 +9,7 @@ module.exports = class BonkCommand extends Command {
       name: "bonk",
       group: "voice",
       memberName: "bonk",
-      description: "Kicks a user to horny jail.",
+      description: "Bonks a user to horny jail.",
       guildOnly: true,
       throttling: {
         usages: 1,
@@ -34,7 +34,7 @@ module.exports = class BonkCommand extends Command {
 
     if (!bonkChannel) {
       console.error(oneLine`
-                You need to specify a valid channel ID in config.json!
+                You need to specify a valid bonk channel ID in config.json!
             `);
       return;
     }

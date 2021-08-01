@@ -75,7 +75,7 @@ module.exports = {
         messageURL.includes("/video/")) ||
       messageURL.includes("vm.tiktok.com")
     ) {
-      const destRegex = new RegExp(/[\n\r].*Destination:\s*([^\n\r]*)/gm);
+      /* const destRegex = new RegExp(/[\n\r].*Destination:\s*([^\n\r]*)/gm);
       const output = await youtubedl(messageURL, {
         output: "assets/tiktok/%(title)s.%(ext)s",
       });
@@ -83,7 +83,7 @@ module.exports = {
       const videoPath = destRegex.exec(output)[1];
       await message.channel.send({ files: [videoPath] });
 
-      fs.unlinkSync(videoPath);
+      fs.unlinkSync(videoPath); */
     }
   },
 };
