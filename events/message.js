@@ -90,7 +90,6 @@ module.exports = {
 
 // get link to vred.rip video
 async function getVredLink(link) {
-  return;
   const id = link.split("/")[3];
   for (let i = 0; i < 2; i++) {
     const apiURL = `https://vred.rip/api/vreddit/${id}`;
