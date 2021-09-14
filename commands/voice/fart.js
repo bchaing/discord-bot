@@ -30,7 +30,7 @@ module.exports = class FartCommand extends Command {
 
     // play audio file
     const dispatcher = connection.play("assets/audio/fart.mp3", {
-      volume: 0.3,
+      volume: 0.8,
     });
 
     // disconnect on audio file finish
