@@ -7,6 +7,7 @@ class PingCommand extends Command {
       name: "ping",
       aliases: ["pong"],
       description: "Display the latency of command replies.",
+      fullCategory: ["General"],
     });
   }
 
