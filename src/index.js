@@ -14,9 +14,4 @@ const client = new SapphireClient({
 // load env variables
 dotenv.config();
 
-// When the client is ready, run this code (only once)
-client.once("ready", () => {
-  console.log("Ready!");
-});
-
 client.login(process.env.DISCORD_TOKEN).catch(console.error);
