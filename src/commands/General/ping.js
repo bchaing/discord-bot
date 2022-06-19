@@ -16,9 +16,11 @@ class PingCommand extends Command {
     const msg = await message.channel.send("🏓 Pong!");
 
     // measure latency and edit message
-    const content = `🏓 Pong! \n Bot Latency: ${Math.round(
+    const content = `🏓 Pong! \n Bot Latency: \`${Math.round(
       this.container.client.ws.ping,
-    )}ms\n API Latency: ${msg.createdTimestamp - message.createdTimestamp}ms`;
+    )}ms\`\n API Latency: \`${
+      msg.createdTimestamp - message.createdTimestamp
+    }ms\``;
     return msg.edit(content);
   }
 }
