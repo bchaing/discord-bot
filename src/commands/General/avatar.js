@@ -26,7 +26,7 @@ class AvatarCommand extends Command {
     const avatar = value.user.displayAvatarURL({ dynamic: true });
 
     // send avatar url
-    message.channel.send(avatar).catch(this.container.logger.error);
+    return message.channel.send(avatar).catch(this.container.logger.error);
   }
 }
 
